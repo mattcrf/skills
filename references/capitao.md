@@ -4,7 +4,7 @@ Leia primeiro `../SKILL.md`. Você responde pelo objetivo e pela aceitação do 
 
 ## Decidir e delegar
 
-Antes de uma parte substancial, identifique o resultado verificável, as dependências e se há trabalho útil para delegar. No modo **orquestrador**, delegue implementação; investigue apenas o suficiente para delimitar tarefas e avaliar retornos. Sem executor disponível, prepare a ponte em vez de implementar silenciosamente.
+Antes de uma parte substancial, identifique o resultado verificável, as dependências e se há trabalho útil para delegar. No modo **orquestrador**, delegue implementação; investigue apenas o suficiente para delimitar tarefas e avaliar retornos. Sem executor disponível, prepare a ponte em vez de implementar silenciosamente. Nunca abra subagentes nativos: toda delegação do capitão sai pela ponte.
 
 No modo **implementador com ajudantes**, faça uma decisão explícita e curta entre executar e delegar em cada parte substancial. Delegue quando uma investigação delimitada, revisão independente ou tarefa separável reduzir trabalho ou incerteza sem exigir transportar contexto desproporcional. Execute localmente mudanças pequenas cujo pacote custaria mais que a solução. Não transforme essa decisão em relatório recorrente para cada comando.
 
@@ -50,7 +50,6 @@ Crie `despacho-NN.md` separado, apenas com dados para abrir e acompanhar agentes
 ```markdown
 # Despacho 01
 Papel: gerente
-Protocolo e referência do papel: [caminhos absolutos]
 Projeto: [raiz absoluta]
 Índice de execução: [caminho absoluto de execucao-01.md]
 Vagas concedidas: [N, descontadas as ocupadas fora deste lote].

@@ -17,7 +17,7 @@ Leia este arquivo e somente a referência do papel recebido:
 - [Gerente](references/gerente.md): abre e acompanha agentes nativos a partir de um despacho operacional, sem carregar ou consolidar conteúdo técnico.
 - [Trabalhador](references/trabalhador.md): realiza uma tarefa delimitada.
 
-Sem papel explícito, assuma capitão. Sem modo explícito, assuma orquestrador. Pedidos recebidos indicam o papel e os caminhos absolutos deste protocolo e da referência pertinente. As instruções do projeto continuam aplicáveis ao escopo de cada papel. O gerente segue as regras operacionais aplicáveis, sem assumir a leitura técnica exigida dos trabalhadores. Capitão e trabalhadores consultam as regras técnicas pertinentes quando ainda não as tiverem no contexto vigente; não releiam mecanicamente arquivos já carregados e inalterados. Não amplie autorizações do usuário.
+Sem papel explícito, assuma capitão. Sem modo explícito, assuma orquestrador. Pedidos para trabalhadores indicam o papel e os caminhos absolutos deste protocolo e da referência pertinente; o despacho indica só o papel, e também esses caminhos quando o usuário pedir na sessão. As instruções do projeto continuam aplicáveis ao escopo de cada papel. O gerente segue as regras operacionais aplicáveis, sem assumir a leitura técnica exigida dos trabalhadores. Capitão e trabalhadores consultam as regras técnicas pertinentes quando ainda não as tiverem no contexto vigente; não releiam mecanicamente arquivos já carregados e inalterados. Não amplie autorizações do usuário.
 
 ## Início e configuração
 
