@@ -37,6 +37,11 @@ escreva `desconhecido`.
 
 Só a classe L segue adiante.
 
+**Teste da escala.** Quando o agente seguiu o texto, repita a escolha em
+cada recorte de uma operação longa (30, por exemplo). Se a soma é trabalho
+que ninguém lê ou que a repetição seguinte torna inútil, o texto é a fonte:
+classe L, mesmo com um caso só.
+
 ## 3. Portões (todos obrigatórios)
 
 1. **Contrafactual:** o texto proposto, existindo, teria evitado o incidente
@@ -47,7 +52,8 @@ Só a classe L segue adiante.
    falha foi de aplicação, e mais texto não resolve.
 4. **Recorrência:** ao menos 2 incidentes da mesma classe em operações ou
    modelos diferentes. Basta 1 se a segurança do protocolo quebrou (dois
-   escritores, limite de trabalhadores excedido).
+   escritores, limite de trabalhadores excedido) ou se o teste da escala
+   falhou.
 5. **Custo:** todo agente lê a SKILL em toda sessão. Prefira substituir ou
    apagar a acrescentar.
 
