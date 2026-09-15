@@ -24,8 +24,9 @@ Situação: concluído | parcial | bloqueado
 Resultado: [entrega ou resposta direta à pergunta].
 Arquivos alterados: [caminhos e propósito; nenhum em tarefa de leitura].
 Evidências: [referências de arquivo/símbolo/linha ou artefatos].
-Verificação: [comando e resultado observado; não executado e motivo, se aplicável].
+Verificação: [comando, resultado observado e tempo; não executado e motivo, se aplicável].
 Pendências: [o que falta, dúvida ou impedimento; omita se não houver].
+Fora do pedido: [sempre presente; o que você notou fora da tarefa e piora o projeto, uma linha por item, o mais custoso primeiro, com número quando houver; não investigue para preencher nem aja sobre isso; "nada" é resposta válida].
 Execução: encerrada; não continuarei editando após este retorno.
 Processos persistentes: [nenhum ou identificação e efeitos relevantes].
 ```
