@@ -56,6 +56,15 @@ classe L, mesmo com um caso só.
    falhou.
 5. **Custo:** todo agente lê a SKILL em toda sessão. Prefira substituir ou
    apagar a acrescentar.
+6. **Relatório:** texto que só gera saída para o dono entra se as três
+   condições valem, todas conferíveis no registro da sessão:
+   - tamanho fixo e pequeno, contável antes (uma linha por retorno, por
+     exemplo);
+   - projeção do que o papel já produziu para decidir, sem leitura,
+     medição ou investigação extra;
+   - emitido depois da decisão, sem condicioná-la.
+
+   Se qualquer uma falha, fica fora.
 
 ## Evidência
 

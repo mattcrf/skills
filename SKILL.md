@@ -21,7 +21,7 @@ Sem papel explícito, assuma capitão. Sem modo explícito, assuma orquestrador.
 
 ## Início e configuração
 
-Reutilize escolhas da conversa e o handoff vigente, quando houver. Consulte `estado.md` somente para coordenação operacional ainda viva; ele não guarda objetivo, decisões técnicas ou contexto do projeto. Registre valores efetivos no pedido ou despacho que depende deles e não faça um questionário sobre informações já disponíveis. Na ausência de configuração, use os padrões abaixo e comunique-os brevemente:
+Reutilize escolhas da conversa. Consulte `estado.md` somente para coordenação operacional ainda viva; ele não guarda objetivo, decisões técnicas ou contexto do projeto. Registre valores efetivos no pedido ou despacho que depende deles e não faça um questionário sobre informações já disponíveis. Na ausência de configuração, use os padrões abaixo e comunique-os brevemente:
 
 ```text
 Papel: capitão
@@ -44,7 +44,7 @@ O capitão escolhe uma pasta nova, com nome curto e único, em `temp/tasks/`, ou
 ```text
 temp/tasks/<operacao>/
   estado.md          # controle operacional mutável, não histórico/contexto
-  continuacao-01.md  # handoff semântico opcional
+  continuacao-01.md  # handoff do projeto, opcional, sem orquestração
   despacho-01.md     # operacional, para o gerente; omitido na ponte direta
   pedido-01-a.md     # técnico, escrito pelo capitão para o trabalhador
   retorno-01-a.md    # técnico, escrito pelo trabalhador

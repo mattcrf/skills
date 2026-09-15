@@ -111,7 +111,7 @@ Handoff vigente: nenhum | [caminho absoluto].
 
 Reescreva o arquivo por inteiro antes de publicar uma concessão e após cada fato operacional observado. Remova a linha do trabalhador assim que houver confirmação terminal; libere a escrita somente conforme a regra de exclusividade. Aceitação técnica não entra no estado. Nunca acrescente parágrafos ao fim e nunca mantenha tarefas concluídas.
 
-Um handoff é diferente: preserva somente contexto semântico ainda necessário para outra sessão e é imutável. Antes de publicar, revise-o como sucessor sem memória: apenas com `estado.md`, o handoff e suas referências, deve ser possível recuperar sem suposições objetivo, configuração e limites vigentes, decisões necessárias, ponto exato e próximo ato. Se exigir reconstruir o histórico ou refazer investigação já concluída, complete-o. Crie handoff só quando o usuário pedir ou anunciar troca de sessão, e só com o que código, testes, Git e o pedido atual não reconstroem; até lá, decisões aprovadas e ainda não materializadas ficam na conversa. `estado.md` apenas aponta para o handoff vigente.
+Um handoff é diferente: é imutável e serve a qualquer agente, mesmo a um que não use esta orquestração. Contém só o contexto do projeto que código, testes, Git e pedidos não reconstroem: objetivo, decisões técnicas aprovadas e ainda não materializadas, ponto exato e próximo ato técnico. Não registra configuração, papéis, ponte, gerente, formato de pedidos, critérios de avaliação de agentes nem notas sobre modelos: a sessão seguinte recebe isso só da SKILL e do usuário. Antes de publicar, revise-o como sucessor sem memória: apenas com o handoff e suas referências, deve ser possível retomar o trabalho técnico sem suposições e sem refazer investigação concluída. Crie handoff só quando o usuário pedir ou anunciar troca de sessão; até lá, decisões aprovadas e ainda não materializadas ficam na conversa. `estado.md` apenas aponta para o handoff vigente.
 
 Quando o objetivo mudar materialmente, abra outra pasta de operação. A predecessora fica com um controle encerrado que aponta para a sucessora; não copie seu histórico. A nova operação recebe um handoff apenas se realmente precisar de contexto não materializado.
 
@@ -122,3 +122,11 @@ Leia o índice operacional do gerente e diretamente os retornos técnicos dos tr
 Escolha entre aceitar, preparar correção específica ou pedir uma decisão necessária. Integre alterações somente com a escrita livre e quando o seu modo e o escopo permitirem; no modo orquestrador, delegue alterações de integração. Ao aceitar implementação, avalie se uma revisão independente é útil; não a imponha para mudanças triviais. Divergência pequena e objetiva no que foi entregue — um tipo, uma constante, um comentário fora da regra local — o capitão corrige com a escrita livre e a relata ao usuário ao aceitar, em qualquer modo: não é alteração de integração e não abre pedido. Corrigir não é reescrever: se a mudança toca uma decisão do trabalhador, o escopo do pedido ou o gosto do capitão, é pedido novo ou é aceitar como está.
 
 Conclua com o resultado, verificação e limitações relevantes. Não mantenha a operação aberta para melhorias fora do pedido. Respeite pausas de revisão exigidas pelo usuário ou projeto.
+
+Termine a avaliação de cada retorno com uma linha, derivada da decisão já tomada, sem investigação extra:
+
+```text
+Desempenho <ID>: <A|B|C|D>; relato <fiel|incompleto>; <motivo em uma frase, citando a linha do pedido>
+```
+
+A: aceito sem correção. B: aceito com correção pequena do capitão. C: exigiu pedido de correção. D: descartado ou refeito. Só conta divergência do que o pedido exigia; o que ele não exigia é falha do pedido e não entra no nível.
