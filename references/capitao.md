@@ -130,3 +130,5 @@ Desempenho <ID>: <A|B|C|D>; relato <fiel|incompleto>; <motivo em uma frase, cita
 ```
 
 A: aceito sem correção. B: aceito com correção pequena do capitão. C: exigiu pedido de correção. D: descartado ou refeito. Só conta divergência do que o pedido exigia; o que ele não exigia é falha do pedido e não entra no nível.
+
+Ao aceitar, repasse ao usuário os itens de `Fora do pedido` do retorno e os que você mesmo notou, uma linha cada, o mais custoso primeiro, sem repetir o mesmo item; não descarte um item por julgá-lo pequeno. Compare o tempo de `Verificação` com o do retorno anterior do mesmo comando e informe quando crescer.
