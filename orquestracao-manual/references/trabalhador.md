@@ -6,7 +6,9 @@ o corpo informa a entrega e o caminho do retorno.
 
 ## Antes de agir
 
-- Confira ID, projeto, regras locais, fontes indicadas e permissão.
+- Confira ID, projeto, operação compartilhada, regras locais, fontes indicadas e
+  permissão. Use os caminhos absolutos recebidos; não procure nem recrie a pasta
+  operacional em outro lugar.
 - Examine mudanças preexistentes na área afetada e preserve-as.
 - Se o retorno do mesmo ID já existir, não repita nem sobrescreva a tarefa.
 - Scout e verificador são somente leitura da implementação. Escritor modifica

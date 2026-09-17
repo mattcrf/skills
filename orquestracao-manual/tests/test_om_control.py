@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import subprocess
 import sys
@@ -64,13 +65,14 @@ Demonstrate one small task.
         )
         return path
 
-    def run_om(self, *args):
+    def run_om(self, *args, env=None):
         return subprocess.run(
             [sys.executable, "-B", str(OM_PATH), *args],
             text=True,
             encoding="utf-8",
             capture_output=True,
             timeout=20,
+            env=env,
         )
 
     def publish(self, task):
@@ -124,6 +126,10 @@ Demonstrate one small task.
         self.assertEqual(writer.returncode, 0, writer.stderr)
         writer_path = Path(writer.stdout.removeprefix("draft ").strip())
         self.assertTrue(writer_path.is_file())
+        self.assertIn(
+            "Operação compartilhada: `%s`." % operation.resolve(),
+            writer_path.read_text(encoding="utf-8"),
+        )
         rejected = self.run_om(
             "task", "publish", "--operation", str(operation), "--task", str(writer_path)
         )
@@ -176,6 +182,7 @@ Demonstrate one small task.
         self.assertIn("SKILL.md", dispatch)
         self.assertIn("references\\gerente.md", dispatch)
         self.assertIn("references\\trabalhador.md", dispatch)
+        self.assertIn("Operação: `%s`" % operation.resolve(), dispatch)
         self.assertNotIn("Não há scout", dispatch)
         self.assertNotIn("não tente", dispatch.lower())
         self.assertIn('manager: Leia "', dispatched.stdout)
@@ -183,6 +190,35 @@ Demonstrate one small task.
         doctor = self.run_om("doctor", "--operation", str(operation))
         self.assertEqual(doctor.returncode, 0, doctor.stderr)
         self.assertIn("tasks=2 events=2", doctor.stdout)
+
+    def test_init_without_operation_uses_standard_root_and_reports_absolute_path(self):
+        project = (self.root / "default-project").resolve()
+        project.mkdir()
+        operations_root = (self.root / "shared-ops").resolve()
+        environment = os.environ.copy()
+        environment["ORQUESTRACAO_MANUAL_OPS_ROOT"] = str(operations_root)
+
+        initialized = self.run_om(
+            "op",
+            "init",
+            "--id",
+            "default-operation",
+            "--project-root",
+            str(project),
+            env=environment,
+        )
+
+        operation = operations_root / "default-operation"
+        self.assertEqual(initialized.returncode, 0, initialized.stderr)
+        self.assertTrue((operation / "operation.toml").is_file())
+        self.assertIn("operation=%s" % operation, initialized.stdout)
+
+    def test_init_without_operation_or_id_is_rejected(self):
+        project = (self.root / "missing-id-project").resolve()
+        project.mkdir()
+        rejected = self.run_om("op", "init", "--project-root", str(project))
+        self.assertEqual(rejected.returncode, 1)
+        self.assertIn("--id is required when --operation is omitted", rejected.stderr)
 
     def test_task_size_is_measured_but_never_blocks_publication(self):
         task = self.task()

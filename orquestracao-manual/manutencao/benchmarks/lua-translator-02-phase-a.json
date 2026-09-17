@@ -26,7 +26,7 @@
         "words": 2080
       }
     ],
-    "operational_words": 1507,
+    "operational_words": 1675,
     "method": "historical revisions measure SKILL.md plus capitao.md; operational_words measures those files plus cli.md, which became required when the public CLI shipped"
   },
   "bridge": {

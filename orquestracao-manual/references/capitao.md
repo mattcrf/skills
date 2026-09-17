@@ -6,9 +6,11 @@ julgamento.
 
 ## Preparar a operação
 
-1. Confirme a raiz do projeto, suas regras e o diretório da operação.
-2. Use `om op init` para uma operação nova. Reuse uma operação somente quando o
-   objetivo material permanece o mesmo.
+1. Confirme a raiz do projeto e suas regras. Se o usuário não escolher o
+   diretório da operação, use a raiz padrão documentada em `cli.md`; não pergunte.
+2. Escolha um ID curto e específico e use `om op init` para uma operação nova.
+   Guarde o caminho absoluto emitido pelo comando e use-o em todo o segmento.
+   Reuse uma operação somente quando o objetivo material permanece o mesmo.
 3. Planeje apenas o próximo segmento executável: todas as tarefas que o gerente
    consegue encadear sem nova decisão técnica.
 4. Para implementação, publique um escritor e um verificador dependente. Acrescente

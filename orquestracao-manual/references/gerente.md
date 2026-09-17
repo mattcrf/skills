@@ -14,10 +14,14 @@ dependências, permissões e retornos.
 
    ```text
    Trabalhe no projeto "<projeto>".
+   A operação compartilhada é "<operação>".
    Leia integralmente "<protocolo>", "<referência do trabalhador>" e
    "<pedido publicado>". Execute o pedido. Ao terminar, informe somente ID,
    situação, caminho do retorno e estado da escrita/processos.
    ```
+
+   Copie `<projeto>` e `<operação>` das linhas correspondentes do despacho;
+   não deduza caminhos a partir da sessão atual.
 
 4. Use as ferramentas nativas para aguardar. Conclusão terminal e existência do
    retorno liberam a próxima dependência; parcial, bloqueado, falha ou processo de

@@ -64,8 +64,18 @@ atingir uma contagem.
 
 ## Operação compartilhada
 
-Novas operações usam o formato criado por `om op init`, preferencialmente fora
-do repositório alvo:
+Novas operações usam o formato criado por `om op init`, fora do repositório
+alvo. Quando o usuário não indicar outro lugar, o capitão não pergunta nem
+inventa um caminho: o CLI cria `<id>` na raiz operacional padrão
+`%USERPROFILE%\Documents\skills\temp\ops` no Windows. Um caminho explícito
+continua podendo substituir o padrão.
+
+O capitão escolhe um ID curto e específico para a nova operação. O caminho
+absoluto criado pelo CLI torna-se canônico e é propagado, sem ser redigitado:
+o despacho o entrega ao gerente; o gerente o entrega a cada trabalhador; cada
+pedido publicado contém o mesmo caminho e o retorno absoluto.
+
+Estrutura:
 
 ```text
 <operação>/

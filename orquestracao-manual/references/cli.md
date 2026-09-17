@@ -17,12 +17,20 @@ Se a harness fornece outro executável Python, substitua apenas `py -B`. Use
 
 ## Preparação completa de um segmento
 
-Crie uma operação em diretório novo ou vazio, preferencialmente fora do projeto:
+Crie a operação na raiz padrão. `--id` também nomeia sua pasta:
 
 ```powershell
 py -B "<skill>\scripts\om.py" op init `
-  --operation "<operação>" --project-root "<projeto>"
+  --id "<id-da-operação>" --project-root "<projeto>"
 ```
+
+No Windows, a raiz padrão é
+`%USERPROFILE%\Documents\skills\temp\ops`; portanto o comando acima cria
+`%USERPROFILE%\Documents\skills\temp\ops\<id-da-operação>`. A variável
+`ORQUESTRACAO_MANUAL_OPS_ROOT`, quando definida com caminho absoluto, muda essa
+raiz. Use `--operation "<caminho absoluto>"` somente quando o usuário escolher
+outro local. A saída de `op init` informa o caminho absoluto canônico; reutilize-o
+nos comandos seguintes, sem reconstruí-lo.
 
 Crie o escritor e o verificador. O segundo depende do primeiro:
 

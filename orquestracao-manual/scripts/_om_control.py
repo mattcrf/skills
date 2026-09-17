@@ -17,6 +17,7 @@ STATUS_FORMAT = "om-status/1"
 EVENT_TYPE = "task-published"
 TARGET_TASK_BYTES = 2_000
 TARGET_TASK_WORDS = 250
+OPS_ROOT_ENV = "ORQUESTRACAO_MANUAL_OPS_ROOT"
 ID_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
 EFFECTS = {"read-only", "mutating"}
 KINDS = {"scout", "writer", "verifier"}
@@ -433,12 +434,28 @@ def run_task_publish(args) -> int:
     return _guard(_publish, args)
 
 
+def _default_operations_root() -> Path:
+    configured = os.environ.get(OPS_ROOT_ENV)
+    if configured:
+        root = Path(configured).expanduser()
+        if not root.is_absolute():
+            _error("%s must be an absolute directory" % OPS_ROOT_ENV)
+        return root.resolve()
+    return (Path.home() / "Documents" / "skills" / "temp" / "ops").resolve()
+
+
 def _op_init(args) -> int:
-    root = Path(args.operation).resolve()
     project = Path(args.project_root).resolve()
     if not project.is_dir():
         _error("project_root must be an existing directory: %s" % project)
-    op_id = _validate_id(args.id or root.name, "operation id")
+    if args.operation is None:
+        if args.id is None:
+            _error("--id is required when --operation is omitted")
+        op_id = _validate_id(args.id, "operation id")
+        root = (_default_operations_root() / op_id).resolve()
+    else:
+        root = Path(args.operation).resolve()
+        op_id = _validate_id(args.id or root.name, "operation id")
     context = args.context
     if isinstance(context, bool) or not isinstance(context, int) or context <= 0:
         _error("context must be a positive integer")
@@ -525,6 +542,8 @@ depends = {depends}
 
 # {title}
 
+Operação compartilhada: `{operation}`.
+
 ## Objetivo
 
 TODO: descreva a entrega observável.
@@ -552,6 +571,7 @@ Grave o resultado em `{result}` conforme o protocolo do trabalhador.
         context=context,
         depends=json.dumps(depends, ensure_ascii=False),
         title=title,
+        operation=root.resolve(),
         result=result,
     )
     target = root / ".scratch" / "drafts" / (task_id + ".md")
@@ -751,9 +771,19 @@ def register_cli(sub) -> None:
     op = sub.add_parser("op", help="operation lifecycle commands")
     op_sub = op.add_subparsers(dest="op_command", required=True)
     init = op_sub.add_parser("init", help="create a local operation")
-    init.add_argument("--operation", required=True, help="new operation directory")
+    init.add_argument(
+        "--operation",
+        required=False,
+        default=None,
+        help="new operation directory; defaults to the standard operations root plus --id",
+    )
     init.add_argument("--project-root", required=True, help="existing project root")
-    init.add_argument("--id", required=False, default=None, help="operation id; defaults to directory name")
+    init.add_argument(
+        "--id",
+        required=False,
+        default=None,
+        help="operation id; required for the standard root, otherwise defaults to directory name",
+    )
     init.add_argument("--context", required=False, type=int, default=1)
     init.set_defaults(func=run_op_init)
     task = sub.add_parser("task", help="local task lifecycle commands")

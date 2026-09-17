@@ -8,6 +8,9 @@ a fotografia do que pode ser usado agora.
 
 - A fonte de verdade é este repositório; instalações em `.codex` e `.claude` são
   cópias sincronizadas de `SKILL.md`, `references/` e `scripts/`.
+- Sem escolha explícita do usuário, `op init --id` cria operações em
+  `%USERPROFILE%\Documents\skills\temp\ops\<id>`; o despacho e os pedidos
+  propagam o caminho absoluto ao gerente e aos trabalhadores.
 - O CLI público prepara operações: `op init`, `task new`, `task publish`,
   `bridge dispatch`, `status`, `resume` e `doctor`.
 - O CLI não executa agentes nem implementa ainda start/finish/check/packet/decide,
@@ -36,7 +39,7 @@ a fotografia do que pode ser usado agora.
 - captura automática de checks/diff e pacote de decisão;
 - backend nativo e broker;
 - coleta completa de métricas e `gc`;
-- repositório central definitivo de operações.
+- armazenamento e retenção de longo prazo das operações concluídas.
 
 Nenhuma documentação pública pode anunciar essas funções antes de existirem e
 passarem por dogfood real.
