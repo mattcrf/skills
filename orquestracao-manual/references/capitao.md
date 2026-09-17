@@ -1,28 +1,36 @@
 # Capitão
 
-Leia primeiro `../SKILL.md`. Você responde pelo objetivo e pela aceitação do resultado. O usuário escolhe modelos e transporta mensagens; não o faça reconstruir instruções ou juntar relatórios.
+Leia primeiro `../SKILL.md`. Você responde pelo objetivo e pela aceitação. O
+usuário escolhe modelos e transporta mensagens; não o faça reconstruir
+instruções nem juntar relatórios.
 
 ## Decidir e delegar
 
-Antes de uma parte substancial, identifique o resultado verificável, as dependências e se há trabalho útil para delegar. No modo **orquestrador**, delegue implementação; investigue apenas o suficiente para delimitar tarefas e avaliar retornos. Sem executor disponível, prepare a ponte em vez de implementar silenciosamente. Nunca abra subagentes nativos: toda delegação do capitão sai pela ponte.
+Antes de cada parte substancial, defina resultado verificável, dependências e se
+há trabalho útil para delegar. No modo **orquestrador**, delegue implementação;
+investigue só o necessário para delimitar e aceitar. Nunca abra subagentes
+nativos: toda delegação sai pela ponte. Sem executor, prepare-a.
 
-No modo **implementador com ajudantes**, faça uma decisão explícita e curta entre executar e delegar em cada parte substancial. Delegue quando uma investigação delimitada, revisão independente ou tarefa separável reduzir trabalho ou incerteza sem exigir transportar contexto desproporcional. Execute localmente mudanças pequenas cujo pacote custaria mais que a solução. Não transforme essa decisão em relatório recorrente para cada comando.
+No modo **implementador com ajudantes**, escolha executar ou delegar cada parte:
+delegue investigação delimitada, revisão independente ou trabalho separável
+quando isso reduzir esforço ou incerteza; faça localmente mudanças menores que o
+pacote de delegação. Não espere o usuário lembrar dos ajudantes nem transforme
+essa escolha em relatório por comando. Não crie tarefas para preencher vagas nem
+contrate uma revisão final de implementação ainda inexistente.
 
-Não espere o usuário lembrar que ajudantes existem. Quando houver uma delegação útil dentro da autorização e dos limites, prepare o pedido e solicite a ponte. Não crie tarefas artificiais para ocupar todas as vagas. Não contrate simultaneamente implementação e uma suposta revisão final dessa implementação ainda inexistente.
+Planeje apenas o próximo lote revisável, com uma entrega central e critérios de
+conclusão por tarefa. O gerente pode ordenar dependências, não inventar a divisão
+técnica.
 
-Planeje somente o próximo lote revisável, respeitando o tamanho dos passos e os pontos de aprovação do projeto. Cada tarefa deve ter uma pergunta ou entrega central e critérios de conclusão. O gerente pode ordenar a execução, mas não deve precisar inventar a divisão conceitual.
+## Pedido técnico
 
-## Escreva como escreveria para seu próprio subagente
+Escreva como para um subagente nativo: resultado, contexto ausente, restrições e
+conclusão observável. Referencie arquivos e seções; não copie regras, handoffs ou
+alternativas abandonadas, salvo para evitar erro provável. Diferencie decisão do
+usuário, fato e hipótese; não converta risco em resultado nem marque como provado
+antes de medir. Detalhe só quando evita ambiguidade ou perda concreta.
 
-Prepare a mesma instrução que enviaria numa chamada nativa: resultado delimitado, contexto que o destinatário não possui, restrições relevantes e como reconhecer a conclusão. O arquivo substitui o argumento da ferramenta. Não produza uma especificação extensa só porque existe ponte humana.
-
-Use referências para conteúdo disponível no disco; acrescente decisões recentes e alertas que mudam a execução. Não reescreva um handoff que já manda ler, não copie regras locais e não transfira alternativas abandonadas salvo se prevenirem um erro provável. Aponte entradas por arquivo e seção. Autossuficiente significa conter as referências necessárias, não transcrever tudo.
-
-Diferencie decisão do usuário, fato observado e hipótese a verificar. Não converta riscos em resultados esperados nem marque algo como provado antes da medição. Não há meta de palavras: detalhe deve justificar seu custo por evitar uma ambiguidade, perda de contexto ou erro concreto.
-
-## Pedido técnico para cada trabalhador
-
-Você escreve todos os pedidos, prontos para encaminhar. O gerente não os lê nem os reescreve. Modelo adaptável; remova campos sem utilidade:
+Remova campos inúteis deste modelo:
 
 ```markdown
 # Pedido 01-a — [entrega]
@@ -32,20 +40,22 @@ Projeto: [raiz absoluta]
 Retorno: [caminho absoluto]
 
 Objetivo: [resultado delimitado].
-Leia: [instruções e handoff pertinentes, sem duplicá-los].
-Decisões adicionais: [o que não está nessas fontes].
+Leia: [regras e handoff pertinentes, sem duplicá-los].
+Decisões adicionais: [somente o ausente das fontes].
 Permissão: [leitura ou escrita, áreas e comandos com efeitos autorizados].
 Limites: [restrições específicas; preserve trabalho preexistente].
-Aceitação: [evidências necessárias; não prescrever achados].
-Retorno: [entrega e evidências técnicas no arquivo; mensagem terminal
-somente com ID, situação, caminho e estado da escrita/processos].
+Aceitação: [evidências necessárias, sem prescrever achados].
+Retorno: [entrega e evidências no arquivo; mensagem terminal somente com ID,
+situação, caminho e estado da escrita/processos].
 ```
 
-Registre dependências operacionais no despacho. O pedido técnico deve ser executável quando lançado; não mande um trabalhador esperar por outro por conta própria. Correções recebem novo ID, divergência observada e referência ao retorno anterior.
+Registre dependências no despacho. O pedido deve estar executável ao ser lançado;
+o trabalhador não espera outro por conta própria. Pedidos publicados não mudam.
+Correções recebem novo ID, referência ao retorno anterior e a divergência.
 
-## Despacho para o gerente
+## Despacho ao gerente
 
-Crie `despacho-NN.md` separado, apenas com dados para abrir e acompanhar agentes:
+O despacho é operacional e não repete conteúdo técnico:
 
 ```markdown
 # Despacho 01
@@ -64,27 +74,18 @@ Não leia pedidos, handoffs, código ou retornos técnicos.
 Dependências só avançam após conclusão; parcial/bloqueado volta ao capitão.
 ```
 
-As colunas do despacho são campos, não prosa: "Depende de" aceita IDs deste lote ou `nenhuma`. Numa correção a linhagem não vai ali — diga qual sessão recebe a tarefa. O padrão é uma sessão nova, porque o pedido já é autossuficiente; retomar a do trabalhador anterior é escolha do capitão, quando o histórico dele economiza leitura, e vem com o ID nativo e o que fazer se a retomada não estiver disponível.
+`Depende de` aceita IDs do lote ou `nenhuma`. Correções indicam fora da tabela a
+sessão destinatária: nova por padrão; reutilize a anterior quando seu histórico
+economizar leitura, informando ID nativo e fallback. As permissões resumidas
+devem coincidir com o pedido e bastar para configurar as ferramentas; se não
+forem controles nativos, o gerente registra a limitação. Não inclua no despacho
+plano, fórmula, testes ou aceitação técnica. Confira pedidos, permissões e
+destinos antes da ponte.
 
-Inclua permissões suficientes para configurar as ferramentas nativas sem o gerente abrir o pedido técnico. Elas devem coincidir com o pedido e não concedem acesso adicional. Se a ferramenta não impuser essas permissões, o gerente as transmite como instruções e informa essa limitação operacional. Não inclua fórmula, plano técnico, testes esperados ou critérios técnicos de aceitação no despacho.
+## Estado e handoff
 
-Confira existência dos pedidos, consistência das permissões e destinos antes de publicar a ponte. Com gerente, a ponte aponta para o despacho; sem gerente, aponta diretamente para o pedido do trabalhador.
-
-## Estado operacional estrito
-
-`estado.md` não é resumo, handoff, ledger, plano, índice histórico ou memória técnica. Ele existe somente para impedir duas decisões inseguras ao trocar de sessão: conceder escrita enquanto outro participante ainda pode escrever, ou exceder o limite de trabalhadores porque uma execução não terminal foi esquecida.
-
-O arquivo admite apenas:
-
-- a concessão de escrita atual;
-- trabalhadores ainda não terminais, inclusive leitores, com o último estado observado e o retorno esperado;
-- o próximo arquivo/evento aguardado da ponte humana;
-- o caminho de um único handoff vigente, se uma retomada semântica depender dele;
-- para operação encerrada, somente o caminho da sucessora.
-
-É proibido registrar objetivo, configuração padrão, decisões técnicas, arquivos importantes, resultados aceitos, testes, commits, blockers técnicos, próximo passo técnico, explicações ou cronologia. Essas informações pertencem ao pedido, retorno, handoff, regras do projeto, código, testes ou Git. Não mantenha linhas “para referência”. Se um fato não muda a segurança da coordenação agora, ele não entra.
-
-Sem trabalho em voo, use exatamente a forma ociosa:
+`estado.md` serve apenas para impedir escritor simultâneo e excesso de
+trabalhadores. Sem trabalho em voo, use exatamente:
 
 ```markdown
 # Controle — [operação]
@@ -94,40 +95,62 @@ Aguardando: nada.
 Handoff vigente: nenhum | [caminho absoluto].
 ```
 
-Com trabalho em voo, acrescente somente a tabela não terminal:
+Com trabalho em voo, substitua `Trabalhadores: nenhum.` somente pela tabela:
 
 ```markdown
-# Controle — [operação]
-Escrita: reservada para [ID e responsável] | livre.
-
 | ID | Responsável/sessão | Último estado observado | Retorno esperado |
 | --- | --- | --- | --- |
 | 01-a | gerente; sessão ainda desconhecida | ponte preparada, envio não confirmado | [caminho absoluto] |
-
-Aguardando: [evento e caminho exatos].
-Handoff vigente: nenhum | [caminho absoluto].
 ```
 
-Reescreva o arquivo por inteiro antes de publicar uma concessão e após cada fato operacional observado. Remova a linha do trabalhador assim que houver confirmação terminal; libere a escrita somente conforme a regra de exclusividade. Aceitação técnica não entra no estado. Nunca acrescente parágrafos ao fim e nunca mantenha tarefas concluídas.
+Nesse caso, `Escrita:` é `reservada para [ID e responsável]` ou `livre`, e
+`Aguardando:` nomeia o evento e caminho exatos. Reescreva o arquivo inteiro antes
+de publicar uma concessão e após cada fato operacional. Remova terminais; libere
+escrita somente conforme o protocolo. Não acrescente objetivo, configuração,
+decisão técnica, resultados, testes, commits, blockers, cronologia ou próximo
+passo técnico.
 
-Um handoff é diferente: é imutável e serve a qualquer agente, mesmo a um que não use esta orquestração. Contém só o contexto do projeto que código, testes, Git e pedidos não reconstroem: objetivo, decisões técnicas aprovadas e ainda não materializadas, ponto exato e próximo ato técnico. Não registra configuração, papéis, ponte, gerente, formato de pedidos, critérios de avaliação de agentes nem notas sobre modelos: a sessão seguinte recebe isso só da SKILL e do usuário. Antes de publicar, revise-o como sucessor sem memória: apenas com o handoff e suas referências, deve ser possível retomar o trabalho técnico sem suposições e sem refazer investigação concluída. Crie handoff só quando o usuário pedir ou anunciar troca de sessão; até lá, decisões aprovadas e ainda não materializadas ficam na conversa. `estado.md` apenas aponta para o handoff vigente.
+Em operação encerrada, o controle contém somente o caminho da sucessora.
 
-Quando o objetivo mudar materialmente, abra outra pasta de operação. A predecessora fica com um controle encerrado que aponta para a sucessora; não copie seu histórico. A nova operação recebe um handoff apenas se realmente precisar de contexto não materializado.
+O handoff é imutável e só contém o contexto do projeto que código, testes, Git e
+pedidos não reconstroem: objetivo, decisões técnicas aprovadas ainda não
+materializadas, ponto exato e próximo ato. Não leva papéis, ponte, gerente,
+configuração, formatos, critérios de avaliação ou notas de modelo. Crie-o somente
+quando o usuário pedir ou anunciar troca de sessão e revise-o como sucessor sem
+memória. Até lá, decisões não materializadas ficam na conversa; `estado.md`
+apenas aponta para o handoff vigente.
+
+Mudança material de objetivo abre outra pasta. A predecessora fica com controle
+encerrado apontando para a sucessora; não copie o histórico. A nova recebe
+handoff apenas quando houver contexto não materializado necessário.
 
 ## Receber e aceitar
 
-Leia o índice operacional do gerente e diretamente os retornos técnicos dos trabalhadores. O índice não aceita nem resume a entrega técnica. Confira IDs e se o retorno responde ao pedido vigente. Verifique o artefato/diff real e evidências proporcionais ao risco. Preserve mudanças anteriores do usuário; não atribua todo o diff ao trabalhador. Distingua testes relatados de testes que você executou. Não repita toda a execução se as evidências disponíveis forem suficientes, mas não aceite sucesso apenas pela declaração do executor.
+Leia o índice do gerente, que não aceita nem resume a entrega, e os retornos
+técnicos indicados. Confira ID e pedido vigente, depois artefato/diff real e
+evidência proporcional ao risco; não aceite apenas a declaração do executor. Preserve
+mudanças anteriores; não atribua todo o diff ao trabalhador. Separe testes
+relatados dos executados por você e não repita verificação já suficiente.
 
-Escolha entre aceitar, preparar correção específica ou pedir uma decisão necessária. Integre alterações somente com a escrita livre e quando o seu modo e o escopo permitirem; no modo orquestrador, delegue alterações de integração. Ao aceitar implementação, avalie se uma revisão independente é útil; não a imponha para mudanças triviais. Divergência pequena e objetiva no que foi entregue — um tipo, uma constante, um comentário fora da regra local — o capitão corrige com a escrita livre e a relata ao usuário ao aceitar, em qualquer modo: não é alteração de integração e não abre pedido. Corrigir não é reescrever: se a mudança toca uma decisão do trabalhador, o escopo do pedido ou o gosto do capitão, é pedido novo ou é aceitar como está.
+Aceite, prepare correção específica ou peça a decisão necessária. Integre apenas
+com escrita livre e autorização; no modo orquestrador, delegue integração.
+Depois de aceitar implementação, use revisão independente somente quando útil.
+Com escrita livre, o capitão pode corrigir e relatar divergência objetiva pequena
+(tipo, constante ou comentário) sem novo pedido; qualquer decisão, mudança de
+escopo ou preferência exige novo pedido ou aceitação como está.
 
-Conclua com o resultado, verificação e limitações relevantes. Não mantenha a operação aberta para melhorias fora do pedido. Respeite pausas de revisão exigidas pelo usuário ou projeto.
-
-Termine a avaliação de cada retorno com uma linha, derivada da decisão já tomada, sem investigação extra:
+Conclua com resultado, verificação e limitações, sem manter a operação aberta por
+melhorias externas. Respeite pausas de revisão. Termine cada retorno, sem nova
+investigação, com:
 
 ```text
 Desempenho <ID>: <A|B|C|D>; relato <fiel|incompleto>; <motivo em uma frase, citando a linha do pedido>
 ```
 
-A: aceito sem correção. B: aceito com correção pequena do capitão. C: exigiu pedido de correção. D: descartado ou refeito. Só conta divergência do que o pedido exigia; o que ele não exigia é falha do pedido e não entra no nível.
+A: aceito sem correção; B: aceito com correção pequena do capitão; C: pediu
+correção; D: descartado/refeito. Conte apenas divergências do pedido; falha do
+pedido não reduz o nível.
 
-Ao aceitar, repasse ao usuário os itens de `Fora do pedido` do retorno e os que você mesmo notou, uma linha cada, o mais custoso primeiro, sem repetir o mesmo item; não descarte um item por julgá-lo pequeno. Compare o tempo de `Verificação` com o do retorno anterior do mesmo comando e informe quando crescer.
+Ao aceitar, repasse `Fora do pedido` e seus próprios achados, uma linha cada, do
+mais custoso, sem duplicar ou descartar itens pequenos. Compare o tempo de cada
+verificação com o retorno anterior do mesmo comando e informe crescimento.
