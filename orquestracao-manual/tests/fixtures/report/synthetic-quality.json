@@ -1,0 +1,81 @@
+{
+  "cases": [
+    {
+      "case_id": "alpha",
+      "note": "synthetic generic requiring two",
+      "provenance": {
+        "evidence": [],
+        "origin": "synthetic"
+      },
+      "required_expanded_review_reasons": [
+        "mechanical-a"
+      ],
+      "required_oracle_ids": [
+        "O1",
+        "O2"
+      ]
+    },
+    {
+      "case_id": "beta",
+      "note": "synthetic control",
+      "provenance": {
+        "evidence": [],
+        "origin": "synthetic"
+      },
+      "required_expanded_review_reasons": [],
+      "required_oracle_ids": []
+    },
+    {
+      "case_id": "clean",
+      "note": "synthetic clean",
+      "provenance": {
+        "evidence": [],
+        "origin": "synthetic"
+      },
+      "required_expanded_review_reasons": [],
+      "required_oracle_ids": []
+    }
+  ],
+  "format": "om-benchmark-quality/1",
+  "information_boundary": {
+    "executor_inputs": [
+      "input-a"
+    ],
+    "note": "synthetic",
+    "oracle_only": [
+      "oracle-x"
+    ]
+  },
+  "oracles": [
+    {
+      "case_id": "alpha",
+      "claim": "generic claim one",
+      "evidence": [
+        {
+          "anchors": [
+            "1"
+          ],
+          "path": "ev.txt",
+          "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        }
+      ],
+      "id": "O1",
+      "severity": "blocking"
+    },
+    {
+      "case_id": "alpha",
+      "claim": "generic claim two",
+      "evidence": [
+        {
+          "anchors": [
+            "2"
+          ],
+          "path": "ev.txt",
+          "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+        }
+      ],
+      "id": "O2",
+      "severity": "blocking"
+    }
+  ]
+}

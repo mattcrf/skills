@@ -1,0 +1,112 @@
+{
+  "aggregates": {
+    "hand_handoff": {
+      "bytes": 70,
+      "files": 1,
+      "flow": "authored",
+      "glob": "cont-*.md",
+      "lines": 1,
+      "words": 7
+    },
+    "op_dispatch": {
+      "bytes": 50,
+      "files": 1,
+      "flow": "authored",
+      "glob": "disp-*.md",
+      "lines": 1,
+      "words": 5
+    },
+    "op_execution": {
+      "bytes": 60,
+      "files": 1,
+      "flow": "received",
+      "glob": "exec-*.md",
+      "lines": 1,
+      "words": 6
+    },
+    "tech_a_requests": {
+      "bytes": 300,
+      "files": 2,
+      "flow": "authored",
+      "glob": "req-*.md",
+      "lines": 5,
+      "words": 30
+    },
+    "tech_b_returns": {
+      "bytes": 400,
+      "files": 2,
+      "flow": "received",
+      "glob": "ret-*.md",
+      "lines": 6,
+      "words": 40
+    }
+  },
+  "files": [
+    {
+      "bytes": 70,
+      "category": "hand_handoff",
+      "flow": "authored",
+      "lines": 1,
+      "path": "cont-01.md",
+      "sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "words": 7
+    },
+    {
+      "bytes": 50,
+      "category": "op_dispatch",
+      "flow": "authored",
+      "lines": 1,
+      "path": "disp-01.md",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "words": 5
+    },
+    {
+      "bytes": 60,
+      "category": "op_execution",
+      "flow": "received",
+      "lines": 1,
+      "path": "exec-01.md",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "words": 6
+    },
+    {
+      "bytes": 100,
+      "category": "tech_a_requests",
+      "flow": "authored",
+      "lines": 2,
+      "path": "req-01.md",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "words": 10
+    },
+    {
+      "bytes": 200,
+      "category": "tech_a_requests",
+      "flow": "authored",
+      "lines": 3,
+      "path": "req-02.md",
+      "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "words": 20
+    },
+    {
+      "bytes": 150,
+      "category": "tech_b_returns",
+      "flow": "received",
+      "lines": 2,
+      "path": "ret-01.md",
+      "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+      "words": 15
+    },
+    {
+      "bytes": 250,
+      "category": "tech_b_returns",
+      "flow": "received",
+      "lines": 4,
+      "path": "ret-02.md",
+      "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+      "words": 25
+    }
+  ],
+  "format": "om-benchmark-legacy/1",
+  "manifest": "a7e90dcba364d02f39067c4bb9adf0c82346883617e1b4d3966c67ba7283549c",
+  "manifest_algorithm": "sha256-hex-of-utf8-joined(sha256-colon-posix-rel-path sorted by posix-rel-path)"
+}

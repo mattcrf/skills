@@ -1,0 +1,43 @@
+{
+  "budgets": {
+    "authored_requests_words_max": 10,
+    "captain_fixed_context_words_max": 7,
+    "combined_words_max": 22,
+    "decision_packet_words_avg_max": 5,
+    "received_returns_words_max": 12,
+    "resume_capsule_words_max": 6
+  },
+  "format": "om-report-spec/1",
+  "legacy_id": "synthetic-legacy.json",
+  "legacy_sha256": "d5ebe0eed9583e104e9801cf7137416d3110d12d2545ee9704ea1b680824d33b",
+  "overhead": {
+    "dispatch_category": "op_dispatch",
+    "execution_category": "op_execution",
+    "handoff_category": "hand_handoff"
+  },
+  "quality_id": "synthetic-quality.json",
+  "quality_sha256": "db94b48d2402125a0e38c4eb3138462a2ce6b66571e46c8413c374bcbf18f863",
+  "replay_slice": {
+    "id": "synthetic-replay",
+    "request_paths": [
+      "req-01.md"
+    ],
+    "return_paths": [
+      "ret-01.md"
+    ]
+  },
+  "technical": {
+    "authored_requests_category": "tech_a_requests",
+    "received_returns_category": "tech_b_returns"
+  },
+  "unrecoverable": [
+    {
+      "id": "synthetic_extra_bytes",
+      "reason": "not recorded in synthetic history"
+    },
+    {
+      "id": "synthetic_read_text",
+      "reason": "reads were not logged in synthetic history"
+    }
+  ]
+}

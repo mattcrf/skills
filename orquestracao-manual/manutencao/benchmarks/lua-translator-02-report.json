@@ -1,0 +1,49 @@
+{
+  "budgets": {
+    "authored_requests_words_max": 5700,
+    "captain_fixed_context_words_max": 1400,
+    "combined_words_max": 11300,
+    "decision_packet_words_avg_max": 200,
+    "received_returns_words_max": 5600,
+    "resume_capsule_words_max": 300
+  },
+  "format": "om-report-spec/1",
+  "legacy_id": "lua-translator-02.json",
+  "legacy_sha256": "8e01b1b5afede1646c66125b8f895088e16ecd0e9c4e21120e7a9fd7c2e275b7",
+  "overhead": {
+    "dispatch_category": "captain_authored_operational",
+    "execution_category": "captain_received_operational",
+    "handoff_category": "captain_authored_handoff"
+  },
+  "quality_id": "lua-translator-02-quality.json",
+  "quality_sha256": "f6d99f01e87edf3ebfdb9032ec87bc022259540e988f9fd1c411adffc25ee9f9",
+  "replay_slice": {
+    "id": "replay-13-a-13-b",
+    "request_paths": [
+      "pedido-13-a.md",
+      "pedido-13-b.md"
+    ],
+    "return_paths": [
+      "retorno-13-a.md",
+      "retorno-13-b.md"
+    ]
+  },
+  "technical": {
+    "authored_requests_category": "captain_authored_technical",
+    "received_returns_category": "captain_received_technical"
+  },
+  "unrecoverable": [
+    {
+      "id": "captain_extra_opened_bytes",
+      "reason": "Additional diff, code and log bytes opened by the captain were not recorded."
+    },
+    {
+      "id": "captain_investigation_actions",
+      "reason": "Explicit open and inspect actions by the captain were not recorded."
+    },
+    {
+      "id": "captain_text_effectively_read",
+      "reason": "Historical reads were not logged and cannot be reconstructed from surviving files."
+    }
+  ]
+}

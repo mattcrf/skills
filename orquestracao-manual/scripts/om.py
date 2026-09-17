@@ -1,10 +1,8 @@
 """Operation control plane (evolutionary entry point).
 
-This recorte provides a read-only legacy benchmark: it measures the five
-canonical coordination file kinds by file name and compares the exact
-measurement with a frozen baseline. It also provides an adjudicated
-quality benchmark via an internal library; it does not create new
-correspondences nor judge meaning.
+This recorte provides read-only legacy and quality benchmarks via internal
+libraries, plus a deterministic Phase A cost report derived from frozen
+fixtures and a small human spec.
 """
 
 from __future__ import annotations
@@ -258,6 +256,23 @@ def _load_quality_runner():
         return module.run_benchmark_quality
 
 
+def _load_report_runner():
+    try:
+        from _om_report import run_benchmark_report
+
+        return run_benchmark_report
+    except ImportError:
+        import importlib.util
+
+        qp = Path(__file__).resolve().parent / "_om_report.py"
+        spec = importlib.util.spec_from_file_location("_om_report", qp)
+        if spec is None or spec.loader is None:
+            raise
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.run_benchmark_report
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="om")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -283,6 +298,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     quality.add_argument("--out", required=False, default=None)
     quality.set_defaults(func=_load_quality_runner())
+    report = bench_sub.add_parser(
+        "report", help="derive measurable Phase A cost baseline"
+    )
+    report.add_argument("--legacy", required=True, help="legacy fixture file")
+    report.add_argument("--quality", required=True, help="quality fixture file")
+    report.add_argument("--spec", required=True, help="report spec file")
+    report.set_defaults(func=_load_report_runner())
     return parser
 
 
