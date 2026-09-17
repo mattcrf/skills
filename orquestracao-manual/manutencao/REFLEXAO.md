@@ -10,7 +10,7 @@ orquestração carrega esta pasta.
 - Editar `SKILL.md` ou `references/` exige um sim separado do dono para cada
   mudança.
 - A pasta `manutencao/` não é espelhada. Uma mudança promovida à SKILL vale
-  para as três cópias: `C:\Users\mattc\Documents\orquestracao-manual` (fonte),
+  para as três cópias: `C:\Users\mattc\Documents\skills\orquestracao-manual` (fonte),
   `C:\Users\mattc\.claude\skills\orquestracao-manual` e
   `C:\Users\mattc\.codex\skills\orquestracao-manual`. Confira as três depois.
 
