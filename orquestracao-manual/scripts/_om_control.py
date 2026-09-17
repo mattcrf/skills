@@ -243,7 +243,11 @@ def _unlock_handle(handle) -> None:
 
 @contextlib.contextmanager
 def _exclusive_lock(root: Path):
-    path = root / "control.lock"
+    path = root / ".cache" / "control.lock"
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+    except OSError:
+        _error("cannot open lock file: %s" % path)
     try:
         handle = path.open("a+b")
     except OSError:
@@ -404,10 +408,32 @@ def run_task_publish(args) -> int:
     return _guard(_publish, args)
 
 
+def _render_brief(operation: dict, events: list[dict], tasks: list[dict]) -> str:
+    lines = [
+        "operation=%s context=%d events=%d tasks=%d"
+        % (
+            operation["id"],
+            operation["current_context"],
+            len(events),
+            len(tasks),
+        )
+    ]
+    for task in tasks:
+        line = "%s %s" % (task["id"], task["state"])
+        if task["depends"]:
+            line += " depends=%s" % ",".join(task["depends"])
+        lines.append(line)
+    return "\n".join(lines) + "\n"
+
+
 def _status(args) -> int:
     root = Path(args.operation)
     operation = _load_operation(root)
-    events, tasks = _state(root, operation)
+    with _exclusive_lock(root):
+        events, tasks = _state(root, operation)
+    if getattr(args, "brief", False):
+        sys.stdout.write(_render_brief(operation, events, tasks))
+        return 0
     document = {
         "format": STATUS_FORMAT,
         "operation": operation["id"],
@@ -436,7 +462,8 @@ def run_status(args) -> int:
 def _doctor(args) -> int:
     root = Path(args.operation)
     operation = _load_operation(root)
-    events, tasks = _state(root, operation)
+    with _exclusive_lock(root):
+        events, tasks = _state(root, operation)
     sys.stdout.write(
         "OK operation=%s tasks=%d events=%d head=%s\n"
         % (
@@ -456,7 +483,8 @@ def run_doctor(args) -> int:
 def _resume(args) -> int:
     root = Path(args.operation)
     operation = _load_operation(root)
-    events, tasks = _state(root, operation)
+    with _exclusive_lock(root):
+        events, tasks = _state(root, operation)
     ready = [task for task in tasks if task["state"] == "ready"]
     blocked = [task for task in tasks if task["state"] == "blocked"]
     lines = [
@@ -487,3 +515,25 @@ def _resume(args) -> int:
 
 def run_resume(args) -> int:
     return _guard(_resume, args)
+
+
+def register_cli(sub) -> None:
+    task = sub.add_parser("task", help="local task lifecycle commands")
+    task_sub = task.add_subparsers(dest="task_command", required=True)
+    publish = task_sub.add_parser("publish", help="validate and seal a task")
+    publish.add_argument("--operation", required=True, help="operation directory")
+    publish.add_argument("--task", required=True, help="draft task markdown")
+    publish.set_defaults(func=run_task_publish)
+    status = sub.add_parser("status", help="derive operation status from events")
+    status.add_argument("--operation", required=True, help="operation directory")
+    status.add_argument(
+        "--brief", action="store_true", help="print a compact human-readable summary"
+    )
+    status.set_defaults(func=run_status)
+    resume = sub.add_parser("resume", help="render a role resume capsule")
+    resume.add_argument("--operation", required=True, help="operation directory")
+    resume.add_argument("--role", required=True, choices=("captain",))
+    resume.set_defaults(func=run_resume)
+    doctor = sub.add_parser("doctor", help="validate operation invariants")
+    doctor.add_argument("--operation", required=True, help="operation directory")
+    doctor.set_defaults(func=run_doctor)

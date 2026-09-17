@@ -345,22 +345,7 @@ def build_parser() -> argparse.ArgumentParser:
     artifacts.add_argument("--spec", required=True, help="artifacts spec file")
     artifacts.add_argument("--baseline", required=True, help="frozen JSON file")
     artifacts.set_defaults(func=_load_artifacts_runner())
-    task = sub.add_parser("task", help="local task lifecycle commands")
-    task_sub = task.add_subparsers(dest="task_command", required=True)
-    publish = task_sub.add_parser("publish", help="validate and seal a task")
-    publish.add_argument("--operation", required=True, help="operation directory")
-    publish.add_argument("--task", required=True, help="draft task markdown")
-    publish.set_defaults(func=_load_control_runner("run_task_publish"))
-    status = sub.add_parser("status", help="derive operation status from events")
-    status.add_argument("--operation", required=True, help="operation directory")
-    status.set_defaults(func=_load_control_runner("run_status"))
-    resume = sub.add_parser("resume", help="render a role resume capsule")
-    resume.add_argument("--operation", required=True, help="operation directory")
-    resume.add_argument("--role", required=True, choices=("captain",))
-    resume.set_defaults(func=_load_control_runner("run_resume"))
-    doctor = sub.add_parser("doctor", help="validate operation invariants")
-    doctor.add_argument("--operation", required=True, help="operation directory")
-    doctor.set_defaults(func=_load_control_runner("run_doctor"))
+    _load_control_runner("register_cli")(sub)
     return parser
 
 

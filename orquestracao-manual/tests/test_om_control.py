@@ -1,7 +1,9 @@
 import json
+import re
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -81,6 +83,13 @@ Demonstrate one small task.
             str(task),
         )
 
+    def publish_chain(self, length):
+        for index in range(length):
+            task_id = "demo-%02d" % index
+            depends = [] if index == 0 else ["demo-%02d" % (index - 1)]
+            published = self.publish(self.task(task_id, depends=depends))
+            self.assertEqual(published.returncode, 0, published.stderr)
+
     def test_happy_path_publish_status_doctor_resume(self):
         published = self.publish(self.task())
         self.assertEqual(published.returncode, 0, published.stderr)
@@ -102,6 +111,205 @@ Demonstrate one small task.
         self.assertEqual(resume.returncode, 0, resume.stderr)
         self.assertIn("# Resume - captain", resume.stdout)
         self.assertIn("Dispatch `demo-001`", resume.stdout)
+
+    def test_publish_stores_the_lock_under_cache(self):
+        self.assertEqual(self.publish(self.task()).returncode, 0)
+        self.assertTrue((self.operation / ".cache" / "control.lock").is_file())
+        self.assertFalse((self.operation / "control.lock").exists())
+
+    def test_status_doctor_resume_wait_for_the_lock(self):
+        self.assertEqual(self.publish(self.task()).returncode, 0)
+        holder_code = (
+            "import os, sys\n"
+            "from pathlib import Path\n"
+            "path = Path({root!r}) / '.cache' / 'control.lock'\n"
+            "path.parent.mkdir(parents=True, exist_ok=True)\n"
+            "handle = path.open('a+b')\n"
+            "handle.seek(0, os.SEEK_END)\n"
+            "if handle.tell() == 0:\n"
+            "    handle.write(b'\\0')\n"
+            "    handle.flush()\n"
+            "handle.seek(0)\n"
+            "if os.name == 'nt':\n"
+            "    import msvcrt\n"
+            "    msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)\n"
+            "else:\n"
+            "    import fcntl\n"
+            "    fcntl.flock(handle.fileno(), fcntl.LOCK_EX)\n"
+            "sys.stdout.write('locked\\n')\n"
+            "sys.stdout.flush()\n"
+            "sys.stdin.readline()\n"
+        ).format(root=str(self.operation))
+        holder = subprocess.Popen(
+            [sys.executable, "-B", "-c", holder_code],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            text=True,
+            encoding="utf-8",
+        )
+        self.assertEqual(holder.stdout.readline().strip(), "locked")
+        readers = [
+            subprocess.Popen(
+                [sys.executable, "-B", str(OM_PATH), command, "--operation", str(self.operation)]
+                + extra,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding="utf-8",
+            )
+            for command, extra in (
+                ("status", []),
+                ("doctor", []),
+                ("resume", ["--role", "captain"]),
+            )
+        ]
+        try:
+            time.sleep(1.5)
+            self.assertTrue(
+                all(process.poll() is None for process in readers),
+                "a reader did not wait for the active lock",
+            )
+            holder.stdin.write("release\n")
+            holder.stdin.flush()
+            outputs = [process.communicate(timeout=60) for process in readers]
+        finally:
+            for process in readers:
+                if process.poll() is None:
+                    process.kill()
+                process.wait(timeout=20)
+                if process.stdout is not None:
+                    process.stdout.close()
+                if process.stderr is not None:
+                    process.stderr.close()
+            if holder.poll() is None:
+                holder.kill()
+            holder.wait(timeout=20)
+            if holder.stdin is not None:
+                holder.stdin.close()
+            if holder.stdout is not None:
+                holder.stdout.close()
+        for process, (out, err) in zip(readers, outputs):
+            self.assertEqual(process.returncode, 0, err)
+        self.assertIn('"state": "ready"', outputs[0][0])
+        self.assertIn("tasks=1 events=1", outputs[1][0])
+        self.assertIn("Dispatch `demo-001`", outputs[2][0])
+
+    def test_reader_and_publishers_share_the_lock_without_deadlock(self):
+        drafts = [self.task("demo-p1"), self.task("demo-p2")]
+        commands = [
+            [
+                sys.executable,
+                "-B",
+                str(OM_PATH),
+                "task",
+                "publish",
+                "--operation",
+                str(self.operation),
+                "--task",
+                str(draft),
+            ]
+            for draft in drafts
+        ]
+        commands += [
+            [sys.executable, "-B", str(OM_PATH), command, "--operation", str(self.operation)]
+            for command in ("status", "doctor")
+        ]
+        processes = [
+            subprocess.Popen(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding="utf-8",
+            )
+            for command in commands
+        ]
+        try:
+            outputs = [process.communicate(timeout=60) for process in processes]
+        finally:
+            for process in processes:
+                if process.poll() is None:
+                    process.kill()
+                process.wait(timeout=20)
+                if process.stdout is not None:
+                    process.stdout.close()
+                if process.stderr is not None:
+                    process.stderr.close()
+        for process, (out, err) in zip(processes, outputs):
+            self.assertEqual(process.returncode, 0, err)
+        events = (self.operation / "events.jsonl").read_text(encoding="utf-8").splitlines()
+        self.assertEqual(len(events), 2)
+        doctor = self.run_om("doctor", "--operation", str(self.operation))
+        self.assertEqual(doctor.returncode, 0, doctor.stderr)
+        self.assertIn("tasks=2 events=2", doctor.stdout)
+
+    def test_cache_failure_uses_the_error_contract(self):
+        (self.operation / ".cache").write_text("blocking file", encoding="utf-8")
+        draft = self.task()
+        commands = (
+            ("status", "--operation", str(self.operation)),
+            ("doctor", "--operation", str(self.operation)),
+            ("resume", "--operation", str(self.operation), "--role", "captain"),
+            ("task", "publish", "--operation", str(self.operation), "--task", str(draft)),
+        )
+        for command in commands:
+            with self.subTest(command=command):
+                failed = self.run_om(*command)
+                self.assertEqual(failed.returncode, 1)
+                self.assertIn("om: cannot open lock file:", failed.stderr)
+                self.assertNotIn("Traceback", failed.stderr)
+        self.assertFalse((self.operation / "events.jsonl").exists())
+
+    def test_brief_output_is_exact(self):
+        self.publish_chain(3)
+        brief = self.run_om("status", "--operation", str(self.operation), "--brief")
+        self.assertEqual(brief.returncode, 0, brief.stderr)
+        self.assertEqual(
+            brief.stdout,
+            "operation=demo-operation context=1 events=3 tasks=3\n"
+            "demo-00 ready\n"
+            "demo-01 blocked depends=demo-00\n"
+            "demo-02 blocked depends=demo-01\n",
+        )
+        self.assertNotIn("sha256", brief.stdout)
+        self.assertNotIn("{", brief.stdout)
+        self.assertIsNone(re.search(r"[0-9a-f]{64}", brief.stdout))
+        with self.assertRaises(json.JSONDecodeError):
+            json.loads(brief.stdout)
+
+    def test_default_status_json_is_compatible(self):
+        self.publish_chain(2)
+        status = self.run_om("status", "--operation", str(self.operation))
+        self.assertEqual(status.returncode, 0, status.stderr)
+        document = json.loads(status.stdout)
+        self.assertEqual(
+            set(document), {"format", "operation", "context", "event_head", "tasks"}
+        )
+        self.assertEqual(document["format"], "om-status/1")
+        self.assertEqual(document["operation"], "demo-operation")
+        self.assertEqual(document["context"], 1)
+        self.assertEqual(document["event_head"]["seq"], 2)
+        self.assertEqual(len(document["event_head"]["hash"]), 64)
+        self.assertEqual(
+            set(document["tasks"][0]),
+            {"id", "kind", "effect", "profile", "state", "depends"},
+        )
+        self.assertEqual(document["tasks"][0]["state"], "ready")
+        self.assertEqual(document["tasks"][1]["state"], "blocked")
+
+    def test_brief_is_at_least_60_percent_smaller_than_json(self):
+        self.publish_chain(6)
+        full = self.run_om("status", "--operation", str(self.operation))
+        brief = self.run_om("status", "--operation", str(self.operation), "--brief")
+        self.assertEqual(full.returncode, 0, full.stderr)
+        self.assertEqual(brief.returncode, 0, brief.stderr)
+        full_bytes = len(full.stdout.encode("utf-8"))
+        brief_bytes = len(brief.stdout.encode("utf-8"))
+        self.assertLessEqual(
+            brief_bytes * 100,
+            full_bytes * 40,
+            msg="brief=%d bytes, json=%d bytes" % (brief_bytes, full_bytes),
+        )
 
     def test_duplicate_publish_is_rejected_without_new_event(self):
         task = self.task()
