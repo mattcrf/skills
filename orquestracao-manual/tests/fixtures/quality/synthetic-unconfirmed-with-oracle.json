@@ -1,0 +1,31 @@
+{
+  "cases": [
+    {
+      "case_id": "alpha",
+      "expanded_review_reasons": [
+        "mechanical-a"
+      ]
+    },
+    {
+      "case_id": "beta",
+      "expanded_review_reasons": [
+        "mechanical-a"
+      ]
+    },
+    {
+      "case_id": "clean",
+      "expanded_review_reasons": []
+    }
+  ],
+  "findings": [
+    {
+      "case_id": "alpha",
+      "id": "G1",
+      "oracle_ids": [
+        "O1"
+      ],
+      "status": "unconfirmed"
+    }
+  ],
+  "format": "om-candidate-quality/1"
+}

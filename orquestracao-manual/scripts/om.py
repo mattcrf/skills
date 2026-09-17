@@ -2,7 +2,9 @@
 
 This recorte provides a read-only legacy benchmark: it measures the five
 canonical coordination file kinds by file name and compares the exact
-measurement with a frozen baseline.
+measurement with a frozen baseline. It also provides an adjudicated
+quality benchmark via an internal library; it does not create new
+correspondences nor judge meaning.
 """
 
 from __future__ import annotations
@@ -239,6 +241,23 @@ def run_benchmark_legacy(args: argparse.Namespace) -> int:
     return 0
 
 
+def _load_quality_runner():
+    try:
+        from _om_quality import run_benchmark_quality
+
+        return run_benchmark_quality
+    except ImportError:
+        import importlib.util
+
+        qp = Path(__file__).resolve().parent / "_om_quality.py"
+        spec = importlib.util.spec_from_file_location("_om_quality", qp)
+        if spec is None or spec.loader is None:
+            raise
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.run_benchmark_quality
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="om")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -251,6 +270,19 @@ def build_parser() -> argparse.ArgumentParser:
     legacy.add_argument("--baseline", required=True, help="frozen JSON file")
     legacy.add_argument("--out", required=False, default=None)
     legacy.set_defaults(func=run_benchmark_legacy)
+    quality = bench_sub.add_parser(
+        "quality", help="score adjudicated correspondences"
+    )
+    quality.add_argument("--fixture", required=True, help="quality fixture file")
+    quality.add_argument("--result", required=True, help="candidate result file")
+    quality.add_argument(
+        "--evidence-root",
+        required=True,
+        default=None,
+        help="required: evidence directory",
+    )
+    quality.add_argument("--out", required=False, default=None)
+    quality.set_defaults(func=_load_quality_runner())
     return parser
 
 

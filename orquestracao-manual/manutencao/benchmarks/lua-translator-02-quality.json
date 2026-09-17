@@ -1,0 +1,188 @@
+{
+  "cases": [
+    {
+      "case_id": "control-10-a",
+      "note": "Historical implementation without known correction and without mandatory finding. Alters tests.",
+      "provenance": {
+        "evidence": [
+          {
+            "anchors": [
+              "18-22",
+              "77"
+            ],
+            "path": "retorno-10-a.md",
+            "sha256": "b650bfca97a2457dd0aaf454582f2c14ab608347586bc7e8578c1704327d6e60"
+          }
+        ],
+        "origin": "historical"
+      },
+      "required_expanded_review_reasons": [
+        "tests_changed"
+      ],
+      "required_oracle_ids": []
+    },
+    {
+      "case_id": "control-11-a",
+      "note": "Historical implementation without known correction and without mandatory finding. Alters tests.",
+      "provenance": {
+        "evidence": [
+          {
+            "anchors": [
+              "26-29",
+              "41"
+            ],
+            "path": "retorno-11-a.md",
+            "sha256": "df18b0fd95c71111191d61b65f41532bc396082cace9163f5c382073cbc15e25"
+          }
+        ],
+        "origin": "historical"
+      },
+      "required_expanded_review_reasons": [
+        "tests_changed"
+      ],
+      "required_oracle_ids": []
+    },
+    {
+      "case_id": "control-14-a",
+      "note": "Historical implementation without known correction and without mandatory finding. Alters tests.",
+      "provenance": {
+        "evidence": [
+          {
+            "anchors": [
+              "50-55",
+              "102-103"
+            ],
+            "path": "retorno-14-a.md",
+            "sha256": "4b96c27a65ae15beb66e977f5ca5dfd92b13d4ce5c1a6e34850e6bf31464356b"
+          }
+        ],
+        "origin": "historical"
+      },
+      "required_expanded_review_reasons": [
+        "tests_changed"
+      ],
+      "required_oracle_ids": []
+    },
+    {
+      "case_id": "control-read-only-clean",
+      "note": "Synthetic case without finding, mutation or mechanical trigger.",
+      "provenance": {
+        "evidence": [],
+        "origin": "synthetic"
+      },
+      "required_expanded_review_reasons": [],
+      "required_oracle_ids": []
+    },
+    {
+      "case_id": "replay-13-a",
+      "note": "Historical replay that required correction; alters tests.",
+      "provenance": {
+        "evidence": [
+          {
+            "anchors": [
+              "7",
+              "65-66"
+            ],
+            "path": "retorno-13-a.md",
+            "sha256": "e6a5075b1a558509961405df7a0a8c28c7549917930776de04043b1a24489b6d"
+          }
+        ],
+        "origin": "historical"
+      },
+      "required_expanded_review_reasons": [
+        "tests_changed"
+      ],
+      "required_oracle_ids": [
+        "D1",
+        "D2",
+        "D3"
+      ]
+    }
+  ],
+  "format": "om-benchmark-quality/1",
+  "information_boundary": {
+    "executor_inputs": [
+      "9e5cfeb",
+      "AGENTS.md",
+      "continuacao-09.md",
+      "diff-13-a",
+      "pedido-13-a.md",
+      "pedido-13-b.md",
+      "rathena@7f080871",
+      "retorno-13-a.md",
+      "src/AGENTS.md"
+    ],
+    "note": "Oracle 80a0001 is posterior and never an executor input. Verifier and scorer may consult it after return.",
+    "oracle_only": [
+      "80a0001"
+    ]
+  },
+  "oracles": [
+    {
+      "case_id": "replay-13-a",
+      "claim": "fallback with fallthrough/default/case 0 executed body that core skipped",
+      "evidence": [
+        {
+          "anchors": [
+            "21-28"
+          ],
+          "path": "pedido-13-b.md",
+          "sha256": "a6a8f0cc277a31d2caf3dc3aa2d00fbdbbba62214f3a5dd296dbf300485ae628"
+        },
+        {
+          "anchors": [
+            "33-68"
+          ],
+          "path": "retorno-13-b.md",
+          "sha256": "d3477702d243aa1c5d857a4c5b2462e4f71df1411c31bdd7ce6c45d57f004729"
+        }
+      ],
+      "id": "D1",
+      "severity": "blocking"
+    },
+    {
+      "case_id": "replay-13-a",
+      "claim": "numeric/canonical duplicates broke the styled diagnostic contract",
+      "evidence": [
+        {
+          "anchors": [
+            "29-35"
+          ],
+          "path": "pedido-13-b.md",
+          "sha256": "a6a8f0cc277a31d2caf3dc3aa2d00fbdbbba62214f3a5dd296dbf300485ae628"
+        },
+        {
+          "anchors": [
+            "70-94"
+          ],
+          "path": "retorno-13-b.md",
+          "sha256": "d3477702d243aa1c5d857a4c5b2462e4f71df1411c31bdd7ce6c45d57f004729"
+        }
+      ],
+      "id": "D2",
+      "severity": "blocking"
+    },
+    {
+      "case_id": "replay-13-a",
+      "claim": "valid octal literals refused and octal/decimal equivalences missed in duplicate detection",
+      "evidence": [
+        {
+          "anchors": [
+            "36-41"
+          ],
+          "path": "pedido-13-b.md",
+          "sha256": "a6a8f0cc277a31d2caf3dc3aa2d00fbdbbba62214f3a5dd296dbf300485ae628"
+        },
+        {
+          "anchors": [
+            "96-112"
+          ],
+          "path": "retorno-13-b.md",
+          "sha256": "d3477702d243aa1c5d857a4c5b2462e4f71df1411c31bdd7ce6c45d57f004729"
+        }
+      ],
+      "id": "D3",
+      "severity": "blocking"
+    }
+  ]
+}

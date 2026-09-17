@@ -1,0 +1,43 @@
+{
+  "cases": [
+    {
+      "case_id": "control-10-a",
+      "expanded_review_reasons": [
+        "tests_changed"
+      ]
+    },
+    {
+      "case_id": "control-11-a",
+      "expanded_review_reasons": [
+        "tests_changed"
+      ]
+    },
+    {
+      "case_id": "control-14-a",
+      "expanded_review_reasons": [
+        "tests_changed"
+      ]
+    },
+    {
+      "case_id": "control-read-only-clean",
+      "expanded_review_reasons": []
+    },
+    {
+      "case_id": "replay-13-a",
+      "expanded_review_reasons": [
+        "tests_changed"
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "case_id": "replay-13-a",
+      "id": "F1",
+      "oracle_ids": [
+        "DX"
+      ],
+      "status": "confirmed"
+    }
+  ],
+  "format": "om-candidate-quality/1"
+}

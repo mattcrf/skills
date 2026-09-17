@@ -1,0 +1,128 @@
+{
+  "cases": [
+    {
+      "case_id": "alpha",
+      "note": "generic case requiring recall of two items; historical-role with synthetic evidence",
+      "provenance": {
+        "evidence": [
+          {
+            "anchors": [
+              "9-10"
+            ],
+            "path": "ev-a.txt",
+            "sha256": "ba4c98fe42dc17fc636c43a5e87baefb86e7c10786e6fcd884c42f5e3cb4138c"
+          },
+          {
+            "anchors": [
+              "11-12"
+            ],
+            "path": "ev-b.txt",
+            "sha256": "f1a2ba4fdca3dc61932aa7cac7675803ed5b8b0d223858dc9339ec73274e14dc"
+          }
+        ],
+        "origin": "historical"
+      },
+      "required_expanded_review_reasons": [
+        "mechanical-a"
+      ],
+      "required_oracle_ids": [
+        "O1",
+        "O2"
+      ]
+    },
+    {
+      "case_id": "beta",
+      "note": "generic control with mechanical trigger and no mandatory item; historical-role with synthetic evidence",
+      "provenance": {
+        "evidence": [
+          {
+            "anchors": [
+              "1"
+            ],
+            "path": "ev-a.txt",
+            "sha256": "ba4c98fe42dc17fc636c43a5e87baefb86e7c10786e6fcd884c42f5e3cb4138c"
+          },
+          {
+            "anchors": [
+              "10"
+            ],
+            "path": "ev-b.txt",
+            "sha256": "f1a2ba4fdca3dc61932aa7cac7675803ed5b8b0d223858dc9339ec73274e14dc"
+          }
+        ],
+        "origin": "historical"
+      },
+      "required_expanded_review_reasons": [
+        "mechanical-a"
+      ],
+      "required_oracle_ids": []
+    },
+    {
+      "case_id": "clean",
+      "note": "generic clean case without item or trigger; explicitly synthetic",
+      "provenance": {
+        "evidence": [],
+        "origin": "synthetic"
+      },
+      "required_expanded_review_reasons": [],
+      "required_oracle_ids": []
+    }
+  ],
+  "format": "om-benchmark-quality/1",
+  "information_boundary": {
+    "executor_inputs": [
+      "input-a",
+      "input-b"
+    ],
+    "note": "generic boundary; oracle entry never overlaps executor inputs",
+    "oracle_only": [
+      "oracle-commit"
+    ]
+  },
+  "oracles": [
+    {
+      "case_id": "alpha",
+      "claim": "generic claim one",
+      "evidence": [
+        {
+          "anchors": [
+            "2-4"
+          ],
+          "path": "ev-a.txt",
+          "sha256": "ba4c98fe42dc17fc636c43a5e87baefb86e7c10786e6fcd884c42f5e3cb4138c"
+        },
+        {
+          "anchors": [
+            "1-3"
+          ],
+          "path": "ev-b.txt",
+          "sha256": "f1a2ba4fdca3dc61932aa7cac7675803ed5b8b0d223858dc9339ec73274e14dc"
+        }
+      ],
+      "id": "O1",
+      "severity": "blocking"
+    },
+    {
+      "case_id": "alpha",
+      "claim": "generic claim two",
+      "evidence": [
+        {
+          "anchors": [
+            "5-6"
+          ],
+          "path": "ev-a.txt",
+          "sha256": "ba4c98fe42dc17fc636c43a5e87baefb86e7c10786e6fcd884c42f5e3cb4138c"
+        },
+        {
+          "anchors": [
+            "4-6"
+          ],
+          "path": "ev-b.txt",
+          "sha256": "f1a2ba4fdca3dc61932aa7cac7675803ed5b8b0d223858dc9339ec73274e14dc"
+        }
+      ],
+      "id": "O2",
+      "severity": "blocking"
+    }
+  ]
+}
