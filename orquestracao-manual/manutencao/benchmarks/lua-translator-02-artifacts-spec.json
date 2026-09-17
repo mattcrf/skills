@@ -1,0 +1,53 @@
+{
+  "format": "om-benchmark-artifacts-spec/1",
+  "rules": [
+    {
+      "id": "coordination",
+      "pattern": "^(?:pedido-[^/]*\\.md|retorno-[^/]*\\.md|despacho-[^/]*\\.md|execucao-[^/]*\\.md|continuacao-[^/]*\\.md|estado\\.md)$"
+    },
+    {
+      "id": "human_source",
+      "pattern": "^(?:[^/]+\\.py|citacao-[^/]*\\.md|[^/]+/[^/]*\\.csproj|[^/]+/Program\\.cs|neolua-08c/translate_item_scripts\\.py)$"
+    },
+    {
+      "id": "log_raw",
+      "pattern": "^(?:[^/]+\\.(?:json|txt)|neolua-08c/[^/]+\\.(?:json|txt))$"
+    },
+    {
+      "id": "mechanical_evidence",
+      "pattern": "^baseline-[^/]+/translate_item_scripts\\.py$"
+    },
+    {
+      "id": "reproducible_scratch",
+      "pattern": "^(?:__pycache__/.*|baseline-[^/]+/__pycache__/.*|[^/]+/bin/.*|[^/]+/obj/.*|[^/]+/__pycache__/.*)$"
+    }
+  ],
+  "text_scopes": [
+    {
+      "id": "captain_authored_handoff",
+      "pattern": "^continuacao-[^/]*\\.md$"
+    },
+    {
+      "id": "captain_authored_operational",
+      "pattern": "^despacho-[^/]*\\.md$"
+    },
+    {
+      "id": "captain_authored_technical",
+      "pattern": "^pedido-[^/]*\\.md$"
+    },
+    {
+      "id": "captain_received_operational",
+      "pattern": "^execucao-[^/]*\\.md$"
+    },
+    {
+      "id": "captain_received_technical",
+      "pattern": "^retorno-[^/]*\\.md$"
+    }
+  ],
+  "thresholds": [
+    2,
+    5,
+    10
+  ],
+  "top_n": 25
+}

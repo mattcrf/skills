@@ -273,6 +273,23 @@ def _load_report_runner():
         return module.run_benchmark_report
 
 
+def _load_artifacts_runner():
+    try:
+        from _om_artifacts import run_benchmark_artifacts
+
+        return run_benchmark_artifacts
+    except ImportError:
+        import importlib.util
+
+        qp = Path(__file__).resolve().parent / "_om_artifacts.py"
+        spec = importlib.util.spec_from_file_location("_om_artifacts", qp)
+        if spec is None or spec.loader is None:
+            raise
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.run_benchmark_artifacts
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="om")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -305,6 +322,13 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--quality", required=True, help="quality fixture file")
     report.add_argument("--spec", required=True, help="report spec file")
     report.set_defaults(func=_load_report_runner())
+    artifacts = bench_sub.add_parser(
+        "artifacts", help="census of physical files with dupes and repeats"
+    )
+    artifacts.add_argument("--source", required=True, help="operation directory")
+    artifacts.add_argument("--spec", required=True, help="artifacts spec file")
+    artifacts.add_argument("--baseline", required=True, help="frozen JSON file")
+    artifacts.set_defaults(func=_load_artifacts_runner())
     return parser
 
 

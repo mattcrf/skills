@@ -1,0 +1,41 @@
+{
+  "format": "om-benchmark-artifacts-spec/1",
+  "rules": [
+    {
+      "id": "coordination",
+      "pattern": "^coord/[^/]+\\.md$"
+    },
+    {
+      "id": "human_source",
+      "pattern": "^(?:src/[^/]+\\.py|docs/[^/]+\\.md|config/[^/]+\\.json|notes/[^/]+\\.md)$"
+    },
+    {
+      "id": "log_raw",
+      "pattern": "^logs/[^/]+\\.(?:json|txt)$"
+    },
+    {
+      "id": "mechanical_evidence",
+      "pattern": "^evidence/[^/]+\\.py$"
+    },
+    {
+      "id": "reproducible_scratch",
+      "pattern": "^(?:build/.*|cache/.*)$"
+    }
+  ],
+  "text_scopes": [
+    {
+      "id": "scope_evening",
+      "pattern": "^coord/evening-.*\\.md$"
+    },
+    {
+      "id": "scope_morning",
+      "pattern": "^coord/morning-.*\\.md$"
+    }
+  ],
+  "thresholds": [
+    2,
+    5,
+    10
+  ],
+  "top_n": 25
+}

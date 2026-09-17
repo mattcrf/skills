@@ -1,0 +1,2 @@
+Guide body
+Repeated paragraph
