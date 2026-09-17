@@ -90,6 +90,133 @@ Demonstrate one small task.
             published = self.publish(self.task(task_id, depends=depends))
             self.assertEqual(published.returncode, 0, published.stderr)
 
+    def test_init_new_publish_and_dispatch_are_a_complete_preparation_path(self):
+        operation = self.root / "fresh-operation"
+        project = self.root / "fresh-project"
+        project.mkdir()
+        initialized = self.run_om(
+            "op",
+            "init",
+            "--operation",
+            str(operation),
+            "--project-root",
+            str(project),
+        )
+        self.assertEqual(initialized.returncode, 0, initialized.stderr)
+        self.assertTrue((operation / "operation.toml").is_file())
+        self.assertEqual(
+            (operation / ".gitignore").read_text(encoding="utf-8"),
+            "/.cache/\n/.scratch/\n",
+        )
+
+        writer = self.run_om(
+            "task",
+            "new",
+            "--operation",
+            str(operation),
+            "--id",
+            "write-one",
+            "--kind",
+            "writer",
+            "--title",
+            "Implement one change",
+        )
+        self.assertEqual(writer.returncode, 0, writer.stderr)
+        writer_path = Path(writer.stdout.removeprefix("draft ").strip())
+        self.assertTrue(writer_path.is_file())
+        rejected = self.run_om(
+            "task", "publish", "--operation", str(operation), "--task", str(writer_path)
+        )
+        self.assertEqual(rejected.returncode, 1)
+        self.assertIn("task still contains TODO markers", rejected.stderr)
+        writer_path.write_text(
+            writer_path.read_text(encoding="utf-8").replace(
+                "TODO:", "Defined:",
+            ),
+            encoding="utf-8",
+        )
+        published_writer = self.run_om(
+            "task", "publish", "--operation", str(operation), "--task", str(writer_path)
+        )
+        self.assertEqual(published_writer.returncode, 0, published_writer.stderr)
+
+        verifier = self.run_om(
+            "task",
+            "new",
+            "--operation",
+            str(operation),
+            "--id",
+            "verify-one",
+            "--kind",
+            "verifier",
+            "--depends",
+            "write-one",
+        )
+        self.assertEqual(verifier.returncode, 0, verifier.stderr)
+        verifier_path = Path(verifier.stdout.removeprefix("draft ").strip())
+        verifier_path.write_text(
+            verifier_path.read_text(encoding="utf-8").replace(
+                "TODO:", "Defined:",
+            ),
+            encoding="utf-8",
+        )
+        published_verifier = self.run_om(
+            "task", "publish", "--operation", str(operation), "--task", str(verifier_path)
+        )
+        self.assertEqual(published_verifier.returncode, 0, published_verifier.stderr)
+
+        dispatched = self.run_om(
+            "bridge", "dispatch", "--operation", str(operation), "--slots", "2"
+        )
+        self.assertEqual(dispatched.returncode, 0, dispatched.stderr)
+        dispatch = (operation / "dispatch.md").read_text(encoding="utf-8")
+        self.assertIn("| write-one |", dispatch)
+        self.assertIn("| verify-one |", dispatch)
+        self.assertIn("write-one", dispatch)
+        self.assertIn("SKILL.md", dispatch)
+        self.assertIn("references\\gerente.md", dispatch)
+        self.assertIn("references\\trabalhador.md", dispatch)
+        self.assertNotIn("Não há scout", dispatch)
+        self.assertNotIn("não tente", dispatch.lower())
+        self.assertIn('manager: Leia "', dispatched.stdout)
+
+        doctor = self.run_om("doctor", "--operation", str(operation))
+        self.assertEqual(doctor.returncode, 0, doctor.stderr)
+        self.assertIn("tasks=2 events=2", doctor.stdout)
+
+    def test_task_size_is_measured_but_never_blocks_publication(self):
+        task = self.task()
+        task.write_text(
+            task.read_text(encoding="utf-8") + ("evidence " * 800),
+            encoding="utf-8",
+        )
+
+        published = self.publish(task)
+
+        self.assertEqual(published.returncode, 0, published.stderr)
+        self.assertIn("budget=over", published.stdout)
+        self.assertTrue((self.operation / "tasks" / "demo-001.md").is_file())
+
+    def test_dispatch_is_immutable_and_slots_are_bounded(self):
+        self.assertEqual(self.publish(self.task()).returncode, 0)
+        first = self.run_om("bridge", "dispatch", "--operation", str(self.operation))
+        self.assertEqual(first.returncode, 0, first.stderr)
+        repeated = self.run_om("bridge", "dispatch", "--operation", str(self.operation))
+        self.assertEqual(repeated.returncode, 1)
+        self.assertIn("dispatch already exists", repeated.stderr)
+        excessive = self.run_om(
+            "bridge",
+            "dispatch",
+            "--operation",
+            str(self.operation),
+            "--slots",
+            "4",
+            "--out",
+            str(self.operation / "dispatch-02.md"),
+        )
+        self.assertEqual(excessive.returncode, 1)
+        self.assertIn("slots must be between 1 and 3", excessive.stderr)
+
     def test_happy_path_publish_status_doctor_resume(self):
         published = self.publish(self.task())
         self.assertEqual(published.returncode, 0, published.stderr)

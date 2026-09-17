@@ -1,6 +1,9 @@
 # Orquestração v2 — plano de desenho e validação
 
-Status: Fases A/B implementadas; Fase C simplificada após dogfood
+Status: Fases A/B implementadas; superfície operacional intermediária publicada
+por decisão do usuário após os dogfoods de preparação. O estado utilizável e os
+limites reais do CLI estão em `ESTADO-V2.md`; as fases posteriores deste plano
+continuam sendo horizonte, não capacidades disponíveis.
 
 Base empírica: operação `lua-translator-02`
 
@@ -44,8 +47,11 @@ do acesso a agentes externos baratos.
 
 ### 2.1 Contexto fixo da skill
 
-A primeira etapa já realizada reduziu a leitura inicial do capitão de 3.126 para
-2.080 palavras: **33,5%**. Esta é a nova linha de base, não o fim da otimização.
+A primeira etapa reduziu a leitura inicial do capitão de 3.126 para 2.080
+palavras. A superfície operacional intermediária agora mede **1.507 palavras** —
+`SKILL.md`, `capitao.md` e a nova referência pública `cli.md`: redução de 51,8%
+contra a versão original e de 27,5% contra a primeira etapa. A meta de 1.400 não
+autoriza remover instruções necessárias; a diferença permanece mensurável.
 A fixture complementar `manutencao/benchmarks/lua-translator-02-phase-a.json`
 sela, com proveniência, as revisões e o algoritmo dessa contagem, além da
 topologia da ponte, da proliferação e das cápsulas.
@@ -379,8 +385,8 @@ pesquisa dos scouts e contexto necessário; seu tamanho é medido, mas não comp
 às custas da qualidade.
 
 O limite é medido **depois** da equivalência técnica. Nenhum agente recebe ordem de
-remover informação para caber: preserva o rascunho completo e retorna
-`over-budget`. Admite-se uma revisão deliberada; repetir compressão até passar ou
+remover informação para caber: o CLI publica o rascunho completo e informa
+`budget=over`. Admite-se uma revisão deliberada; repetir compressão até passar ou
 trocar completude por contagem invalida o gate. O CLI verifica estrutura e números,
 mas não funde decisões nem declara equivalência semântica.
 
@@ -880,14 +886,15 @@ Gate F: nenhuma decisão técnica tomada pelo escalonador e dados suficientes pa
 escolher backend por papel. Zero transporte humano é benefício possível, não condição
 para declarar a v2 útil.
 
-### Fase G — dogfood geral e somente então mudança da skill
+### Fase G — dogfood geral da superfície final
 
 1. usar a v2 numa operação pequena real, mantendo fallback para o protocolo atual;
 2. usar numa operação média com implementação e pelo menos uma revisão;
 3. exigir que uma das duas operações seja de domínio, artefato ou toolchain
    claramente diferente do tradutor Lua;
 4. colher métricas e fricções, sem acrescentar recursos por preferência estética;
-5. alterar `SKILL.md` e referências apenas depois de o fluxo provar seu valor;
+5. substituir a superfície intermediária documentada em `ESTADO-V2.md` somente
+   por capacidades já implementadas e validadas;
 6. sincronizar instalações e publicar migração.
 
 Gate G: metas de capitão e qualidade cumpridas em duas operações reais, incluindo a
@@ -902,8 +909,9 @@ registrar a decisão de não construir. Ausência do broker pode ser o resultado
 
 1. considerar Fases A/B concluídas no commit aceito;
 2. registrar os dois dogfoods falhos de preparação e encerrar esse desenho;
-3. aplicar esta simplificação sem alterar ainda a skill operacional;
-4. usar o controle atual em uma tarefa pequena real, com escritor + verificador e
+3. manter a skill operacional alinhada somente às capacidades reais registradas
+   em `ESTADO-V2.md`, sem anunciar comandos futuros;
+4. usar essa superfície em uma tarefa pequena real, com escritor + verificador e
    scout somente se houver bloqueio factual;
 5. medir fricção, sessões, caminho crítico e custo do capitão;
 6. escolher a menor adição de Fase C sustentada por esse uso real.
@@ -953,7 +961,8 @@ preferência de desenho.
 - backend nativo compete por papel e pode coexistir com agentes externos;
 - capitão sempre decide o aceite e sempre pode abrir o diff completo;
 - validação em uma operação não relacionada ao tradutor é obrigatória;
-- skill só muda depois do dogfood.
+- capacidades aspiracionais só entram na skill depois de implementadas e testadas;
+  a superfície intermediária permanece explicitamente limitada por `ESTADO-V2.md`.
 
 ### Adiadas até medição
 

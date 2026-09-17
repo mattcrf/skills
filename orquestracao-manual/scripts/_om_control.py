@@ -1,4 +1,4 @@
-"""Minimal local control plane for the Phase B vertical slice."""
+"""Operation preparation, immutable task publication, and bridge dispatch."""
 
 from __future__ import annotations
 
@@ -15,7 +15,8 @@ from pathlib import Path
 OP_FORMAT = "om-operation/1"
 STATUS_FORMAT = "om-status/1"
 EVENT_TYPE = "task-published"
-MAX_TASK_BYTES = 2_000
+TARGET_TASK_BYTES = 2_000
+TARGET_TASK_WORDS = 250
 ID_RE = re.compile(r"[a-z0-9][a-z0-9-]*")
 EFFECTS = {"read-only", "mutating"}
 KINDS = {"scout", "writer", "verifier"}
@@ -119,8 +120,6 @@ def _load_operation(root: Path) -> dict:
 
 def _parse_task(path: Path, operation: dict) -> tuple[dict, bytes]:
     raw = _read_bytes(path, "task")
-    if len(raw) > MAX_TASK_BYTES:
-        _error("task exceeds %d bytes" % MAX_TASK_BYTES)
     text = _decode(raw, "task")
     lines = text.splitlines(keepends=True)
     if not lines or lines[0].strip() != "+++":
@@ -164,8 +163,11 @@ def _parse_task(path: Path, operation: dict) -> tuple[dict, bytes]:
         or task_id in depends
     ):
         _error("invalid task dependencies")
-    if not "".join(lines[closing + 1 :]).strip():
+    body = "".join(lines[closing + 1 :])
+    if not body.strip():
         _error("task body is empty")
+    if "TODO:" in body:
+        _error("task still contains TODO markers")
     return {
         "id": task_id,
         "kind": kind,
@@ -186,6 +188,15 @@ def _event_hash(event_without_hash: dict) -> str:
 
 def _task_sha(raw: bytes) -> str:
     return hashlib.sha256(raw).hexdigest()
+
+
+def _word_count(raw: bytes) -> int:
+    return len(re.findall(r"\S+", _decode(raw, "task")))
+
+
+def _toml_string(value: str) -> str:
+    # JSON basic strings are valid TOML basic strings for these values.
+    return json.dumps(value, ensure_ascii=False)
 
 
 def _atomic_write(path: Path, data: bytes) -> None:
@@ -397,15 +408,234 @@ def _publish(args) -> int:
                 pass
             raise
     state = "blocked" if task["depends"] else "ready"
+    words = _word_count(raw)
+    budget = (
+        "within"
+        if len(raw) <= TARGET_TASK_BYTES and words <= TARGET_TASK_WORDS
+        else "over"
+    )
     sys.stdout.write(
-        "published %s state=%s event=%d sha256=%s\n"
-        % (task["id"], state, event["seq"], event["task_sha256"])
+        "published %s state=%s event=%d bytes=%d words=%d budget=%s sha256=%s\n"
+        % (
+            task["id"],
+            state,
+            event["seq"],
+            len(raw),
+            words,
+            budget,
+            event["task_sha256"],
+        )
     )
     return 0
 
 
 def run_task_publish(args) -> int:
     return _guard(_publish, args)
+
+
+def _op_init(args) -> int:
+    root = Path(args.operation).resolve()
+    project = Path(args.project_root).resolve()
+    if not project.is_dir():
+        _error("project_root must be an existing directory: %s" % project)
+    op_id = _validate_id(args.id or root.name, "operation id")
+    context = args.context
+    if isinstance(context, bool) or not isinstance(context, int) or context <= 0:
+        _error("context must be a positive integer")
+    if root.exists() and any(root.iterdir()):
+        _error("operation directory is not empty: %s" % root)
+    try:
+        root.mkdir(parents=True, exist_ok=True)
+        for name in ("tasks", "results", ".scratch", ".cache"):
+            (root / name).mkdir()
+    except OSError:
+        _error("cannot initialize operation: %s" % root)
+    document = """\
+format = "om-operation/1"
+id = {op_id}
+project_root = {project}
+current_context = {context}
+
+[profiles.scout]
+effects = ["read-only"]
+
+[profiles.implementer]
+effects = ["mutating"]
+
+[profiles.independent-reviewer]
+effects = ["read-only"]
+""".format(
+        op_id=_toml_string(op_id),
+        project=_toml_string(project.as_posix()),
+        context=context,
+    )
+    _atomic_write(root / "operation.toml", document.encode("utf-8"))
+    _atomic_write(root / ".gitignore", b"/.cache/\n/.scratch/\n")
+    sys.stdout.write("initialized %s operation=%s project=%s\n" % (op_id, root, project))
+    return 0
+
+
+def run_op_init(args) -> int:
+    return _guard(_op_init, args)
+
+
+def _task_defaults(kind: str) -> tuple[str, str]:
+    if kind == "writer":
+        return "mutating", "implementer"
+    if kind == "verifier":
+        return "read-only", "independent-reviewer"
+    return "read-only", "scout"
+
+
+def _task_new(args) -> int:
+    root = Path(args.operation)
+    operation = _load_operation(root)
+    task_id = _validate_id(args.id, "task id")
+    kind = args.kind
+    default_effect, default_profile = _task_defaults(kind)
+    effect = args.effect or default_effect
+    profile = args.profile or default_profile
+    if effect not in EFFECTS:
+        _error("invalid task effect")
+    if profile not in operation["profiles"]:
+        _error("unknown task profile")
+    if effect not in operation["profiles"][profile]["effects"]:
+        _error("task effect is not granted by profile")
+    depends = list(args.depends or [])
+    if len(depends) != len(set(depends)):
+        _error("duplicate task dependency")
+    for dependency in depends:
+        _validate_id(dependency, "task dependency")
+    if task_id in depends:
+        _error("task cannot depend on itself")
+    context = operation["current_context"] if args.context is None else args.context
+    if context <= 0 or context > operation["current_context"]:
+        _error("invalid task context")
+    result = (root / "results" / (task_id + ".md")).resolve()
+    title = args.title or task_id
+    document = """\
++++
+id = {task_id}
+kind = {kind}
+effect = {effect}
+profile = {profile}
+context = {context}
+depends = {depends}
++++
+
+# {title}
+
+## Objetivo
+
+TODO: descreva a entrega observável.
+
+## Contexto específico
+
+TODO: aponte somente fontes e decisões ainda necessárias.
+
+## Permissão e limites
+
+TODO: delimite escrita, efeitos e exclusões próprias desta tarefa.
+
+## Aceitação
+
+TODO: liste evidências que permitem julgar a entrega.
+
+## Retorno
+
+Grave o resultado em `{result}` conforme o protocolo do trabalhador.
+""".format(
+        task_id=_toml_string(task_id),
+        kind=_toml_string(kind),
+        effect=_toml_string(effect),
+        profile=_toml_string(profile),
+        context=context,
+        depends=json.dumps(depends, ensure_ascii=False),
+        title=title,
+        result=result,
+    )
+    target = root / ".scratch" / "drafts" / (task_id + ".md")
+    if target.exists() or (root / "tasks" / (task_id + ".md")).exists():
+        _error("task already exists: %s" % task_id)
+    _atomic_write(target, document.encode("utf-8"))
+    sys.stdout.write("draft %s\n" % target.resolve())
+    return 0
+
+
+def run_task_new(args) -> int:
+    return _guard(_task_new, args)
+
+
+def _execution_path(root: Path, dispatch_path: Path) -> Path:
+    stem = dispatch_path.stem
+    suffix = stem[len("dispatch") :] if stem.startswith("dispatch") else "-" + stem
+    return root / ("execution%s.md" % suffix)
+
+
+def _bridge_dispatch(args) -> int:
+    root = Path(args.operation).resolve()
+    operation = _load_operation(root)
+    if args.slots < 1 or args.slots > 3:
+        _error("slots must be between 1 and 3")
+    with _exclusive_lock(root):
+        _events, tasks = _state(root, operation)
+    by_id = {task["id"]: task for task in tasks}
+    selected_ids = list(args.tasks or [task["id"] for task in tasks])
+    if not selected_ids:
+        _error("operation has no published tasks")
+    if len(selected_ids) != len(set(selected_ids)):
+        _error("duplicate task selected for dispatch")
+    missing = [task_id for task_id in selected_ids if task_id not in by_id]
+    if missing:
+        _error("unknown task for dispatch: %s" % ", ".join(missing))
+    selected = [by_id[task_id] for task_id in selected_ids]
+    out = Path(args.out).resolve() if args.out else root / "dispatch.md"
+    if out.exists():
+        _error("dispatch already exists: %s" % out)
+    execution = _execution_path(root, out)
+    skill_root = Path(__file__).resolve().parent.parent
+    skill = skill_root / "SKILL.md"
+    manager = skill_root / "references" / "gerente.md"
+    worker = skill_root / "references" / "trabalhador.md"
+    for path in (skill, manager, worker):
+        if not path.is_file():
+            _error("installed protocol file is missing: %s" % path)
+    lines = [
+        "# Despacho — %s" % operation["id"],
+        "",
+        "Papel: gerente",
+        "Protocolo: `%s`" % skill,
+        "Referência do gerente: `%s`" % manager,
+        "Referência do trabalhador: `%s`" % worker,
+        "Projeto: `%s`" % operation["project_root"],
+        "Operação: `%s`" % root,
+        "Índice de execução: `%s`" % execution.resolve(),
+        "Vagas concedidas: %d" % args.slots,
+        "Escrita: no máximo uma tarefa mutante por vez.",
+        "",
+        "| ID | Pedido publicado | Efeito | Depende de | Retorno |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for task in selected:
+        dependencies = ", ".join(task["depends"]) or "nenhuma"
+        lines.append(
+            "| {id} | `{task}` | {effect} | {depends} | `{result}` |".format(
+                id=task["id"],
+                task=(root / "tasks" / (task["id"] + ".md")).resolve(),
+                effect=task["effect"],
+                depends=dependencies,
+                result=(root / "results" / (task["id"] + ".md")).resolve(),
+            )
+        )
+    rendered = "\n".join(lines) + "\n"
+    _atomic_write(out, rendered.encode("utf-8"))
+    sys.stdout.write("dispatch %s\n" % out)
+    sys.stdout.write('manager: Leia "%s" e execute as instruções.\n' % out)
+    return 0
+
+
+def run_bridge_dispatch(args) -> int:
+    return _guard(_bridge_dispatch, args)
 
 
 def _render_brief(operation: dict, events: list[dict], tasks: list[dict]) -> str:
@@ -518,8 +748,26 @@ def run_resume(args) -> int:
 
 
 def register_cli(sub) -> None:
+    op = sub.add_parser("op", help="operation lifecycle commands")
+    op_sub = op.add_subparsers(dest="op_command", required=True)
+    init = op_sub.add_parser("init", help="create a local operation")
+    init.add_argument("--operation", required=True, help="new operation directory")
+    init.add_argument("--project-root", required=True, help="existing project root")
+    init.add_argument("--id", required=False, default=None, help="operation id; defaults to directory name")
+    init.add_argument("--context", required=False, type=int, default=1)
+    init.set_defaults(func=run_op_init)
     task = sub.add_parser("task", help="local task lifecycle commands")
     task_sub = task.add_subparsers(dest="task_command", required=True)
+    new = task_sub.add_parser("new", help="create an editable task draft")
+    new.add_argument("--operation", required=True, help="operation directory")
+    new.add_argument("--id", required=True, help="task id")
+    new.add_argument("--kind", required=True, choices=tuple(sorted(KINDS)))
+    new.add_argument("--effect", required=False, choices=tuple(sorted(EFFECTS)), default=None)
+    new.add_argument("--profile", required=False, default=None)
+    new.add_argument("--context", required=False, type=int, default=None)
+    new.add_argument("--depends", nargs="*", default=[])
+    new.add_argument("--title", required=False, default=None)
+    new.set_defaults(func=run_task_new)
     publish = task_sub.add_parser("publish", help="validate and seal a task")
     publish.add_argument("--operation", required=True, help="operation directory")
     publish.add_argument("--task", required=True, help="draft task markdown")
@@ -537,3 +785,13 @@ def register_cli(sub) -> None:
     doctor = sub.add_parser("doctor", help="validate operation invariants")
     doctor.add_argument("--operation", required=True, help="operation directory")
     doctor.set_defaults(func=run_doctor)
+    bridge = sub.add_parser("bridge", help="generate bridge transport artifacts")
+    bridge_sub = bridge.add_subparsers(dest="bridge_command", required=True)
+    dispatch = bridge_sub.add_parser(
+        "dispatch", help="generate a minimal operational manager dispatch"
+    )
+    dispatch.add_argument("--operation", required=True, help="operation directory")
+    dispatch.add_argument("--slots", required=False, type=int, default=2)
+    dispatch.add_argument("--tasks", nargs="*", default=None, help="published task ids; defaults to all")
+    dispatch.add_argument("--out", required=False, default=None, help="immutable dispatch path")
+    dispatch.set_defaults(func=run_bridge_dispatch)

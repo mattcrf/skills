@@ -1,8 +1,4 @@
-"""Operation control plane (evolutionary entry point).
-
-Phase A: deterministic read-only benchmarks from internal libraries and frozen
-fixtures. Phase B: local task lifecycle over a hash-chained event log.
-"""
+"""Public CLI for operation preparation plus maintenance benchmarks."""
 
 from __future__ import annotations
 

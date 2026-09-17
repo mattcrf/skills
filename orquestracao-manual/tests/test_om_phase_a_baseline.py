@@ -29,7 +29,8 @@ HEX64_RE = re.compile(r"[0-9a-f]{64}")
 TOP_KEYS = ("format", "algorithm", "context", "bridge", "proliferation",
             "capsules", "references", "unrecoverable")
 ALGO_KEYS = ("words", "bytes", "lines")
-CONTEXT_KEYS = ("origin", "paths", "revisions", "operational_words", "method")
+CONTEXT_KEYS = ("origin", "historical_paths", "operational_paths", "revisions",
+                "operational_words", "method")
 BRIDGE_KEYS = ("origin", "dispatches", "executions", "transports", "tasks_total",
                "task_lines_dispatched", "direct_or_earlier", "dispatches_one_task",
                "dispatches_two_tasks", "method")
@@ -119,7 +120,7 @@ def block(doc, name, expected, origin):
 def check_fixture(doc):
     if not isinstance(doc, dict) or set(doc) != set(TOP_KEYS):
         raise AssertionError("fixture keys differ from the strict schema")
-    if doc["format"] != "om-phase-a-baseline/1":
+    if doc["format"] != "om-phase-a-baseline/2":
         raise AssertionError("unexpected fixture format: %r" % doc["format"])
 
     algo = doc["algorithm"]
@@ -130,11 +131,12 @@ def check_fixture(doc):
         nonempty_str(value, "algorithm value")
 
     context = block(doc, "context", CONTEXT_KEYS, "git")
-    if not isinstance(context["paths"], list) or not context["paths"]:
-        raise AssertionError("context.paths must list the measured paths")
-    for rel in context["paths"]:
-        if not isinstance(rel, str) or rel == "" or rel.startswith("/") or ":" in rel:
-            raise AssertionError("context.paths entries must be relative paths")
+    for key in ("historical_paths", "operational_paths"):
+        if not isinstance(context[key], list) or not context[key]:
+            raise AssertionError("context.%s must list the measured paths" % key)
+        for rel in context[key]:
+            if not isinstance(rel, str) or rel == "" or rel.startswith("/") or ":" in rel:
+                raise AssertionError("context.%s entries must be relative paths" % key)
     positive_int(context["operational_words"], "context.operational_words")
     if not isinstance(context["revisions"], list) or not context["revisions"]:
         raise AssertionError("context.revisions must not be empty")
@@ -254,7 +256,7 @@ class ContextTest(unittest.TestCase):
     def test_current_operational_paths_still_measure_the_frozen_words(self):
         doc = check_fixture(load_json(FIXTURE_PATH))
         measured = sum(word_count((REPO_DIR / rel).read_text(encoding="utf-8-sig"))
-                       for rel in doc["context"]["paths"])
+                       for rel in doc["context"]["operational_paths"])
         self.assertEqual(measured, doc["context"]["operational_words"],
                          msg="working tree context words drifted from the frozen baseline")
 
@@ -273,7 +275,7 @@ class ContextTest(unittest.TestCase):
                 missing.append(commit)
                 continue
             measured = 0
-            for rel in doc["context"]["paths"]:
+            for rel in doc["context"]["historical_paths"]:
                 shown = git_run("show", "%s:%s" % (commit, rel))
                 if shown.returncode != 0:
                     self.fail("canonical revision %s exists but lacks %s: %s"

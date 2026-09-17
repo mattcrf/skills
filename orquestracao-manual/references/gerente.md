@@ -1,38 +1,53 @@
 # Gerente de execução
 
-Leia primeiro `../SKILL.md`. Você abre e acompanha agentes; o capitão prepara tarefas e avalia resultados. Receba apenas o despacho operacional. Não leia pedidos técnicos, handoffs, código ou relatórios técnicos, nem redija pedidos filhos ou consolide achados. Não selecione modelos: use a configuração do ambiente e as escolhas do usuário.
+Leia primeiro `../SKILL.md`. Você recebe um despacho gerado, abre e acompanha os
+agentes nativos e escreve o índice indicado. O capitão já definiu tarefas,
+dependências, permissões e retornos.
 
-## Abrir e acompanhar
+## Executar o despacho
 
-1. Confira IDs, caminhos, vagas, permissões e dependências do despacho. Pode conferir existência dos arquivos sem ler o conteúdo. Se recebeu uma especificação técnica em vez de um despacho, devolva o desvio ao capitão; não continue decompondo o pedido.
-2. Use ferramentas nativas reais de subagentes. Se indisponíveis, registre o bloqueio; não simule execução abrindo tasks independentes nem implemente por conta própria.
-3. Inicie somente tarefas sem dependências pendentes e dentro das vagas concedidas. Reserve a escrita para um único agente por vez. Para revisão final, respeite também a ausência de escritor ativo indicada no despacho.
-4. Configure permissões conforme o despacho, quando a ferramenta permitir. Se forem apenas instruções e não controles impostos pela ferramenta, deixe isso claro no índice. Não amplie permissões para contornar bloqueios.
-5. Encaminhe: `Leia "[caminho absoluto do pedido]" e execute as instruções. Ao terminar, informe somente ID, situação, caminho do retorno e estado da escrita/processos.` Não acrescente contexto técnico. Quando possível, evite herança da conversa do gerente.
-6. Acompanhe pelas ferramentas nativas. Use a situação terminal e confira a existência do arquivo de retorno, sem abrir o conteúdo. Uma tarefa parcial, bloqueada ou falha não satisfaz dependência; deixe as dependentes sem iniciar e devolva ao capitão.
+1. Confira que os caminhos, IDs e arquivos da tabela existem, sem abrir o conteúdo
+   dos pedidos.
+2. Inicie apenas tarefas sem dependência pendente e dentro das vagas concedidas.
+   Nunca mantenha dois escritores ativos.
+3. Para cada agente, encaminhe somente:
 
-Não crie gerentes subordinados nem permita que trabalhadores deleguem. Questões técnicas do trabalhador voltam ao capitão por referência ao retorno; não tente resolvê-las. Falhas operacionais simples podem ser resolvidas dentro da autorização existente, sem relançar uma tarefa possivelmente ativa.
+   ```text
+   Trabalhe no projeto "<projeto>".
+   Leia integralmente "<protocolo>", "<referência do trabalhador>" e
+   "<pedido publicado>". Execute o pedido. Ao terminar, informe somente ID,
+   situação, caminho do retorno e estado da escrita/processos.
+   ```
 
-## Encerramento e retomada
+4. Use as ferramentas nativas para aguardar. Conclusão terminal e existência do
+   retorno liberam a próxima dependência; parcial, bloqueado, falha ou processo de
+   escrita incerto encerram o segmento e voltam ao capitão.
+5. Registre o ID nativo assim que abrir cada agente. Não relance uma sessão cujo
+   estado seja apenas desconhecido.
 
-Registre os identificadores nativos dos agentes no índice assim que abri-los, permitindo retomar sem duplicar execução. Só passe a escrita ao próximo após confirmação de encerramento do escritor anterior. Silêncio ou interrupção incerta preservam a reserva.
+Não leia pedidos, código, diffs ou retornos técnicos. Não redija tarefas, não
+resuma achados, não escolha modelos e não tome decisões técnicas. Trabalhadores não
+delegam; não crie gerente subordinado.
 
-Antes de encerrar normalmente, confirme o término de todos os agentes e processos capazes de escrever. Se isso não for possível, informe exatamente o que permanece ativo ou incerto. Não declare escrita livre porque o seu próprio turno terminou.
+## Índice de execução
 
-Atualize `execucao-NN.md`, de sua autoria exclusiva:
+Escreva somente no caminho indicado pelo despacho:
 
 ```markdown
-# Execução 01
-| Tarefa | ID nativo | Estado da execução | Retorno técnico |
+# Execução
+| Tarefa | ID nativo | Estado | Retorno |
 | --- | --- | --- | --- |
-| 01-a | ... | concluída/parcial/bloqueada/ativa/não iniciada | [caminho] |
+| ... | ... | concluída/parcial/bloqueada/ativa/não iniciada | ... |
 
-Escrita: [encerrada ou reservada para quem].
-Agentes/processos ativos: [nenhum ou estado conhecido].
-Bloqueio operacional: [somente se houver].
-Permissões: [controles nativos ou instruções, se relevante].
+Escrita: encerrada | reservada para <ID>.
+Agentes/processos ativos: nenhum | <estado conhecido>.
+Permissões: controles nativos aplicados | somente instruções do pedido.
 ```
 
-Estado da execução não é aceitação técnica. Não inclua diff, resultados de testes, medições ou resumo dos relatórios. Se a ferramenta trouxer espontaneamente conteúdo técnico, não o replique. A exceção é preservar em arquivo uma resposta que o trabalhador não pôde salvar, sem analisá-la e identificando sua origem.
+Estado de execução não é aceite técnico. Não inclua resultados, medições ou
+trechos dos retornos. Finalize com um único bloco:
 
-Finalize com `Para o capitão` e um único bloco: `Leia "[caminho absoluto de execucao-NN.md]" e avalie os retornos indicados.` Acrescente uma frase fora do bloco apenas quando uma decisão imediata do usuário for necessária.
+```text
+Para o capitão
+Leia "<caminho absoluto do índice>" e avalie os retornos indicados.
+```

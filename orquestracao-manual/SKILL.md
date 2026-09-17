@@ -1,145 +1,108 @@
 ---
 name: orquestracao-manual
-description: Coordenar agentes em ambientes distintos com ponte humana e pasta compartilhada, usando pedidos e retornos em arquivos. Use para operar esse fluxo como capitão, gerente ou trabalhador.
+description: Coordenar capitão, gerente e trabalhadores por arquivos compartilhados e ponte humana, com publicação e despacho validados pelo CLI incluído na skill.
 ---
 
 # Orquestração manual
 
-Adapte à ponte humana as mesmas decisões que tomaria com subagentes nativos. Os
-agentes compartilham arquivos, mas não conversa nem acompanhamento automático.
-Reduza o transporte e não escolha nem recomende modelos: isso pertence ao usuário
-e ao ambiente.
+Use esta skill quando agentes trabalham em ambientes distintos e o usuário
+transporta uma única mensagem entre o capitão e um gerente operacional. A pasta
+compartilhada contém pedidos e retornos; o CLI incluído cria a operação, sela
+pedidos e gera o despacho sem duplicar protocolo.
 
-## Papel
+## Escolha o papel
 
-Leia este arquivo e somente a referência do papel recebido:
+Leia este arquivo e somente as referências do papel recebido:
 
-- [Capitão](references/capitao.md): planeja, delega e aceita; opera como
-  orquestrador ou implementador com ajudantes.
-- [Gerente](references/gerente.md): abre e acompanha agentes nativos sem ler ou
-  consolidar conteúdo técnico.
-- [Trabalhador](references/trabalhador.md): executa uma tarefa delimitada.
+- **Capitão:** leia [capitao.md](references/capitao.md) e
+  [cli.md](references/cli.md). Define o trabalho, publica a cadeia e aceita ou
+  rejeita o resultado.
+- **Gerente:** leia [gerente.md](references/gerente.md). Abre e acompanha os
+  agentes nativos descritos no despacho; não toma decisões técnicas.
+- **Trabalhador:** leia [trabalhador.md](references/trabalhador.md). Executa um
+  pedido publicado como scout, escritor ou verificador.
 
-Sem papel explícito, assuma capitão; sem modo explícito, orquestrador. Capitão e
-trabalhadores leem as regras técnicas pertinentes ainda ausentes do contexto; o
-gerente segue apenas as regras operacionais aplicáveis. Não releia arquivos
-inalterados já presentes nem amplie autorizações.
+Sem papel explícito, assuma capitão. Não leia `manutencao/`, testes ou código do
+CLI para operar a skill; a referência do CLI é a interface pública.
 
-Pedidos para trabalhadores informam papel e caminhos absolutos deste protocolo e
-da referência pertinente. O despacho informa apenas o papel, salvo pedido do
-usuário por esses caminhos na sessão.
+## Fluxo normal
 
-## Configuração
-
-Reutilize escolhas da conversa; não pergunte pelo que já está disponível. Grave
-valores efetivos no pedido ou despacho que deles depender. Sem configuração,
-anuncie brevemente e use:
+Para uma mudança de implementação, o capitão publica uma cadeia de duas tarefas:
 
 ```text
-Papel: capitão
-Modo: orquestrador
-Delegação: ponte humana direta (ou com gerente, quando indicado)
-Máximo de trabalhadores simultâneos: 2
-Edição: um único escritor em toda a operação
-Rodadas adicionais: permitidas dentro do escopo
-Diretório de saídas: temp/tasks/ na raiz do projeto
+escritor -> verificador independente -> capitão
 ```
 
-O limite abrange todos os trabalhadores ativos, inclusive leitores e lotes
-distintos; capitão e gerente coordenadores não contam, mas não podem usar essa
-exceção para excedê-lo. Ele limita concorrência, não chamadas. Não infira
-orçamento e respeite limites adicionais do usuário. Use delegação nativa somente
-com ferramenta real e autorização. Não apresente sessão ou task independente
-como subagente, nem finja ter acionado ou acompanhado agentes; sem a ferramenta,
-prepare a ponte e não espere por transporte humano em polling.
+Use um scout antes delas somente quando uma dúvida factual concreta impedir a
+definição segura do pedido ou da aceitação. Não crie curador. Quatro ou mais
+sessões técnicas exigem risco excepcional explicado pelo capitão; capacidade
+disponível não é motivo para preencher vagas.
 
-## Operação e autoria
+O capitão gera um despacho operacional e o usuário o entrega ao gerente. O
+gerente executa todas as dependências que não exigem nova decisão do capitão e
+devolve um único índice. O capitão lê os retornos indicados, confere código e
+evidências e decide. O usuário escolhe modelos e transporta mensagens; nenhum
+papel escolhe fornecedor por conta própria.
 
-O capitão resolve a raiz pelo diretório de trabalho e cria uma pasta curta e
-única, ou retoma a indicada, sem sobrescrever outra operação:
+## Garantias
+
+- Um único trabalhador pode modificar a implementação ou suas saídas por vez.
+- Scout e verificador são somente leitura da implementação.
+- Pedidos publicados, despachos gerados e retornos terminais são imutáveis;
+  correções recebem novo ID.
+- Resultado parcial ou bloqueado não libera dependências e volta ao capitão.
+- Gerente coordena sessões, mas não lê nem resume conteúdo técnico.
+- Trabalhadores não delegam e não ampliam permissão ou escopo.
+- O capitão continua responsável por decomposição, julgamento do diff e aceite.
+- Commits, ações destrutivas e efeitos externos continuam sujeitos ao pedido e
+  às regras do projeto.
+
+Tamanho de texto é métrica, não autorização para cortar informação. O CLI marca
+um pedido acima da meta como `budget=over`, mas publica normalmente. Nunca entre
+em ciclos de compressão nem sacrifique requisitos, evidência ou clareza para
+atingir uma contagem.
+
+## Operação compartilhada
+
+Novas operações usam o formato criado por `om op init`, preferencialmente fora
+do repositório alvo:
 
 ```text
-temp/tasks/<operacao>/
-  estado.md          # controle operacional mutável
-  continuacao-01.md  # handoff técnico opcional
-  despacho-01.md     # do capitão para o gerente; omitido na ponte direta
-  pedido-01-a.md     # do capitão para o trabalhador
-  retorno-01-a.md    # do trabalhador
-  execucao-01.md     # do gerente
+<operação>/
+  operation.toml
+  tasks/             # pedidos publicados e selados
+  results/           # retornos dos trabalhadores
+  events.jsonl       # publicação append-only
+  dispatch*.md       # despachos gerados para o gerente
+  execution*.md      # índices escritos pelo gerente
+  .scratch/drafts/   # rascunhos editáveis, ignorados
+  .cache/            # lock local, ignorado
 ```
 
-Pedidos publicados, handoffs e retornos concluídos são imutáveis; correções usam
-novo ID e apontam para o anterior. Cada arquivo tem um responsável: o capitão
-escreve estado, pedidos, handoffs e despachos; o gerente, o índice de execução;
-cada trabalhador, seu retorno. Se o trabalhador não puder salvá-lo, o gerente
-pode preservar a resposta sem interpretar e identificando a exceção. Prefira
-trabalhadores sem herdar a conversa do gerente e aponte o pedido; a pasta
-compartilhada não fornece isolamento, portanto não prometa isso.
+Cada arquivo tem um responsável: o CLI publica `operation.toml`, `tasks/`,
+`events.jsonl` e despachos; cada trabalhador escreve somente seu retorno e os
+efeitos autorizados no projeto; o gerente escreve somente o índice indicado; o
+capitão edita apenas rascunhos ainda não publicados.
 
-Enquanto a operação está viva, `estado.md` contém somente a concessão de escrita,
-trabalhadores não terminais, evento aguardado e, se necessário, um handoff
-vigente; encerrada, somente o caminho da sucessora. Contexto técnico fica em
-código, Git, regras, pedidos, retornos e handoffs.
-
-## Escritor exclusivo
-
-Somente um participante altera implementação ou suas saídas por vez, mesmo em
-arquivos diferentes. Relatórios de coordenação em caminhos exclusivos são a
-exceção. O capitão concede escrita diretamente ou autoriza um gerente a
-serializá-la; enquanto reservada, não edita nem concede outra. O gerente não
-divide a autoridade com outro gerente; gerentes não se aninham e trabalhadores
-não delegam.
-
-Registre a reserva antes da ponte. Um pedido publicado já reserva a permissão;
-silêncio, tempo ou fim de turno não a liberam. Libere-a somente após retorno
-terminal que encerre a escrita e quaisquer processos capazes de escrever, ou
-confirmação explícita de interrupção. O estado registra o acordo, mas não o impõe
-tecnicamente.
-
-Leitores não editam implementação. Build, teste com geração, saída compartilhada
-ou processo persistente pertence ao escritor ou a uma validação exclusiva;
-permissão para relatório não autoriza esses efeitos. A leitura durante edição é
-provisória; revisão final exige estado estável e deve ser refeita se os arquivos
-mudarem.
+O formato anterior em `temp/tasks/` continua legível como histórico, mas não é
+modelo para uma operação nova. Não crie `estado.md`, despacho ou pedido manual
+quando o CLI puder produzi-lo.
 
 ## Ponte
 
-Confira e grave os arquivos antes de responder. Identifique fora do bloco `Para o
-gerente`, `Para o trabalhador` ou `Para o capitão`; entregue então um único bloco
-copiável por destino, com IDs preenchidos e caminhos absolutos reais, sem repetir
-o arquivo. O pedido deve bastar para iniciar:
+Depois de conferir os arquivos, entregue um único bloco copiável:
 
 ```text
-Leia "<caminho absoluto>" e execute as instruções.
+Para o gerente
+Leia "<caminho absoluto do despacho gerado>" e execute as instruções.
 ```
 
 Na volta:
 
 ```text
-Leia "<caminho absoluto do retorno ou índice>" e avalie os resultados indicados.
+Para o capitão
+Leia "<caminho absoluto do índice de execução>" e avalie os retornos indicados.
 ```
 
-Sem gerente, use blocos separados e informe a ordem apenas quando houver
-dependência; nunca peça ao usuário que inicie dois escritores simultaneamente.
-Com gerente, envie e receba um único lote consolidado. Além do identificador,
-acrescente fora do bloco apenas uma decisão humana necessária. Atualizações
-exigidas pelo ambiente continuam válidas, mas devem ser curtas. Não inclua
-conteúdo técnico na mensagem terminal do trabalhador: além do invólucro da ponte
-exigido pelo papel, informe somente ID, situação, caminho do retorno e estado da
-escrita/processos.
-
-## Retomada e economia
-
-Consulte `estado.md` apenas para coordenação ainda viva. Como capitão, leia os
-arquivos exatos apontados e confira o estado real, sem percorrer o histórico;
-como gerente, use despacho, índice e ferramentas nativas, sem ler conteúdo
-técnico. Resolva permissões incertas antes de editar ou redistribuir.
-
-Ausência de retorno não prova que um agente terminou. Não repita um ID nem refaça
-trabalho aceito sem razão: reutilize retorno terminal ainda aplicável, esclareça
-execução possivelmente ativa e dê novo ID a mudanças. Use referências e
-evidências proporcionais, sem copiar arquivos, históricos ou logs acessíveis;
-não repita informação entre campos de um retorno nem omita falhas. `estado.md`
-obedece estritamente ao esquema do capitão; qualquer campo ou narrativa extra é
-defeito. Após tentativa improdutiva, mude a estratégia e não reenvie a mesma
-tarefa indefinidamente; sem próximo passo justificável, devolva o impasse.
+Não copie conteúdo técnico para a ponte. Atualizações exigidas pela harness
+continuam válidas, mas devem ser curtas.

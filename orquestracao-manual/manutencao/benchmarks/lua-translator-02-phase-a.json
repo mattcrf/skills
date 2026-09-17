@@ -1,5 +1,5 @@
 {
-  "format": "om-phase-a-baseline/1",
+  "format": "om-phase-a-baseline/2",
   "algorithm": {
     "words": "count of non-overlapping matches of the regular expression \\S+ over the text decoded as utf-8-sig",
     "bytes": "raw file size on disk, including BOM and line endings",
@@ -7,9 +7,14 @@
   },
   "context": {
     "origin": "git",
-    "paths": [
+    "historical_paths": [
       "orquestracao-manual/SKILL.md",
       "orquestracao-manual/references/capitao.md"
+    ],
+    "operational_paths": [
+      "orquestracao-manual/SKILL.md",
+      "orquestracao-manual/references/capitao.md",
+      "orquestracao-manual/references/cli.md"
     ],
     "revisions": [
       {
@@ -21,8 +26,8 @@
         "words": 2080
       }
     ],
-    "operational_words": 2080,
-    "method": "sum of the \\S+ counts of both paths at each commit; operational_words re-measures the same paths in the working tree"
+    "operational_words": 1507,
+    "method": "historical revisions measure SKILL.md plus capitao.md; operational_words measures those files plus cli.md, which became required when the public CLI shipped"
   },
   "bridge": {
     "origin": "history",
