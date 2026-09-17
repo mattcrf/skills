@@ -130,6 +130,8 @@ domínio. NeoLua, corpus, scripts rAthena e snapshots são exemplos de `harness`
 `dataset`, `baseline` e `artifact`; esses conceitos devem funcionar igualmente para
 C#, C++, documentação, diagnóstico, pesquisa e outros repositórios. Nenhuma
 abstração entra no núcleo se não puder ser nomeada sem vocabulário do tradutor.
+Cada tarefa declara somente se é `read-only` ou `mutating`: lease de escrita,
+baseline de mutação e diff são obrigatórios apenas no segundo caso.
 
 ## 3. Garantias que permanecem
 
@@ -191,8 +193,10 @@ Os papéis baratos são capacidades, não sessões fixas:
 - `scout`: pesquisa contexto, identifica superfícies e propõe tarefa/aceitação;
 - `writer`: único agente autorizado a modificar a superfície concedida;
 - `verifier`: reproduz checks e confronta critérios com o diff;
-- `adversarial reviewer`: procura regressões, omissões e testes enganosos;
-- `curator`: só é usado se a síntese determinística não bastar.
+- `adversarial reviewer`: procura regressões, omissões e testes enganosos.
+
+Não haverá `curator` inicial. Se a necessidade for demonstrada depois, ele poderá
+ordenar ou anotar, nunca suprimir achados.
 
 O limite inicial é três agentes baratos simultâneos. Eles podem executar etapas
 diferentes ou análises redundantes, desde que somente um possua a lease de escrita.
@@ -254,12 +258,15 @@ Princípios:
 - `evidence/` só existe para uma evidência durável excepcional que não caiba no
   resultado ou no log de eventos; não há sidecar por tarefa por padrão;
 - `.scratch/` guarda logs, raw, cópias temporárias e sondas; é ignorado pelo Git;
-- `.cache/` contém índice SQLite regenerável e locks locais; também é ignorado;
+- `.cache/` contém locks locais e, somente se desempenho medido justificar, índices
+  regeneráveis; também é ignorado;
 - `closure.md` é gerado no encerramento e reúne resultado, decisões, pendências e
   métricas finais.
 
-O Git versiona o plano de controle textual. SQLite é apenas índice/cache: não será
-a fonte canônica nem um binário opaco no histórico.
+O Git versiona o plano de controle textual. Inicialmente, `status`, `inbox` e
+métricas leem `events.jsonl` diretamente. SQLite só poderá ser acrescentado como
+índice regenerável após gargalo medido; nunca será fonte canônica nem binário opaco
+no histórico.
 
 ### 5.3 Projeto alvo
 
@@ -277,6 +284,17 @@ explicitamente autorizada para a operação. No modo `in-place`, registra o esta
 inicial e detecta alterações alheias; no modo `worktree`, ganha isolamento e uma
 comparação naturalmente barata.
 
+O efeito da tarefa é uma capacidade explícita:
+
+- `read-only`: não adquire lease de implementação nem exige diff; entrega conclusões
+  ancoradas nas fontes, checks e snapshots consultados;
+- `mutating`: exige escritor exclusivo, estado inicial reproduzível, diff e
+  conferência dos caminhos efetivamente alterados.
+
+Os dois efeitos compartilham publicação, evidência, verificação e decisão. Isso
+mantém diagnósticos, pesquisa e documentação não mutante como casos de primeira
+classe sem inventar novos papéis.
+
 ## 6. Modelo de tarefa enxuto
 
 Uma tarefa combina front matter TOML pequeno com corpo Markdown. Ela referencia
@@ -286,6 +304,7 @@ um perfil, em vez de repetir permissões, caminhos e comandos comuns.
 +++
 id = "013-a"
 kind = "writer"
+effect = "mutating"
 profile = "translator-writer"
 context = 4
 depends = []
@@ -343,7 +362,8 @@ pesquisa dos scouts e contexto necessário; seu tamanho é medido, mas não comp
 
 ### 7.1 Captura do escritor
 
-O escritor não redigirá novamente fatos que o computador conhece:
+Para uma tarefa `mutating`, o escritor não redigirá novamente fatos que o computador
+conhece:
 
 1. `om task start 013-a` adquire a lease de escrita e registra Git/arquivos iniciais;
 2. `om check 013-a -- <comando>` executa checks autorizados, mede duração e salva o
@@ -360,6 +380,8 @@ do log. O CLI compara os caminhos realmente alterados com o perfil concedido.
 Alteração fora do escopo impede `complete` e transforma o resultado em
 `needs-review`. Também diferencia “nenhum processo iniciado por `om` permanece
 ativo” da alegação impossível de provar de que não existe qualquer processo externo.
+Uma tarefa `read-only` usa a mesma captura para fontes, checks e notas, mas não
+adquire lease de implementação nem fabrica baseline ou diff inexistente.
 
 ### 7.2 Pré-revisão barata e independente
 
@@ -371,9 +393,12 @@ liberada:
    pressupostos falsos, testes enfraquecidos e itens fora do pedido;
 3. os verificadores não herdam a conclusão do escritor como fato; recebem o pedido,
    o estado inicial, o diff e a evidência;
-4. achados usam um esquema curto: severidade, afirmação, âncora exata, critério
-   afetado, confiança e ação sugerida;
-5. o CLI une dados objetivos, remove duplicação literal e mantém divergências.
+4. cada achado recebe ID imutável e usa um esquema curto: severidade, afirmação,
+   âncora exata, critério afetado, confiança e ação sugerida;
+5. o CLI une dados objetivos e só colapsa achados estritamente equivalentes,
+   preservando a relação entre todos os IDs de origem e a representação resultante;
+6. desacordo, baixa confiança ou equivalência ambígua é `fail-open`: permanece
+   explícito e nunca é rebaixado por ser minoritário.
 
 Três agentes baratos podem ser empregados sem três escritores: por exemplo, um
 scout em fonte externa, um escritor e um leitor de baseline durante a execução; ou
@@ -393,11 +418,18 @@ O capitão recebe uma visão própria, não o retorno bruto:
 - itens fora do pedido, separados;
 - recomendação de profundidade: diff completo, hunks de risco ou spot-check.
 
-A recomendação não limita o capitão. Mudança de testes, falha, desacordo entre
-agentes, escopo sensível, diff amplo ou evidência incompleta força revisão ampliada.
-No começo, os limiares serão conservadores; só podem ser afrouxados com dados de
-dogfood. O objetivo é remover procura, transcrição e leitura redundante, nunca
-ocultar código necessário à decisão.
+O pacote inclui uma tabela `finding-id -> representação`, cobrindo todo achado dos
+verificadores. Um curador futuro pode ordenar, agrupar ou anotar essa tabela, jamais
+suprimir IDs ou resolver semanticamente um desacordo em nome do capitão.
+
+A recomendação não limita o capitão. Antes do dogfood, revisão ampliada é acionada
+por condições observáveis: critério sem evidência independente; verificador incapaz
+de emitir veredito; qualquer desacordo; check esperado ausente ou falho; alteração em
+teste; caminho alterado fora da superfície prevista; ou arquivo/hunk modificado que
+nenhum verificador examinou. Limiares de linhas/arquivos e perfis de caminhos
+sensíveis podem ser conservadores e configuráveis, mas precisam ser mecânicos. Só
+podem ser afrouxados com dados de dogfood. O objetivo é remover procura, transcrição
+e leitura redundante, nunca ocultar código necessário à decisão.
 
 O resultado do escritor não recebe teto rígido: pode crescer até o orçamento barato
 da operação quando detalhe adicional ajudar os verificadores. Ele apenas não repete
@@ -448,7 +480,8 @@ Transições são comandos, não edições manuais. `om doctor` rejeita ou apont
 - arquivo publicado alterado depois do hash registrado;
 - estado derivado diferente do log de eventos;
 - scratch acima da política de retenção;
-- sessão declarada ativa sem heartbeat ou encerramento.
+- quando o backend declarar suporte a heartbeat, sessão ativa sem heartbeat ou
+  encerramento conforme a política desse backend.
 
 `estado.md`, índices de execução e handoffs deixam de ser fontes editáveis. `om
 status` os calcula de `events.jsonl`; uma visão Markdown pode ser gerada para
@@ -461,6 +494,10 @@ arquivo do sistema, gravação temporária + substituição atômica quando apli
 evento anterior, papel, tarefa e hash do payload. O encadeamento detecta edição ou
 truncamento acidental; ele não pretende ser um mecanismo criptográfico de confiança
 contra um operador malicioso.
+
+Na Fase B, o núcleo valida somente leases e transições locais. Heartbeat e detecção
+de sessão obsoleta entram com o backend na Fase E, quando podem ser testados de forma
+realista.
 
 ## 9. Transporte como decisão econômica
 
@@ -605,7 +642,7 @@ Isto é uma única ferramenta. Atalhos ou interfaces gráficas só serão consid
 depois de observar uso repetitivo que o justifique.
 
 Implementação inicial recomendada: Python com biblioteca padrão, por já existir no
-ambiente Windows (`py`), oferecer `tomllib`, `sqlite3`, subprocessos e testes sem
+ambiente Windows (`py`), oferecer `tomllib`, subprocessos e testes sem
 dependências. O núcleo não dependerá de PowerShell. Uma distribuição executável ou
 reescrita só será cogitada se startup, instalação ou portabilidade forem medidos
 como gargalo.
@@ -615,8 +652,11 @@ como gargalo.
 `om metrics` produzirá por operação:
 
 - entrada e saída textual separadas por papel e backend;
-- palavras do capitão em intenções, correções, decisões e pacotes recebidos;
-- bytes de diff/código/log deliberadamente abertos pelo capitão;
+- texto entregue e efetivamente lido pelo capitão, separado em intenções, correções,
+  decisões e pacotes recebidos;
+- bytes adicionais de diff/código/log deliberadamente abertos pelo capitão;
+- ações explícitas de investigação do capitão: abrir diff, hunk, log ou arquivo e
+  executar inspeção;
 - custo barato empregado para cada unidade de trabalho retirada do capitão;
 - arquivos e bytes duráveis por categoria;
 - arquivos e bytes de scratch por categoria;
@@ -629,13 +669,14 @@ como gargalo.
 - violações prevenidas pelo validador;
 - leituras de contexto fixo declaradas por papel;
 - recall dos incidentes conhecidos no replay;
+- achados não confirmados e revisões ampliadas desnecessárias em casos-controle;
 - divergências entre escritor, verificadores e decisão final;
 - custo do próprio CLI: comandos e arquivos adicionais.
 
 Quando o ambiente não fornecer tokens por papel, palavras e bytes emitidos serão o
 proxy reproduzível. O relatório não deve fingir precisão de tokens que não possui.
 
-Alvos para o replay de `lua-translator-02`:
+Orçamento para a operação completa `lua-translator-02`:
 
 | Métrica | Base | Alvo v2 |
 | --- | ---: | ---: |
@@ -649,6 +690,7 @@ Alvos para o replay de `lua-translator-02`:
 | palavras de pedidos redigidas pelo capitão | >= 22.730 | <= 5.700 |
 | palavras de retornos entregues ao capitão | >= 25.220 | <= 5.600 |
 | achados bloqueantes históricos apresentados ao capitão | conjunto a congelar na Fase A | 100% |
+| controles sem divergência escalados desnecessariamente | conjunto a congelar na Fase A | medir; recall isolado não aprova o gate |
 | despachos + execuções manuais | 50 arquivos | 0 |
 | transportes humanos, backend native | ~50 | 0, quando escolhido |
 | transportes humanos, backend bridge | ~50 | métrica secundária; medir sem meta artificial |
@@ -664,6 +706,15 @@ inferiores cai de 47.950 para 11.300 palavras: **76,4%**. Trabalhadores e reviso
 podem consumir até três vezes mais para produzir essa economia, desde que o ganho e
 a qualidade sejam medidos. O replay deve medir o realizado; estes números são
 orçamento, não crédito antecipado.
+
+O replay 13-a/13-b é um benchmark retrospectivo conhecido, não uma prova de
+generalização. Antes de implementar as Fases C/D, a Fase A congela suas entradas, as
+três divergências históricas, regra de pontuação e informação permitida a cada papel.
+Agentes executores não recebem a solução final; o commit `80a0001` é oráculo somente
+posterior. Sua economia usa como denominador exclusivamente a fatia histórica
+13-a/13-b: texto escrito e recebido pelo capitão, bytes adicionais abertos e ações de
+investigação recuperáveis. O orçamento 47.950 -> 11.300 continua pertencendo à
+operação completa.
 
 Regra de regressão: nenhuma alteração posterior pode piorar em mais de 10% o custo
 do capitão, pedido, pacote de decisão ou artefatos sem registrar a causa e obter
@@ -681,17 +732,22 @@ ganho demonstrável de qualidade, cobertura ou economia do capitão.
 4. separar o que o capitão escreveu, recebeu e precisou abrir;
 5. congelar um conjunto-ouro dos erros, divergências e decisões que o fluxo real
    encontrou, incluindo os casos que exigiram correção;
-6. criar fixtures genéricas mínimas de tarefa de código, diagnóstico somente leitura
+6. congelar casos-controle sem divergência relevante e medir achados não confirmados,
+   revisões ampliadas desnecessárias e investigação adicional do capitão;
+7. registrar uma baseline específica do par 13-a/13-b, partindo de `9e5cfeb`, com
+   suas três divergências, fronteira de informação, pontuação e custos recuperáveis;
+8. criar fixtures genéricas mínimas de tarefa de código, diagnóstico somente leitura
    e documentação/configuração;
-7. gerar relatório de equivalência e custo por papel.
+9. gerar relatório de equivalência e custo por papel.
 
 Gate A: os números do CLI precisam reproduzir as medições manuais com tolerância
-explicada, e a base de qualidade precisa estar enumerada. Nenhuma mudança da skill
-operacional nesta fase.
+explicada; incidentes e controles precisam estar enumerados; e 100% de recall não
+pode, sozinho, aprovar qualidade. Nenhuma mudança da skill operacional nesta fase.
 
 ### Fase B — formato e validador, sem transporte
 
-1. implementar `operation.toml`, front matter, eventos e máquina de estados;
+1. implementar `operation.toml`, front matter, efeitos `read-only`/`mutating`,
+   eventos e máquina de estados local;
 2. implementar `task publish`, `status`, `resume` e `doctor`;
 3. converter, de forma automatizada, três recortes representativos: simples,
    correção/continuação e lote paralelo;
@@ -699,7 +755,7 @@ operacional nesta fase.
 
 Gate B: pedido convertido atinge o alvo, todas as invariantes conhecidas têm teste,
 nenhum dado técnico necessário desaparece e o esquema não contém conceito exclusivo
-do tradutor.
+do tradutor. Heartbeat e staleness de sessões permanecem fora desta fase.
 
 ### Fase C — preparação barata da tarefa
 
@@ -722,10 +778,13 @@ transformar sua hipótese em decisão silenciosa.
 5. fazer replay de resultados simples, falhos, corrigidos e controversos;
 6. comparar pacote novo com o conjunto-ouro da Fase A.
 
-Gate D: pacote atinge o alvo, apresenta 100% dos achados bloqueantes conhecidos e o
-capitão consegue dar o mesmo veredito com no máximo 25% da entrada textual original,
-sem perder acesso ao diff completo. Se logs brutos precisarem ser abertos em todos os
-casos, a curadoria falhou.
+Gate D: pacote atinge o alvo, cobre de forma rastreável 100% dos IDs de achados,
+apresenta 100% dos achados bloqueantes conhecidos e não usa escalada indiscriminada
+para obter recall. O capitão consegue dar o mesmo veredito com no máximo 25% da
+entrada textual original, sem perder acesso ao diff completo; bytes adicionais e
+ações de investigação são publicados junto do resultado. Se logs brutos precisarem
+ser abertos em todos os casos, ou controles limpos forem escalados sistematicamente,
+a compactação falhou.
 
 ### Fase E — backend bridge com agentes baratos
 
@@ -733,7 +792,8 @@ casos, a curadoria falhou.
 2. substituir despacho/execução por eventos;
 3. permitir até três sessões externas com papéis e permissões distintos;
 4. simular falha, parcial, retomada, lote paralelo e desacordo entre revisores;
-5. medir custo dos trabalhadores, custo do capitão, ações humanas e payload.
+5. implementar e testar heartbeat/staleness por backend;
+6. medir custo dos trabalhadores, custo do capitão, ações humanas e payload.
 
 Gate E: zero despacho/execução manual, nenhum enfraquecimento da fronteira do gerente
 e redução do custo do capitão dentro do orçamento. A contagem de viagens é publicada
@@ -809,7 +869,7 @@ preferência de desenho.
 - uma única ferramenta pública;
 - repositório separado para estado operacional;
 - arquivos humanos pequenos + eventos estruturados;
-- SQLite somente como cache;
+- leitura direta de `events.jsonl` até desempenho justificar um índice;
 - scratch ignorado e sujeito a retenção;
 - estado sempre derivado;
 - consumo e atenção do capitão são a principal função de custo;
@@ -825,6 +885,7 @@ preferência de desenho.
 
 - nome definitivo do CLI e do repositório de operações;
 - formato de empacotamento do Python;
+- eventual índice SQLite regenerável;
 - necessidade de daemon/broker;
 - commit automático no repositório de operações;
 - política padrão de worktree versus `in-place` por projeto;
