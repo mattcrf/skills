@@ -1,0 +1,1030 @@
+{
+  "aggregates": {
+    "captain_authored_handoff": {
+      "bytes": 10976,
+      "files": 3,
+      "flow": "authored",
+      "glob": "continuacao-*.md",
+      "lines": 244,
+      "words": 1600
+    },
+    "captain_authored_operational": {
+      "bytes": 32749,
+      "files": 25,
+      "flow": "authored",
+      "glob": "despacho-*.md",
+      "lines": 434,
+      "words": 3428
+    },
+    "captain_authored_technical": {
+      "bytes": 173896,
+      "files": 28,
+      "flow": "authored",
+      "glob": "pedido-*.md",
+      "lines": 3401,
+      "words": 22730
+    },
+    "captain_received_operational": {
+      "bytes": 12089,
+      "files": 25,
+      "flow": "received",
+      "glob": "execucao-*.md",
+      "lines": 249,
+      "words": 1518
+    },
+    "captain_received_technical": {
+      "bytes": 203457,
+      "files": 28,
+      "flow": "received",
+      "glob": "retorno-*.md",
+      "lines": 2918,
+      "words": 25220
+    }
+  },
+  "files": [
+    {
+      "bytes": 4350,
+      "category": "captain_authored_handoff",
+      "flow": "authored",
+      "lines": 96,
+      "path": "continuacao-07.md",
+      "sha256": "e7c5b21a7eb8ac286c42022c9aa010b161c733869571e379d0365a2003f9d4b6",
+      "words": 623
+    },
+    {
+      "bytes": 1737,
+      "category": "captain_authored_handoff",
+      "flow": "authored",
+      "lines": 46,
+      "path": "continuacao-08.md",
+      "sha256": "6919967d626b6a056be854b0c61f1a2037cf0af7bb4c518ff7619829f1eb64e8",
+      "words": 274
+    },
+    {
+      "bytes": 4889,
+      "category": "captain_authored_handoff",
+      "flow": "authored",
+      "lines": 102,
+      "path": "continuacao-09.md",
+      "sha256": "88b929f8856a060242885c313ffc4eec3772bb4b2e20ef368a1eca1ba5922c24",
+      "words": 703
+    },
+    {
+      "bytes": 1297,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 18,
+      "path": "despacho-02b.md",
+      "sha256": "d15196095f884af73988654ac21af7e6089ca6490157c5aa1ed77258890da735",
+      "words": 137
+    },
+    {
+      "bytes": 1296,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 18,
+      "path": "despacho-03.md",
+      "sha256": "991eb821d963644a7182248bad6c9f8d1998f9532b673e6e017eda3d7971ddee",
+      "words": 135
+    },
+    {
+      "bytes": 1327,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 18,
+      "path": "despacho-03b.md",
+      "sha256": "1269b96a5749c364b0918b414d492a799867b0f12aadeddc685dce3444fb0fe7",
+      "words": 140
+    },
+    {
+      "bytes": 1341,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 18,
+      "path": "despacho-03c.md",
+      "sha256": "c5809f92be3b123178d0e0c8ca84491299f154cc314875249e8700d52033d329",
+      "words": 142
+    },
+    {
+      "bytes": 1440,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 18,
+      "path": "despacho-04a.md",
+      "sha256": "9b9f1d622fa4d15e5630952bede170360988d66fd5fe89c0962574c76af69220",
+      "words": 140
+    },
+    {
+      "bytes": 1280,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-04b.md",
+      "sha256": "51260f7591055654af9de9982531f9bb4b418ec2f67e3fddfb7438ed06a4c1ea",
+      "words": 133
+    },
+    {
+      "bytes": 1280,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-04c.md",
+      "sha256": "002573054594c91e319be569f9a9d6d710d29106f8fc31d096d214fe6ef12dad",
+      "words": 133
+    },
+    {
+      "bytes": 1280,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-05a.md",
+      "sha256": "f4c75971fa213120686e0c4d31ff7fa40c8bcf8269615a9b8f881125fc799447",
+      "words": 133
+    },
+    {
+      "bytes": 1335,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-06a.md",
+      "sha256": "f0bc9351bfa4d8f05df34e57a6de8be58eff139654f149faa3d051fca7e70f2b",
+      "words": 138
+    },
+    {
+      "bytes": 1183,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-07a.md",
+      "sha256": "ac0d7c731fcd691d25b2b8cda9ee34402c3ef2c6159d5052ca03215402500620",
+      "words": 127
+    },
+    {
+      "bytes": 1940,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 18,
+      "path": "despacho-08.md",
+      "sha256": "3e0a64fd1d549571864270d376319470663e9da17a5a44c67a28cd5a5bbe5776",
+      "words": 197
+    },
+    {
+      "bytes": 1330,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-09.md",
+      "sha256": "f97dc84e1d28f8554097377cb57828f1cdda32903c44aec33e0353b2534f30f5",
+      "words": 145
+    },
+    {
+      "bytes": 1303,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-09b.md",
+      "sha256": "1e7b8e623e6b2ef01b7ad730e78e54246870251867d7ae57eacc3bd5a37fe1e9",
+      "words": 142
+    },
+    {
+      "bytes": 1329,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-10.md",
+      "sha256": "0c7ee5ffb0e53bd5538d9e8473a5b5bef1c0d7da76fa1a342dcb41809db5e3ee",
+      "words": 141
+    },
+    {
+      "bytes": 1329,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-11.md",
+      "sha256": "184009dbe010d5755e5996c5a2efbab9da572bf78e2ca014f7c7d9b0bb4ec99f",
+      "words": 141
+    },
+    {
+      "bytes": 1220,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 16,
+      "path": "despacho-12.md",
+      "sha256": "5797dce4cdc2c8e74a66e26843e10ce1f91ccb1c0c5ab4461a6a70a861d57de0",
+      "words": 126
+    },
+    {
+      "bytes": 1327,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-12b.md",
+      "sha256": "5b8344e125193d9a431e4d2bc276e747c23944fdebf8c35d918d6cd3b531406e",
+      "words": 139
+    },
+    {
+      "bytes": 1221,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-13.md",
+      "sha256": "3ac298913c00c05231fd62fc3dd17b2d90669fb9a1321f49ebf2d06a506be354",
+      "words": 126
+    },
+    {
+      "bytes": 1309,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 19,
+      "path": "despacho-13b.md",
+      "sha256": "84ffc36221ea4d57eb31615efedbc4c6a28416e6b1a3e26fb47fc6473a2631f7",
+      "words": 139
+    },
+    {
+      "bytes": 1201,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-14.md",
+      "sha256": "770829748c78b9df648d33d0df6824aa51ca0928ad87295b89200a20588488af",
+      "words": 125
+    },
+    {
+      "bytes": 1201,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-15.md",
+      "sha256": "b063e538f6bface1922a074056813edd0c1317a56426c069c1398a87e47e71e0",
+      "words": 125
+    },
+    {
+      "bytes": 1331,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 19,
+      "path": "despacho-15b.md",
+      "sha256": "33170ce2722adbc6bc9df7a1eea30067d3efff69be777a012e39991873a5aae7",
+      "words": 143
+    },
+    {
+      "bytes": 1195,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-16.md",
+      "sha256": "5ab6aeaa79451c9840c2495d30c38484979842a49186c1f4e9a579b982d15c7c",
+      "words": 125
+    },
+    {
+      "bytes": 1196,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-17.md",
+      "sha256": "5c29cb6e0325b24334bd9527782f06d7258145da97ca33a998c843ec5cb9608f",
+      "words": 125
+    },
+    {
+      "bytes": 1258,
+      "category": "captain_authored_operational",
+      "flow": "authored",
+      "lines": 17,
+      "path": "despacho-18.md",
+      "sha256": "68f5825765c7e323ca33d5aa6683f52be0334ca5cf84a5a5abc9e00bb0348815",
+      "words": 131
+    },
+    {
+      "bytes": 498,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-02b.md",
+      "sha256": "b35e3aa320579fa0a12be4fe3e12d4a639ee5965b6348bac2d4b8458f98bd888",
+      "words": 63
+    },
+    {
+      "bytes": 404,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-03.md",
+      "sha256": "bd452371e1a81705c2f1b4b32396a46356371cb83ca5a73dc172ae93b9825b13",
+      "words": 50
+    },
+    {
+      "bytes": 405,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-03b.md",
+      "sha256": "6c3de1eb24a98d0a5af2d2e74ff08428d12295ffe6701c1c11c453d62ce5e554",
+      "words": 50
+    },
+    {
+      "bytes": 405,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-03c.md",
+      "sha256": "01168f44880dbde62c5231afb7209f074ec9a21f965e40f09a8c6ef1d7dcaddf",
+      "words": 50
+    },
+    {
+      "bytes": 405,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-04a.md",
+      "sha256": "256ac03a79a5b7956c4b1033f26e26a66b0950bef5612714146bd01e3c9b164d",
+      "words": 50
+    },
+    {
+      "bytes": 378,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-04b.md",
+      "sha256": "c8252bbba18a07f6f8c61b4a787b5cb73f71145f4b3a78774f5f00cdc1cd59a7",
+      "words": 49
+    },
+    {
+      "bytes": 437,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-04c.md",
+      "sha256": "0a389b31239fc90607a41c4bc5ae83270705669453ea1b4fd36ebaeda8b053c4",
+      "words": 58
+    },
+    {
+      "bytes": 437,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-05a.md",
+      "sha256": "8b56d187fc78d5b1dd1eee11a20e99403a2c284cfafad540990108224a1c02e0",
+      "words": 58
+    },
+    {
+      "bytes": 433,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-06a.md",
+      "sha256": "f0f42347a7efdeb2004119077809929ae7fe5fce99948097c1ce805fb516425e",
+      "words": 53
+    },
+    {
+      "bytes": 433,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-07a.md",
+      "sha256": "5cab8f1712141013cae21067c46efe6858784727a9142ae942dcb4810e1edd4f",
+      "words": 53
+    },
+    {
+      "bytes": 604,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 11,
+      "path": "execucao-08.md",
+      "sha256": "975496b1998b87317f66925629409fdc1ee04e4946528f0392bcba45ac9ec568",
+      "words": 65
+    },
+    {
+      "bytes": 432,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-09.md",
+      "sha256": "346b34d10bd8a5f3567df4b5121149bd3fa4150c33e525ccb78a90bb2d5d1b38",
+      "words": 53
+    },
+    {
+      "bytes": 433,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-09b.md",
+      "sha256": "a1478bd2bbd7c90b2b822af5dfb65d3506bed5193ecdd5545595a3773a0d424b",
+      "words": 53
+    },
+    {
+      "bytes": 432,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-10.md",
+      "sha256": "81c0a2d11d1e067b39dae2047a4e76682ef312085e16e155093b7cc994d0fb34",
+      "words": 53
+    },
+    {
+      "bytes": 432,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-11.md",
+      "sha256": "3fecf99b1451d31b62e0fdafe6c2c32df9b7d0b476afde0f501cd6e699bea1e6",
+      "words": 53
+    },
+    {
+      "bytes": 552,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-12.md",
+      "sha256": "b1e08af46e2c2068f70dbf6b291bfeaae8bc36546f29a4c3ff122d25c7e9cc34",
+      "words": 71
+    },
+    {
+      "bytes": 553,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-12b.md",
+      "sha256": "90e42c62da07d0c42b7c4558a496c123bcd2f4768711277cc5e5e539f8951d6b",
+      "words": 71
+    },
+    {
+      "bytes": 566,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 10,
+      "path": "execucao-13.md",
+      "sha256": "fe7c0a830d55f35cfe54745d06034187d2ec8a5ce93ad75c7a39d5b6ce7f1069",
+      "words": 71
+    },
+    {
+      "bytes": 792,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 11,
+      "path": "execucao-13b.md",
+      "sha256": "d1cd4a0609de4785289155b272c16947f42d900b59209ff713abe4e76a38915f",
+      "words": 101
+    },
+    {
+      "bytes": 543,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 11,
+      "path": "execucao-14.md",
+      "sha256": "c4aa6c4035470d4a2a2c5c21d0e7c88cc25ee14df6b94b709b2debf097eb07d6",
+      "words": 72
+    },
+    {
+      "bytes": 536,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 11,
+      "path": "execucao-15.md",
+      "sha256": "85c7d275eafd4e4ff98582b542ab46c22358b13e61a4dff22e195ec05e4afd9d",
+      "words": 70
+    },
+    {
+      "bytes": 513,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 11,
+      "path": "execucao-15b.md",
+      "sha256": "ad16f1ccc314816f5b4dfee004a8baefe6c77f1536f933857a97724e78d84093",
+      "words": 63
+    },
+    {
+      "bytes": 536,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 11,
+      "path": "execucao-16.md",
+      "sha256": "f50498e77e3b3e5e7d3a0f2181698259fb2a4e7acdeaa03c55026f71748c2567",
+      "words": 70
+    },
+    {
+      "bytes": 535,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 11,
+      "path": "execucao-17.md",
+      "sha256": "c7f1fad9f0b2413a5f2ceda401f41233ebd61b3430c92dea69aeef9ec7eb188e",
+      "words": 68
+    },
+    {
+      "bytes": 395,
+      "category": "captain_received_operational",
+      "flow": "received",
+      "lines": 9,
+      "path": "execucao-18.md",
+      "sha256": "3537bebde3b17f41b031dde143d9a12f7eed8798316bb83b1e15da0f92bb6fdf",
+      "words": 50
+    },
+    {
+      "bytes": 4261,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 109,
+      "path": "pedido-01-a.md",
+      "sha256": "2adf67e2f238ee90f855bd5b2c9144b6ad8aaa572c4db3ab7411c0bfb80e7ba9",
+      "words": 577
+    },
+    {
+      "bytes": 6562,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 133,
+      "path": "pedido-02-a.md",
+      "sha256": "9465f0621327c7f0fa7c0d80b80fa6e0e0f5b34423e865b76ad2e867a55f7e64",
+      "words": 937
+    },
+    {
+      "bytes": 5438,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 120,
+      "path": "pedido-02-b.md",
+      "sha256": "d6aa976279158df32ace8f2ac197cbafa63fa41c4eeaac61109621eaae825f2c",
+      "words": 783
+    },
+    {
+      "bytes": 8107,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 159,
+      "path": "pedido-03-a.md",
+      "sha256": "233526075f7184feaca52518f3a5ec56ab6059447ac8bf36efb4a10e87f8aeb6",
+      "words": 1123
+    },
+    {
+      "bytes": 5646,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 112,
+      "path": "pedido-03-b.md",
+      "sha256": "a65392d3829bc17d21c6b57502786036a9c568e12a30a6651671c51e5fbd80a4",
+      "words": 728
+    },
+    {
+      "bytes": 6074,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 121,
+      "path": "pedido-03-c.md",
+      "sha256": "e8394fe2724e6c00d3a983e62071c6b1bec4d310cc83a5ee9ab132fc06cef4e0",
+      "words": 806
+    },
+    {
+      "bytes": 4862,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 100,
+      "path": "pedido-04-a.md",
+      "sha256": "daa35c10cfec08409d4dd5d241e8136a5453daa39541e1a08434ef3db56ce092",
+      "words": 624
+    },
+    {
+      "bytes": 6985,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 139,
+      "path": "pedido-04-b.md",
+      "sha256": "e5e0655444917adcf444fd482ceaf62d8efa5b79343b70330d1e9adeaad1a7a2",
+      "words": 911
+    },
+    {
+      "bytes": 7660,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 167,
+      "path": "pedido-04-c.md",
+      "sha256": "fffcc74d064b98f510e5e9f2f299c5c424e2a0736b7de3e51a04b7035cf55e20",
+      "words": 965
+    },
+    {
+      "bytes": 7687,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 161,
+      "path": "pedido-05-a.md",
+      "sha256": "65d413b3ba031e310b30e0f04a9a2b09b840efc5b69e61cbfdff55d647923a9a",
+      "words": 1021
+    },
+    {
+      "bytes": 8189,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 170,
+      "path": "pedido-06-a.md",
+      "sha256": "88a48fc287013e137646ad8ff715395a11ac1e2f992709078179cf4f11257bab",
+      "words": 1203
+    },
+    {
+      "bytes": 3709,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 86,
+      "path": "pedido-07-a.md",
+      "sha256": "edbe281932d49051509057b04f41717f03fb18e1d96c70768f7c9ab0258ad5c2",
+      "words": 484
+    },
+    {
+      "bytes": 9997,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 192,
+      "path": "pedido-08-a.md",
+      "sha256": "57e732350b975d4876cd5ab7271747d5fba3e2db748a56fcf72d3eaed8635204",
+      "words": 1369
+    },
+    {
+      "bytes": 4571,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 95,
+      "path": "pedido-08-c.md",
+      "sha256": "3300ed0be1be4c1b6a44aa8e9bd0d2fe5ba0968179b322b72dcbed5c53700a09",
+      "words": 619
+    },
+    {
+      "bytes": 6932,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 132,
+      "path": "pedido-09-a.md",
+      "sha256": "b22f6c2c1a7b7143846598accfe35a62a1365e22b33d322e8f96f1450194e270",
+      "words": 934
+    },
+    {
+      "bytes": 5705,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 111,
+      "path": "pedido-09-b.md",
+      "sha256": "5ad4608b8c52bee44222f4a47070715935cd5d3c193261eaf5fb936bda26d893",
+      "words": 761
+    },
+    {
+      "bytes": 6283,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 132,
+      "path": "pedido-10-a.md",
+      "sha256": "e3d200d3fd9c593910f4dc2dcf84087090956850b33520a20dc12f3f54ee381c",
+      "words": 779
+    },
+    {
+      "bytes": 7179,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 142,
+      "path": "pedido-11-a.md",
+      "sha256": "c0ee26a4665efd2c96bbf1af46e9d1df8e54d2e7928f1d8b20f37bbdcbf10c7d",
+      "words": 872
+    },
+    {
+      "bytes": 5481,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 91,
+      "path": "pedido-12-a.md",
+      "sha256": "59fc5a42b965d1f48ca85ab13cdf461667de534cbab898dd1f6bee4070baf0f9",
+      "words": 698
+    },
+    {
+      "bytes": 3862,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 70,
+      "path": "pedido-12-b.md",
+      "sha256": "cf171d4aa9880501af04b99eabb0858480dd9cb3380446e6d13b6d998f0f6d55",
+      "words": 456
+    },
+    {
+      "bytes": 7194,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 126,
+      "path": "pedido-13-a.md",
+      "sha256": "49f0e83d9387103f68936ae172fb93f9d043152f97b17d944a5bf8c5db5b6e5c",
+      "words": 949
+    },
+    {
+      "bytes": 5291,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 85,
+      "path": "pedido-13-b.md",
+      "sha256": "a6a8f0cc277a31d2caf3dc3aa2d00fbdbbba62214f3a5dd296dbf300485ae628",
+      "words": 660
+    },
+    {
+      "bytes": 5312,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 94,
+      "path": "pedido-14-a.md",
+      "sha256": "ef4c3c877645e4ebacb6eb0c8101ab9c9be7941e97a9a5f2ea9cdd5450a30fba",
+      "words": 623
+    },
+    {
+      "bytes": 8170,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 144,
+      "path": "pedido-15-a.md",
+      "sha256": "d51e213dc74474bf12d785454871e50f05129f6ec446fcaab05c9b0656b44346",
+      "words": 1047
+    },
+    {
+      "bytes": 4758,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 90,
+      "path": "pedido-15-b.md",
+      "sha256": "5427cc48a55b0e2a8d95f496638842bc09a700dbb633d063adde93777361ae8a",
+      "words": 581
+    },
+    {
+      "bytes": 6467,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 112,
+      "path": "pedido-16-a.md",
+      "sha256": "9328b8ae8a9a96458896739372fb1a553322ffa48eb5829fb03b057fa81bb0d4",
+      "words": 764
+    },
+    {
+      "bytes": 6970,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 124,
+      "path": "pedido-17-a.md",
+      "sha256": "1e4a56b70a6cd47b4148f9c5ce1ecf63380b075d43471a5863966e53df4983a9",
+      "words": 874
+    },
+    {
+      "bytes": 4544,
+      "category": "captain_authored_technical",
+      "flow": "authored",
+      "lines": 84,
+      "path": "pedido-18-a.md",
+      "sha256": "920f50157a88173792614d987aa563a3da71bf1cbc628578701a54c2462a9db6",
+      "words": 582
+    },
+    {
+      "bytes": 6182,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 121,
+      "path": "retorno-01-a.md",
+      "sha256": "19a4bb491e8c4c817f336add627dd16c9b4bc38716503bf2972665e305c9c3a6",
+      "words": 742
+    },
+    {
+      "bytes": 9034,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 141,
+      "path": "retorno-02-a.md",
+      "sha256": "cab7d4c986e404d7dc4825c49829c29ab5e08d1725114ebf0a6b3fa2978d41be",
+      "words": 1320
+    },
+    {
+      "bytes": 7402,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 139,
+      "path": "retorno-02-b.md",
+      "sha256": "132b76303d24e42bdd0e12774a32c8b46c644e61f38e7110c1c83114cd327457",
+      "words": 993
+    },
+    {
+      "bytes": 6046,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 31,
+      "path": "retorno-03-a.md",
+      "sha256": "46088c40cf49d5cea8b591ee32eb612ea660d294bef15e9b970ac1c7b742910d",
+      "words": 834
+    },
+    {
+      "bytes": 5468,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 15,
+      "path": "retorno-03-b.md",
+      "sha256": "a1cab39348a8ce287665596c3710e19ff01023fcc61b074c8e000b91de47aa1f",
+      "words": 495
+    },
+    {
+      "bytes": 8672,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 59,
+      "path": "retorno-03-c.md",
+      "sha256": "362fbcd1c29d1d1d4fee2a461dcd72359203efe70ce3d93c2d08331021c42760",
+      "words": 911
+    },
+    {
+      "bytes": 5674,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 26,
+      "path": "retorno-04-a.md",
+      "sha256": "82b71f23bc67d4d01073bd082cc1646d119793ea4a40a953d0baa52eda6db7a1",
+      "words": 624
+    },
+    {
+      "bytes": 4427,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 17,
+      "path": "retorno-04-b.md",
+      "sha256": "d3d9de807da4b4cba1778aafe7d14de71a24b1e89b634c75d1fb400ffb0db27a",
+      "words": 436
+    },
+    {
+      "bytes": 3927,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 12,
+      "path": "retorno-04-c.md",
+      "sha256": "0ba18ff2060a0ae90ca2a310103d37f2adae7e9601698eef85214dcaa1bd58ab",
+      "words": 387
+    },
+    {
+      "bytes": 5386,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 42,
+      "path": "retorno-05-a.md",
+      "sha256": "dd28573190300de8db0d270ca908b2e13ea3d32b4e2e7881d5eed21a91ff011c",
+      "words": 653
+    },
+    {
+      "bytes": 6435,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 109,
+      "path": "retorno-06-a.md",
+      "sha256": "75e8296cb5a47a122c2435a8491911f09037831bd4c4687895208b69791c00db",
+      "words": 836
+    },
+    {
+      "bytes": 3826,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 74,
+      "path": "retorno-07-a.md",
+      "sha256": "a6d9deebf7d39fdf78d40590e2172f9eff3b931ea784cc946ff4b6e2fef1ef60",
+      "words": 423
+    },
+    {
+      "bytes": 6132,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 104,
+      "path": "retorno-08-a.md",
+      "sha256": "2728917da9ef4bddda3bceb3113a5551613c2ad6f3a2c4014b1284979128fed6",
+      "words": 716
+    },
+    {
+      "bytes": 6344,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 123,
+      "path": "retorno-08-c.md",
+      "sha256": "85d8b32c491d9a2f09cb835a5f7a75e38b9a3a225f1e999d2bf7291b68afbd59",
+      "words": 815
+    },
+    {
+      "bytes": 6891,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 123,
+      "path": "retorno-09-a.md",
+      "sha256": "0caa57fb2f9532208eb33a13bf401e3cbdd51cbcfb41c3cc65198043d7be5d21",
+      "words": 804
+    },
+    {
+      "bytes": 7396,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 148,
+      "path": "retorno-09-b.md",
+      "sha256": "460f5d7b635978c0b29f4a2a099aa7cf3c64ab479ec1132988c02bd3e9b247b0",
+      "words": 989
+    },
+    {
+      "bytes": 5351,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 92,
+      "path": "retorno-10-a.md",
+      "sha256": "b650bfca97a2457dd0aaf454582f2c14ab608347586bc7e8578c1704327d6e60",
+      "words": 625
+    },
+    {
+      "bytes": 9420,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 141,
+      "path": "retorno-11-a.md",
+      "sha256": "df18b0fd95c71111191d61b65f41532bc396082cace9163f5c382073cbc15e25",
+      "words": 1107
+    },
+    {
+      "bytes": 5819,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 92,
+      "path": "retorno-12-a.md",
+      "sha256": "27e4257d2c37399b766edec03820f3cbcf05dca4c433c06d73b6e1025ea30f5d",
+      "words": 622
+    },
+    {
+      "bytes": 6046,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 94,
+      "path": "retorno-12-b.md",
+      "sha256": "774e7dc6e87eee6ae7422877bcacaa8daa468e056c13dcd499ffa156bfb7cbeb",
+      "words": 652
+    },
+    {
+      "bytes": 9893,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 87,
+      "path": "retorno-13-a.md",
+      "sha256": "e6a5075b1a558509961405df7a0a8c28c7549917930776de04043b1a24489b6d",
+      "words": 1233
+    },
+    {
+      "bytes": 11660,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 188,
+      "path": "retorno-13-b.md",
+      "sha256": "d3477702d243aa1c5d857a4c5b2462e4f71df1411c31bdd7ce6c45d57f004729",
+      "words": 1570
+    },
+    {
+      "bytes": 7398,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 141,
+      "path": "retorno-14-a.md",
+      "sha256": "4b96c27a65ae15beb66e977f5ca5dfd92b13d4ce5c1a6e34850e6bf31464356b",
+      "words": 943
+    },
+    {
+      "bytes": 11786,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 198,
+      "path": "retorno-15-a.md",
+      "sha256": "4a8970f6d7ed59909025bfcf3c8d740a5de34386ef67c40b79f76bf577578574",
+      "words": 1568
+    },
+    {
+      "bytes": 6843,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 122,
+      "path": "retorno-15-b.md",
+      "sha256": "b2d72513ac09d357bc9223ad0df6a218e6d763bad921a42c9bc737318405c3e4",
+      "words": 941
+    },
+    {
+      "bytes": 7900,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 143,
+      "path": "retorno-16-a.md",
+      "sha256": "bec638c01a67cba034bb64c8a66e379ecfe71f07a182f286a0eddaa62bdb25ee",
+      "words": 1000
+    },
+    {
+      "bytes": 12503,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 224,
+      "path": "retorno-17-a.md",
+      "sha256": "0d3da44a2dc1365e09fd79a30dade487c5c2955f5aabcd67331e9452ca7e1bb7",
+      "words": 1630
+    },
+    {
+      "bytes": 9596,
+      "category": "captain_received_technical",
+      "flow": "received",
+      "lines": 112,
+      "path": "retorno-18-a.md",
+      "sha256": "b23f12a5b21ab5d89f1d8aee905a30c90200e620f179cd4e8f25e2b1a90d5b55",
+      "words": 1351
+    }
+  ],
+  "format": "om-benchmark-legacy/1",
+  "manifest": "4d3a833ddc83474d3df051333d45af1ad6309907ef8e4dd7780f473ea169b89f",
+  "manifest_algorithm": "sha256-hex-of-utf8-joined('<sha256>:<posix-rel-path>\\n' sorted by posix-rel-path)"
+}
