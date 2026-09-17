@@ -1,0 +1,106 @@
+{
+  "format": "om-phase-a-baseline/1",
+  "algorithm": {
+    "words": "count of non-overlapping matches of the regular expression \\S+ over the text decoded as utf-8-sig",
+    "bytes": "raw file size on disk, including BOM and line endings",
+    "lines": "count of LF characters plus one when the decoded text is non-empty, zero when empty; the final empty segment counts (legacy benchmark convention)"
+  },
+  "context": {
+    "origin": "git",
+    "paths": [
+      "orquestracao-manual/SKILL.md",
+      "orquestracao-manual/references/capitao.md"
+    ],
+    "revisions": [
+      {
+        "commit": "bc30308",
+        "words": 3126
+      },
+      {
+        "commit": "a9b0532",
+        "words": 2080
+      }
+    ],
+    "operational_words": 2080,
+    "method": "sum of the \\S+ counts of both paths at each commit; operational_words re-measures the same paths in the working tree"
+  },
+  "bridge": {
+    "origin": "history",
+    "dispatches": 25,
+    "executions": 25,
+    "transports": 50,
+    "tasks_total": 28,
+    "task_lines_dispatched": 26,
+    "direct_or_earlier": 2,
+    "dispatches_one_task": 24,
+    "dispatches_two_tasks": 1,
+    "method": "count despacho-*.md, execucao-*.md and pedido-*.md files; task lines are the data rows of the Markdown tables in despacho-*.md; direct_or_earlier = tasks_total minus task_lines_dispatched; transports = dispatches plus executions"
+  },
+  "proliferation": {
+    "origin": "history",
+    "root_json_files": 34,
+    "root_json_bytes": 19007360,
+    "neolua_dirs": 3,
+    "baseline_dirs": 9,
+    "markdown_files": 111,
+    "census": {
+      "fixture": "lua-translator-02-artifacts.json",
+      "files": 417,
+      "bytes": 32831762
+    },
+    "method": "walk the history root; count first-level directory names by prefix; markdown = recursive .md files; the census totals remain sealed in the referenced artifacts benchmark and are not recopied here"
+  },
+  "capsules": {
+    "origin": "history",
+    "glob": "continuacao-*.md",
+    "files": 3,
+    "max_lines": 102,
+    "method": "line count follows algorithm.lines; max_lines is the greatest count among the matching files"
+  },
+  "references": [
+    {
+      "id": "legacy",
+      "path": "manutencao/benchmarks/lua-translator-02.json",
+      "format": "om-benchmark-legacy/1",
+      "sha256": "8e01b1b5afede1646c66125b8f895088e16ecd0e9c4e21120e7a9fd7c2e275b7"
+    },
+    {
+      "id": "artifacts",
+      "path": "manutencao/benchmarks/lua-translator-02-artifacts.json",
+      "format": "om-benchmark-artifacts/1",
+      "sha256": "6bf88511e33e29f95e91240c2bee76482c26d60e0e2dac256f44dcaddb3f26e8"
+    },
+    {
+      "id": "report_spec",
+      "path": "manutencao/benchmarks/lua-translator-02-report-spec.json",
+      "format": "om-report-spec/1",
+      "sha256": "bd0467cb1c4ebacc5f1105f5d999234092c47ef0daa8608b464990c5dc754e0c"
+    }
+  ],
+  "unrecoverable": [
+    {
+      "id": "captain_extra_opened_bytes",
+      "reason": "Additional diff, code and log bytes opened by the captain were not recorded."
+    },
+    {
+      "id": "captain_investigation_actions",
+      "reason": "Explicit open and inspect actions by the captain were not recorded."
+    },
+    {
+      "id": "captain_text_effectively_read",
+      "reason": "Historical reads were not logged and cannot be reconstructed from surviving files."
+    },
+    {
+      "id": "bridge_transport_text",
+      "reason": "Messages that crossed the human bridge were not archived; only the published files survive."
+    },
+    {
+      "id": "human_time_in_the_bridge",
+      "reason": "Waiting and handling time on either side of the bridge was not recorded."
+    },
+    {
+      "id": "model_usage_per_role",
+      "reason": "The historical environment did not report per-role model usage; word and byte counts are the reproducible textual proxy, not a substitute measurement."
+    }
+  ]
+}

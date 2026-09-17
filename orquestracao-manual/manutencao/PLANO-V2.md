@@ -41,6 +41,9 @@ do acesso a agentes externos baratos.
 
 A primeira etapa já realizada reduziu a leitura inicial do capitão de 3.126 para
 2.080 palavras: **33,5%**. Esta é a nova linha de base, não o fim da otimização.
+A fixture complementar `manutencao/benchmarks/lua-translator-02-phase-a.json`
+sela, com proveniência, as revisões e o algoritmo dessa contagem, além da
+topologia da ponte, da proliferação e das cápsulas.
 
 ### 2.2 Artefatos de coordenação
 
@@ -85,7 +88,7 @@ não somente o formato.
 A pasta da operação terminou com 417 arquivos e 32.831.762 bytes (31,31 MiB).
 Havia:
 
-- 34 JSONs somando 19.007.360 bytes;
+- 34 JSONs na raiz da operação, somando 19.007.360 bytes;
 - três projetos NeoLua;
 - nove diretórios de baseline identificados na inspeção;
 - resultados raw de 3,3 a 6,9 MiB;

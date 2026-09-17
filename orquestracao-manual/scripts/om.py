@@ -1,8 +1,7 @@
 """Operation control plane (evolutionary entry point).
 
-This recorte provides read-only legacy and quality benchmarks via internal
-libraries, plus a deterministic Phase A cost report derived from frozen
-fixtures and a small human spec.
+This recorte provides deterministic read-only Phase A benchmarks via internal
+libraries and frozen, provenance-bearing fixtures.
 """
 
 from __future__ import annotations

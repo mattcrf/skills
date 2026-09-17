@@ -14,7 +14,9 @@ OM_PATH = ORQ_DIR / "scripts" / "om.py"
 OM_REPORT_PATH = ORQ_DIR / "scripts" / "_om_report.py"
 CANONICAL_LEGACY = ORQ_DIR / "manutencao" / "benchmarks" / "lua-translator-02.json"
 CANONICAL_QUALITY = ORQ_DIR / "manutencao" / "benchmarks" / "lua-translator-02-quality.json"
-CANONICAL_SPEC = ORQ_DIR / "manutencao" / "benchmarks" / "lua-translator-02-report.json"
+CANONICAL_SPEC = (
+    ORQ_DIR / "manutencao" / "benchmarks" / "lua-translator-02-report-spec.json"
+)
 REPORT_DIR = TEST_DIR / "fixtures" / "report"
 SYNTHETIC_LEGACY = REPORT_DIR / "synthetic-legacy.json"
 SYNTHETIC_QUALITY = REPORT_DIR / "synthetic-quality.json"
