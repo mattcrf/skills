@@ -238,72 +238,19 @@ def run_benchmark_legacy(args: argparse.Namespace) -> int:
     return 0
 
 
-def _load_quality_runner():
+def _load_runner(module_name: str, attribute: str):
     try:
-        from _om_quality import run_benchmark_quality
-
-        return run_benchmark_quality
+        module = __import__(module_name)
     except ImportError:
         import importlib.util
 
-        qp = Path(__file__).resolve().parent / "_om_quality.py"
-        spec = importlib.util.spec_from_file_location("_om_quality", qp)
+        path = Path(__file__).resolve().parent / ("%s.py" % module_name)
+        spec = importlib.util.spec_from_file_location(module_name, path)
         if spec is None or spec.loader is None:
             raise
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        return module.run_benchmark_quality
-
-
-def _load_report_runner():
-    try:
-        from _om_report import run_benchmark_report
-
-        return run_benchmark_report
-    except ImportError:
-        import importlib.util
-
-        qp = Path(__file__).resolve().parent / "_om_report.py"
-        spec = importlib.util.spec_from_file_location("_om_report", qp)
-        if spec is None or spec.loader is None:
-            raise
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module.run_benchmark_report
-
-
-def _load_artifacts_runner():
-    try:
-        from _om_artifacts import run_benchmark_artifacts
-
-        return run_benchmark_artifacts
-    except ImportError:
-        import importlib.util
-
-        qp = Path(__file__).resolve().parent / "_om_artifacts.py"
-        spec = importlib.util.spec_from_file_location("_om_artifacts", qp)
-        if spec is None or spec.loader is None:
-            raise
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module.run_benchmark_artifacts
-
-
-def _load_control_runner(name: str):
-    try:
-        import _om_control
-
-        return getattr(_om_control, name)
-    except ImportError:
-        import importlib.util
-
-        path = Path(__file__).resolve().parent / "_om_control.py"
-        spec = importlib.util.spec_from_file_location("_om_control", path)
-        if spec is None or spec.loader is None:
-            raise
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return getattr(module, name)
+    return getattr(module, attribute)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -330,22 +277,28 @@ def build_parser() -> argparse.ArgumentParser:
         help="required: evidence directory",
     )
     quality.add_argument("--out", required=False, default=None)
-    quality.set_defaults(func=_load_quality_runner())
+    quality.set_defaults(func=_load_runner("_om_quality", "run_benchmark_quality"))
     report = bench_sub.add_parser(
         "report", help="derive measurable Phase A cost baseline"
     )
     report.add_argument("--legacy", required=True, help="legacy fixture file")
     report.add_argument("--quality", required=True, help="quality fixture file")
     report.add_argument("--spec", required=True, help="report spec file")
-    report.set_defaults(func=_load_report_runner())
+    report.set_defaults(func=_load_runner("_om_report", "run_benchmark_report"))
     artifacts = bench_sub.add_parser(
         "artifacts", help="census of physical files with dupes and repeats"
     )
     artifacts.add_argument("--source", required=True, help="operation directory")
     artifacts.add_argument("--spec", required=True, help="artifacts spec file")
     artifacts.add_argument("--baseline", required=True, help="frozen JSON file")
-    artifacts.set_defaults(func=_load_artifacts_runner())
-    _load_control_runner("register_cli")(sub)
+    artifacts.set_defaults(func=_load_runner("_om_artifacts", "run_benchmark_artifacts"))
+    replay = bench_sub.add_parser(
+        "replay", help="render converted slices and compare a frozen report"
+    )
+    replay.add_argument("--spec", required=True, help="replay spec file")
+    replay.add_argument("--baseline", required=True, help="frozen JSON report")
+    replay.set_defaults(func=_load_runner("_om_replay", "run_benchmark_replay"))
+    _load_runner("_om_control", "register_cli")(sub)
     return parser
 
 

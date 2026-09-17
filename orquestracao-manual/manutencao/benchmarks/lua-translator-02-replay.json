@@ -1,0 +1,419 @@
+{
+  "algorithm": {
+    "bytes": "raw utf-8 byte length of the rendered task, including the TOML front matter and the trailing newline",
+    "note": "tasks are rendered from the spec in memory; the very same text is published into a throwaway operation and re-read by the local control schema before any measurement is reported",
+    "words": "count of non-overlapping matches of the regular expression \\S+ over the task text decoded as utf-8-sig"
+  },
+  "average_task": {
+    "bytes": 1795.6,
+    "within_limits": true,
+    "words": 215.0
+  },
+  "cases": [
+    {
+      "generated": {
+        "bytes": 1567,
+        "files": 1,
+        "words": 194
+      },
+      "id": "simple",
+      "original": {
+        "bytes": 4261,
+        "files": 1,
+        "words": 577
+      },
+      "original_sources": [
+        "pedido-01-a.md"
+      ],
+      "reduction_percent": {
+        "bytes": 63.224595165454126,
+        "words": 66.37781629116117
+      },
+      "relation": null,
+      "shape": "simple",
+      "tasks": [
+        {
+          "bytes": 1567,
+          "context": 1,
+          "depends": [],
+          "effect": "read-only",
+          "id": "01-a",
+          "kind": "scout",
+          "mapped_items": [
+            "S1-OBJ.1",
+            "S1-OBJ.2",
+            "S1-CON.1",
+            "S1-CON.2",
+            "S1-CON.3",
+            "S1-PERM.1",
+            "S1-LIM.1",
+            "S1-LIM.2",
+            "S1-LIM.3",
+            "S1-LIM.4",
+            "S1-ACC.1",
+            "S1-ACC.2",
+            "S1-ACC.3",
+            "S1-RET.1",
+            "S1-N.1"
+          ],
+          "missing_items": [],
+          "profile": "scout",
+          "validation": "ok",
+          "within_limits": true,
+          "words": 194
+        }
+      ]
+    },
+    {
+      "generated": {
+        "bytes": 3851,
+        "files": 2,
+        "words": 451
+      },
+      "id": "correction",
+      "original": {
+        "bytes": 12485,
+        "files": 2,
+        "words": 1609
+      },
+      "original_sources": [
+        "pedido-13-a.md",
+        "pedido-13-b.md"
+      ],
+      "reduction_percent": {
+        "bytes": 69.15498598317981,
+        "words": 71.97016780609073
+      },
+      "relation": {
+        "from": "13-b",
+        "items": [],
+        "kind": "correction_dependency",
+        "to": "13-a",
+        "verified": true
+      },
+      "shape": "correction_continuation",
+      "tasks": [
+        {
+          "bytes": 1996,
+          "context": 1,
+          "depends": [],
+          "effect": "mutating",
+          "id": "13-a",
+          "kind": "writer",
+          "mapped_items": [
+            "C1-OBJ.1",
+            "C1-SRC.1",
+            "C1-SRC.2",
+            "C1-DEC.1",
+            "C1-DEC.2",
+            "C1-DEC.3",
+            "C1-DEC.4",
+            "C1-DEC.5",
+            "C1-DEC.6",
+            "C1-DEC.7",
+            "C1-DEC.8",
+            "C1-DEC.9",
+            "C1-DEC.10",
+            "C1-DEC.11",
+            "C1-PERM.1",
+            "C1-LIM.1",
+            "C1-ACC.1",
+            "C1-ACC.2",
+            "C1-ACC.3",
+            "C1-ACC.4",
+            "C1-ACC.5",
+            "C1-ACC.6",
+            "C1-ACC.7",
+            "C1-ACC.8",
+            "C1-RET.1"
+          ],
+          "missing_items": [],
+          "profile": "implementer",
+          "validation": "ok",
+          "within_limits": true,
+          "words": 201
+        },
+        {
+          "bytes": 1855,
+          "context": 1,
+          "depends": [
+            "13-a"
+          ],
+          "effect": "mutating",
+          "id": "13-b",
+          "kind": "writer",
+          "mapped_items": [
+            "C2-OBJ.1",
+            "C2-SRC.1",
+            "C2-SRC.2",
+            "C2-DEC.1",
+            "C2-DEC.2",
+            "C2-DEC.3",
+            "C2-PERM.1",
+            "C2-ACC.1",
+            "C2-ACC.2",
+            "C2-ACC.3",
+            "C2-ACC.4",
+            "C2-ACC.5",
+            "C2-ACC.6",
+            "C2-ACC.7",
+            "C2-RET.1"
+          ],
+          "missing_items": [],
+          "profile": "implementer",
+          "validation": "ok",
+          "within_limits": true,
+          "words": 250
+        }
+      ]
+    },
+    {
+      "generated": {
+        "bytes": 3560,
+        "files": 2,
+        "words": 430
+      },
+      "id": "manager_batch",
+      "original": {
+        "bytes": 14568,
+        "files": 2,
+        "words": 1988
+      },
+      "original_sources": [
+        "pedido-08-a.md",
+        "pedido-08-c.md"
+      ],
+      "reduction_percent": {
+        "bytes": 75.56287753981329,
+        "words": 78.3702213279678
+      },
+      "relation": {
+        "details": [
+          {
+            "id": "M-LOAD.1",
+            "text": "Both tasks return independently with writing closed and no active agents; 08-a produced the raw artifact the probe anticipated."
+          },
+          {
+            "id": "M0-DS.1",
+            "text": "Dispatch collapses into the control plane: two tasks ready in parallel, writing exclusive to 08-a, fresh sessions, no technical reading by the manager, partial or blocked back to the captain."
+          }
+        ],
+        "independent": true,
+        "items": [
+          "M-LOAD.1",
+          "M0-DS.1"
+        ],
+        "kind": "parallel_independence",
+        "read_only": [
+          "08-c"
+        ],
+        "verified": true,
+        "writer": "08-a"
+      },
+      "shape": "manager_batch",
+      "tasks": [
+        {
+          "bytes": 1995,
+          "context": 1,
+          "depends": [],
+          "effect": "mutating",
+          "id": "08-a",
+          "kind": "writer",
+          "mapped_items": [
+            "M1-OBJ.1",
+            "M1-SRC.1",
+            "M1-DEC.1",
+            "M1-DEC.2",
+            "M1-DEC.3",
+            "M1-DEC.4",
+            "M1-DEC.5",
+            "M1-DEC.6",
+            "M1-DEC.7",
+            "M1-DEC.8",
+            "M1-DEC.9",
+            "M1-DEC.10",
+            "M1-FACT.1",
+            "M1-PERM.1",
+            "M1-LIM.1",
+            "M1-LIM.2",
+            "M1-LIM.3",
+            "M1-LIM.4",
+            "M1-TEST.1",
+            "M1-ACC.1",
+            "M1-ACC.2",
+            "M1-ACC.3",
+            "M1-ACC.4",
+            "M1-ACC.5",
+            "M1-ACC.6",
+            "M1-ACC.7",
+            "M1-RET.1"
+          ],
+          "missing_items": [],
+          "profile": "implementer",
+          "validation": "ok",
+          "within_limits": true,
+          "words": 220
+        },
+        {
+          "bytes": 1565,
+          "context": 1,
+          "depends": [],
+          "effect": "read-only",
+          "id": "08-c",
+          "kind": "scout",
+          "mapped_items": [
+            "M2-OBJ.1",
+            "M2-SRC.1",
+            "M2-FACT.1",
+            "M2-DEL.1",
+            "M2-DEL.2",
+            "M2-DEL.3",
+            "M2-DEL.4",
+            "M2-PERM.1",
+            "M2-ACC.1",
+            "M2-ACC.2",
+            "M2-ACC.3",
+            "M2-RET.1"
+          ],
+          "missing_items": [],
+          "profile": "scout",
+          "validation": "ok",
+          "within_limits": true,
+          "words": 210
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "mapped": 96,
+    "missing": [],
+    "percent": 100.0,
+    "required": 96
+  },
+  "format": "om-benchmark-replay/1",
+  "limits": {
+    "task_bytes_max": 2000,
+    "task_words_max": 250
+  },
+  "provenance": {
+    "note": "Source hashes, words and bytes are sealed in the spec and cross-check the frozen Phase A legacy fixture; generated task copies are never committed.",
+    "spec_sha256": "d64388fccde24b9471518a02cfc05042d11a0c754ed2dbbcb18e3d509ed5c189"
+  },
+  "sources": [
+    {
+      "bytes": 4261,
+      "id": "pedido-01-a.md",
+      "sha256": "2adf67e2f238ee90f855bd5b2c9144b6ad8aaa572c4db3ab7411c0bfb80e7ba9",
+      "words": 577
+    },
+    {
+      "bytes": 6182,
+      "id": "retorno-01-a.md",
+      "sha256": "19a4bb491e8c4c817f336add627dd16c9b4bc38716503bf2972665e305c9c3a6",
+      "words": 742
+    },
+    {
+      "bytes": 7194,
+      "id": "pedido-13-a.md",
+      "sha256": "49f0e83d9387103f68936ae172fb93f9d043152f97b17d944a5bf8c5db5b6e5c",
+      "words": 949
+    },
+    {
+      "bytes": 9893,
+      "id": "retorno-13-a.md",
+      "sha256": "e6a5075b1a558509961405df7a0a8c28c7549917930776de04043b1a24489b6d",
+      "words": 1233
+    },
+    {
+      "bytes": 5291,
+      "id": "pedido-13-b.md",
+      "sha256": "a6a8f0cc277a31d2caf3dc3aa2d00fbdbbba62214f3a5dd296dbf300485ae628",
+      "words": 660
+    },
+    {
+      "bytes": 11660,
+      "id": "retorno-13-b.md",
+      "sha256": "d3477702d243aa1c5d857a4c5b2462e4f71df1411c31bdd7ce6c45d57f004729",
+      "words": 1570
+    },
+    {
+      "bytes": 1221,
+      "id": "despacho-13.md",
+      "sha256": "3ac298913c00c05231fd62fc3dd17b2d90669fb9a1321f49ebf2d06a506be354",
+      "words": 126
+    },
+    {
+      "bytes": 1309,
+      "id": "despacho-13b.md",
+      "sha256": "84ffc36221ea4d57eb31615efedbc4c6a28416e6b1a3e26fb47fc6473a2631f7",
+      "words": 139
+    },
+    {
+      "bytes": 566,
+      "id": "execucao-13.md",
+      "sha256": "fe7c0a830d55f35cfe54745d06034187d2ec8a5ce93ad75c7a39d5b6ce7f1069",
+      "words": 71
+    },
+    {
+      "bytes": 792,
+      "id": "execucao-13b.md",
+      "sha256": "d1cd4a0609de4785289155b272c16947f42d900b59209ff713abe4e76a38915f",
+      "words": 101
+    },
+    {
+      "bytes": 4889,
+      "id": "continuacao-09.md",
+      "sha256": "88b929f8856a060242885c313ffc4eec3772bb4b2e20ef368a1eca1ba5922c24",
+      "words": 703
+    },
+    {
+      "bytes": 1940,
+      "id": "despacho-08.md",
+      "sha256": "3e0a64fd1d549571864270d376319470663e9da17a5a44c67a28cd5a5bbe5776",
+      "words": 197
+    },
+    {
+      "bytes": 9997,
+      "id": "pedido-08-a.md",
+      "sha256": "57e732350b975d4876cd5ab7271747d5fba3e2db748a56fcf72d3eaed8635204",
+      "words": 1369
+    },
+    {
+      "bytes": 4571,
+      "id": "pedido-08-c.md",
+      "sha256": "3300ed0be1be4c1b6a44aa8e9bd0d2fe5ba0968179b322b72dcbed5c53700a09",
+      "words": 619
+    },
+    {
+      "bytes": 6132,
+      "id": "retorno-08-a.md",
+      "sha256": "2728917da9ef4bddda3bceb3113a5551613c2ad6f3a2c4014b1284979128fed6",
+      "words": 716
+    },
+    {
+      "bytes": 6344,
+      "id": "retorno-08-c.md",
+      "sha256": "85d8b32c491d9a2f09cb835a5f7a75e38b9a3a225f1e999d2bf7291b68afbd59",
+      "words": 815
+    },
+    {
+      "bytes": 604,
+      "id": "execucao-08.md",
+      "sha256": "975496b1998b87317f66925629409fdc1ee04e4946528f0392bcba45ac9ec568",
+      "words": 65
+    },
+    {
+      "bytes": 1737,
+      "id": "continuacao-08.md",
+      "sha256": "6919967d626b6a056be854b0c61f1a2037cf0af7bb4c518ff7619829f1eb64e8",
+      "words": 274
+    }
+  ],
+  "spec_sha256": "d64388fccde24b9471518a02cfc05042d11a0c754ed2dbbcb18e3d509ed5c189",
+  "validation": {
+    "doctor": "ok",
+    "failed": [],
+    "ok": 5,
+    "tasks": 5
+  }
+}

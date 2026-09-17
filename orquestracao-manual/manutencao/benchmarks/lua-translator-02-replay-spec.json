@@ -1,0 +1,580 @@
+{
+  "format": "om-benchmark-replay-spec/1",
+  "operation": {
+    "current_context": 1,
+    "profiles": {
+      "scout": [
+        "read-only"
+      ],
+      "implementer": [
+        "mutating"
+      ]
+    }
+  },
+  "limits": {
+    "task_bytes_max": 2000,
+    "task_words_max": 250
+  },
+  "sources": [
+    {
+      "id": "pedido-01-a.md",
+      "bytes": 4261,
+      "words": 577,
+      "sha256": "2adf67e2f238ee90f855bd5b2c9144b6ad8aaa572c4db3ab7411c0bfb80e7ba9"
+    },
+    {
+      "id": "retorno-01-a.md",
+      "bytes": 6182,
+      "words": 742,
+      "sha256": "19a4bb491e8c4c817f336add627dd16c9b4bc38716503bf2972665e305c9c3a6"
+    },
+    {
+      "id": "pedido-13-a.md",
+      "bytes": 7194,
+      "words": 949,
+      "sha256": "49f0e83d9387103f68936ae172fb93f9d043152f97b17d944a5bf8c5db5b6e5c"
+    },
+    {
+      "id": "retorno-13-a.md",
+      "bytes": 9893,
+      "words": 1233,
+      "sha256": "e6a5075b1a558509961405df7a0a8c28c7549917930776de04043b1a24489b6d"
+    },
+    {
+      "id": "pedido-13-b.md",
+      "bytes": 5291,
+      "words": 660,
+      "sha256": "a6a8f0cc277a31d2caf3dc3aa2d00fbdbbba62214f3a5dd296dbf300485ae628"
+    },
+    {
+      "id": "retorno-13-b.md",
+      "bytes": 11660,
+      "words": 1570,
+      "sha256": "d3477702d243aa1c5d857a4c5b2462e4f71df1411c31bdd7ce6c45d57f004729"
+    },
+    {
+      "id": "despacho-13.md",
+      "bytes": 1221,
+      "words": 126,
+      "sha256": "3ac298913c00c05231fd62fc3dd17b2d90669fb9a1321f49ebf2d06a506be354"
+    },
+    {
+      "id": "despacho-13b.md",
+      "bytes": 1309,
+      "words": 139,
+      "sha256": "84ffc36221ea4d57eb31615efedbc4c6a28416e6b1a3e26fb47fc6473a2631f7"
+    },
+    {
+      "id": "execucao-13.md",
+      "bytes": 566,
+      "words": 71,
+      "sha256": "fe7c0a830d55f35cfe54745d06034187d2ec8a5ce93ad75c7a39d5b6ce7f1069"
+    },
+    {
+      "id": "execucao-13b.md",
+      "bytes": 792,
+      "words": 101,
+      "sha256": "d1cd4a0609de4785289155b272c16947f42d900b59209ff713abe4e76a38915f"
+    },
+    {
+      "id": "continuacao-09.md",
+      "bytes": 4889,
+      "words": 703,
+      "sha256": "88b929f8856a060242885c313ffc4eec3772bb4b2e20ef368a1eca1ba5922c24"
+    },
+    {
+      "id": "despacho-08.md",
+      "bytes": 1940,
+      "words": 197,
+      "sha256": "3e0a64fd1d549571864270d376319470663e9da17a5a44c67a28cd5a5bbe5776"
+    },
+    {
+      "id": "pedido-08-a.md",
+      "bytes": 9997,
+      "words": 1369,
+      "sha256": "57e732350b975d4876cd5ab7271747d5fba3e2db748a56fcf72d3eaed8635204"
+    },
+    {
+      "id": "pedido-08-c.md",
+      "bytes": 4571,
+      "words": 619,
+      "sha256": "3300ed0be1be4c1b6a44aa8e9bd0d2fe5ba0968179b322b72dcbed5c53700a09"
+    },
+    {
+      "id": "retorno-08-a.md",
+      "bytes": 6132,
+      "words": 716,
+      "sha256": "2728917da9ef4bddda3bceb3113a5551613c2ad6f3a2c4014b1284979128fed6"
+    },
+    {
+      "id": "retorno-08-c.md",
+      "bytes": 6344,
+      "words": 815,
+      "sha256": "85d8b32c491d9a2f09cb835a5f7a75e38b9a3a225f1e999d2bf7291b68afbd59"
+    },
+    {
+      "id": "execucao-08.md",
+      "bytes": 604,
+      "words": 65,
+      "sha256": "975496b1998b87317f66925629409fdc1ee04e4946528f0392bcba45ac9ec568"
+    },
+    {
+      "id": "continuacao-08.md",
+      "bytes": 1737,
+      "words": 274,
+      "sha256": "6919967d626b6a056be854b0c61f1a2037cf0af7bb4c518ff7619829f1eb64e8"
+    }
+  ],
+  "cases": [
+    {
+      "id": "simple",
+      "shape": "simple",
+      "original_source_ids": [
+        "pedido-01-a.md"
+      ],
+      "required_items": [
+        "S1-OBJ.1",
+        "S1-OBJ.2",
+        "S1-CON.1",
+        "S1-CON.2",
+        "S1-CON.3",
+        "S1-PERM.1",
+        "S1-LIM.1",
+        "S1-LIM.2",
+        "S1-LIM.3",
+        "S1-LIM.4",
+        "S1-ACC.1",
+        "S1-ACC.2",
+        "S1-ACC.3",
+        "S1-RET.1",
+        "S1-N.1"
+      ],
+      "tasks": [
+        {
+          "id": "01-a",
+          "kind": "scout",
+          "effect": "read-only",
+          "profile": "scout",
+          "context": 1,
+          "depends": [],
+          "sections": [
+            {
+              "field": "goal",
+              "heading": "Goal",
+              "text": "Read-only census of every `Script` in both equipment databases: raw coverage, blockers by construct/frequency, parser case-sensitivity in the fixed clone."
+            },
+            {
+              "field": "inputs",
+              "heading": "Inputs",
+              "text": "`AGENTS.md`, `docs/test-selection.md`, `docs/simulator-database.md`, translator docstring, `translate_source`; clone `src/map/script.cpp` read-only."
+            },
+            {
+              "field": "delta",
+              "heading": "Delta",
+              "text": "Audit command lookup case-insensitivity for `bonus`, `set`, `if`, `switch`; answer whether `BoNuS bStr,2;` parses. `censo.py`: per file/mode load YAML `Body`, take non-empty `Script` items, call `translate_source(text, mode, format=\"raw\")` directly, classify translated/blocked, record blocker strings; print per mode totals and blockers grouped by string with counts and up to 3 representative IDs; top-3 groups' excerpts up to 120 characters. Ground the answer in the parser: registration function, container type, comparison flags. Import the translator from the project root (four parents), not the legacy three-parent `temp/tools` path."
+            },
+            {
+              "field": "scope",
+              "heading": "Scope",
+              "text": "Read-only: only `censo.py` and the return, inside the operation directory; no project or clone changes, no build/test/generation; no batch CLI (`--staging`, `--manifest`) or translator/project change; no grammar, renderer or catalog proposal."
+            },
+            {
+              "field": "acceptance",
+              "heading": "Acceptance",
+              "text": "Counts match the YAML `Body`; blocker strings are really emitted by `translate_source`; the case-sensitivity answer rests on parser code."
+            },
+            {
+              "field": "return",
+              "heading": "Return",
+              "text": "Numbers and tables, parser conclusion with evidence, no implementation proposal."
+            }
+          ],
+          "items": {
+            "S1-OBJ.1": "goal",
+            "S1-OBJ.2": "return",
+            "S1-CON.1": "delta",
+            "S1-CON.2": "delta",
+            "S1-CON.3": "delta",
+            "S1-PERM.1": "scope",
+            "S1-LIM.1": "scope",
+            "S1-LIM.2": "scope",
+            "S1-LIM.3": "scope",
+            "S1-LIM.4": "scope",
+            "S1-ACC.1": "acceptance",
+            "S1-ACC.2": "acceptance",
+            "S1-ACC.3": "acceptance",
+            "S1-RET.1": "return",
+            "S1-N.1": "delta"
+          }
+        }
+      ]
+    },
+    {
+      "id": "correction",
+      "shape": "correction_continuation",
+      "original_source_ids": [
+        "pedido-13-a.md",
+        "pedido-13-b.md"
+      ],
+      "required_items": [
+        "C1-OBJ.1",
+        "C1-SRC.1",
+        "C1-SRC.2",
+        "C1-DEC.1",
+        "C1-DEC.2",
+        "C1-DEC.3",
+        "C1-DEC.4",
+        "C1-DEC.5",
+        "C1-DEC.6",
+        "C1-DEC.7",
+        "C1-DEC.8",
+        "C1-DEC.9",
+        "C1-DEC.10",
+        "C1-DEC.11",
+        "C1-PERM.1",
+        "C1-LIM.1",
+        "C1-ACC.1",
+        "C1-ACC.2",
+        "C1-ACC.3",
+        "C1-ACC.4",
+        "C1-ACC.5",
+        "C1-ACC.6",
+        "C1-ACC.7",
+        "C1-ACC.8",
+        "C1-RET.1",
+        "C2-OBJ.1",
+        "C2-SRC.1",
+        "C2-SRC.2",
+        "C2-DEC.1",
+        "C2-DEC.2",
+        "C2-DEC.3",
+        "C2-PERM.1",
+        "C2-ACC.1",
+        "C2-ACC.2",
+        "C2-ACC.3",
+        "C2-ACC.4",
+        "C2-ACC.5",
+        "C2-ACC.6",
+        "C2-ACC.7",
+        "C2-RET.1"
+      ],
+      "relation": {
+        "kind": "correction_dependency",
+        "from": "13-b",
+        "to": "13-a"
+      },
+      "tasks": [
+        {
+          "id": "13-a",
+          "kind": "writer",
+          "effect": "mutating",
+          "profile": "implementer",
+          "context": 1,
+          "depends": [],
+          "sections": [
+            {
+              "field": "goal",
+              "heading": "Goal",
+              "text": "Raw: close four Renewal `Script` entries blocked by `switch`, readable at 410028, keeping entry/fallthrough/`default`/`break`."
+            },
+            {
+              "field": "inputs",
+              "heading": "Inputs",
+              "text": "`AGENTS.md`,`src/AGENTS.md`,`continuacao-09.md`; clone read-only: `switch`/`case`/`default`/`break` parse/execution."
+            },
+            {
+              "field": "delta",
+              "heading": "Delta",
+              "text": "Base `9e5cfeb`. AST: expression/order/labels/bodies/`break`. Evaluate once in a deterministic synthetic local/counter outside `symbols`; source in `Var[...]`. Clean path: fallthrough over label-only runs to a body ending in unconditional same-level `break`; `do`/`local __switch_value_N`/`if`/`elseif`, empty labels share `or`, no terminal `break`, `default` as `else`; ≤3 comparisons/line, `or`; 410028 → 3 branches, 6/3/9. Else `repeat...until true`: entry preselected per `case`, active walk, source `break` → `repeat` break; `default` anywhere, later entry, fallthrough, no duplication. Nested: own counter; inner `break` trapped. Symbols once; reads join `read-before-write`; definitions intersected; 59 diagnostics. Reject dup `case` (normalized value/canonical constant), multiple `default`, malformed syntax; catalog unextended; document aliases. Styled unchanged; raw only."
+            },
+            {
+              "field": "scope",
+              "heading": "Scope",
+              "text": "Writer of translator source/tests; `*-13a` evidence; no commit; preserve preexisting work/projection; stop if both need refactor."
+            },
+            {
+              "field": "acceptance",
+              "heading": "Acceptance",
+              "text": "Tests: clean path/empty labels/expression once/`default`/long conditions/styled; fallback fallthrough/`default` before later `case`/conditional `break`/nested switch/later entry; negatives dup numeric/canonical/`default`, malformed; read/join diagnostics. Anchors 15980/410027/410028/490405; 410028 attached. Raw 8922/8922; `EquipScript`/`UnEquipScript`/Pre-Renewal complete. 59 diagnostics; 18985 `read-before-write:.@i`. NeoLua zero failures; suite vs 214/7.675 s; `git diff --check`. Return: situation/files/design/split/counts/diagnostics/commands/times/limitations/findings."
+            }
+          ],
+          "items": {
+            "C1-OBJ.1": "goal",
+            "C1-SRC.1": "inputs",
+            "C1-SRC.2": "inputs",
+            "C1-DEC.1": "delta",
+            "C1-DEC.2": "delta",
+            "C1-DEC.3": "delta",
+            "C1-DEC.4": "delta",
+            "C1-DEC.5": "delta",
+            "C1-DEC.6": "delta",
+            "C1-DEC.7": "delta",
+            "C1-DEC.8": "delta",
+            "C1-DEC.9": "delta",
+            "C1-DEC.10": "delta",
+            "C1-DEC.11": "delta",
+            "C1-PERM.1": "scope",
+            "C1-LIM.1": "scope",
+            "C1-ACC.1": "acceptance",
+            "C1-ACC.2": "acceptance",
+            "C1-ACC.3": "acceptance",
+            "C1-ACC.4": "acceptance",
+            "C1-ACC.5": "acceptance",
+            "C1-ACC.6": "acceptance",
+            "C1-ACC.7": "acceptance",
+            "C1-ACC.8": "acceptance",
+            "C1-RET.1": "acceptance"
+          }
+        },
+        {
+          "id": "13-b",
+          "kind": "writer",
+          "effect": "mutating",
+          "profile": "implementer",
+          "context": 1,
+          "depends": [
+            "13-a"
+          ],
+          "sections": [
+            {
+              "field": "goal",
+              "heading": "Goal",
+              "text": "Fix the three divergences blocking 13-a without redesign: `default` with a later `case 0`, the styled legacy contract, valid octal labels."
+            },
+            {
+              "field": "inputs",
+              "heading": "Inputs",
+              "text": "`AGENTS.md`, `src/AGENTS.md`, the 13-a pair; recheck clone `parse_syntax`, `$@__SW*_VAL` zeroing, `parse_curly_close`."
+            },
+            {
+              "field": "delta",
+              "heading": "Delta",
+              "text": "`default` + later `case 0`: initial entry skips the `default` body; the zeroed temporary lets a later `case 0` match before returning; apply to clean/fallback and `read-before-write`; drop the docstring caveat. Styled: keep the legacy blockers per form (duplicate numeric/canonical, duplicate `default`, malformed label, unknown constant) without disabling the new raw rejection; no shortcut for the other blockers. Octal: normalize with the rAthena base, emit decimal Lua, reuse the value for duplicates; cover 007=7, 010=8, octal/decimal duplicate, invalid 08."
+            },
+            {
+              "field": "scope",
+              "heading": "Scope",
+              "text": "Writer of the two 13-a files, preserved; no commit."
+            },
+            {
+              "field": "acceptance",
+              "heading": "Acceptance",
+              "text": "Tests: prior fallthrough + `default` + later `case 0`; sections between; absent later `case 0`; no-match and direct entry; clean and fallback forms. Output skips the `default` body and intermediates when the zeroed temporary finds later `case 0`; other paths keep order; `read-before-write` uses the same paths. Raw 007/010 decimal, equivalent duplicates, 08 refused. Styled matrix versus `9e5cfeb` keeps the six legacy blockers; raw rejects duplicates. 13-a's 24 tests stay valid or change only here, plus regressions. Anchors clean, 410028 output; corpus 8922/8922, 59 diagnostics, 18985 exact. NeoLua anchors/edges compile; suite versus 8.235 s; `git diff --check`."
+            },
+            {
+              "field": "return",
+              "heading": "Return",
+              "text": "Situation, files, semantic correction, styled matrix, tests added/adjusted, corpus counts/diagnostics, commands/times, limitations, findings."
+            }
+          ],
+          "items": {
+            "C2-OBJ.1": "goal",
+            "C2-SRC.1": "inputs",
+            "C2-SRC.2": "inputs",
+            "C2-DEC.1": "delta",
+            "C2-DEC.2": "delta",
+            "C2-DEC.3": "delta",
+            "C2-PERM.1": "scope",
+            "C2-ACC.1": "acceptance",
+            "C2-ACC.2": "acceptance",
+            "C2-ACC.3": "acceptance",
+            "C2-ACC.4": "acceptance",
+            "C2-ACC.5": "acceptance",
+            "C2-ACC.6": "acceptance",
+            "C2-ACC.7": "acceptance",
+            "C2-RET.1": "return"
+          }
+        }
+      ]
+    },
+    {
+      "id": "manager_batch",
+      "shape": "manager_batch",
+      "original_source_ids": [
+        "pedido-08-a.md",
+        "pedido-08-c.md"
+      ],
+      "required_items": [
+        "M0-DS.1",
+        "M1-OBJ.1",
+        "M1-SRC.1",
+        "M1-DEC.1",
+        "M1-DEC.2",
+        "M1-DEC.3",
+        "M1-DEC.4",
+        "M1-DEC.5",
+        "M1-DEC.6",
+        "M1-DEC.7",
+        "M1-DEC.8",
+        "M1-DEC.9",
+        "M1-DEC.10",
+        "M1-FACT.1",
+        "M1-PERM.1",
+        "M1-LIM.1",
+        "M1-LIM.2",
+        "M1-LIM.3",
+        "M1-LIM.4",
+        "M1-TEST.1",
+        "M1-ACC.1",
+        "M1-ACC.2",
+        "M1-ACC.3",
+        "M1-ACC.4",
+        "M1-ACC.5",
+        "M1-ACC.6",
+        "M1-ACC.7",
+        "M1-RET.1",
+        "M2-OBJ.1",
+        "M2-SRC.1",
+        "M2-FACT.1",
+        "M2-DEL.1",
+        "M2-DEL.2",
+        "M2-DEL.3",
+        "M2-DEL.4",
+        "M2-PERM.1",
+        "M2-ACC.1",
+        "M2-ACC.2",
+        "M2-ACC.3",
+        "M2-RET.1",
+        "M-LOAD.1"
+      ],
+      "relation": {
+        "kind": "parallel_independence",
+        "writer": "08-a",
+        "items": {
+          "M0-DS.1": "Dispatch collapses into the control plane: two tasks ready in parallel, writing exclusive to 08-a, fresh sessions, no technical reading by the manager, partial or blocked back to the captain.",
+          "M-LOAD.1": "Both tasks return independently with writing closed and no active agents; 08-a produced the raw artifact the probe anticipated."
+        }
+      },
+      "tasks": [
+        {
+          "id": "08-a",
+          "kind": "writer",
+          "effect": "mutating",
+          "profile": "implementer",
+          "context": 1,
+          "depends": [],
+          "sections": [
+            {
+              "field": "goal",
+              "heading": "Goal",
+              "text": "Raw: translate `autobonus`, `autobonus2`, `autobonus3`; the script argument is translated one-line Lua; styled refuses."
+            },
+            {
+              "field": "inputs",
+              "heading": "Inputs",
+              "text": "`AGENTS.md`, `src/AGENTS.md`, `docs/test-selection.md` core; translator symbols; `6f39ace`; clone `autobonus`/`pc_addautobonus`. Renewal 380 blocked/650 args/460 translate/12 templates (calls 302/38/149); Pre-Renewal 36/74/38; estimates refused."
+            },
+            {
+              "field": "delta",
+              "heading": "Delta",
+              "text": "Args 1st/5th: raw-translated Lua, same mode, Lua string. Inner lines join by spaces; long brackets, level rising at closure. Trimmed opens `{`, closes its `}` pre-translation; empty braces → empty. Templates: `+` chain, string leftmost; strings text, others holes (numeric position, parens unless atom), concatenated; empty pieces dropped except wholly empty; marker once, non-integer, symbols excluded, hole's kept. Refusals `unsupported-argument`: non-literal/template, non-string leftmost, string/call hole, missing pair; counted; expect 0. Inner blockers rise; inner/hole symbols merge. Docstring: key is Lua text; integers join as text. Styled identical."
+            },
+            {
+              "field": "scope",
+              "heading": "Scope",
+              "text": "Writer: translator source/tests, `*-08a.py`, `raw-08a-*.json`; base `c1ec49e`; no commit/stash/worktree. Untouched: catalog, generator, lexer, grammar, styled, omitted commands, tests; isolate; no batch CLI."
+            },
+            {
+              "field": "acceptance",
+              "heading": "Acceptance",
+              "text": "Tests: arity/parens, optional script, one-line `if`/`else`, bracket levels, empty/missing braces, five templates, refusals, blocker rising, symbols, anchors 19265/24216/24271/24280/2134, a Pre-Renewal, styled equal `c1ec49e`, mutations. Suites with counts/times; catalog `--check`; deviation/emission/docstring; mutations named or none; corpus both modes/formats vs `c1ec49e`: styled identical, raw text/symbols unchanged, counts, unblocked, blockers, new refusals/parsing blockers (IDs), `raw-08a-<mode>.json`; `git diff --check`."
+            },
+            {
+              "field": "return",
+              "heading": "Return",
+              "text": "Situation/files/design/counts/commands/times/limits/findings."
+            }
+          ],
+          "items": {
+            "M1-OBJ.1": "goal",
+            "M1-SRC.1": "inputs",
+            "M1-DEC.1": "delta",
+            "M1-DEC.2": "delta",
+            "M1-DEC.3": "delta",
+            "M1-DEC.4": "delta",
+            "M1-DEC.5": "delta",
+            "M1-DEC.6": "delta",
+            "M1-DEC.7": "delta",
+            "M1-DEC.8": "delta",
+            "M1-DEC.9": "delta",
+            "M1-DEC.10": "delta",
+            "M1-FACT.1": "inputs",
+            "M1-PERM.1": "scope",
+            "M1-LIM.1": "scope",
+            "M1-LIM.2": "scope",
+            "M1-LIM.3": "scope",
+            "M1-LIM.4": "scope",
+            "M1-TEST.1": "acceptance",
+            "M1-ACC.1": "acceptance",
+            "M1-ACC.2": "acceptance",
+            "M1-ACC.3": "acceptance",
+            "M1-ACC.4": "acceptance",
+            "M1-ACC.5": "acceptance",
+            "M1-ACC.6": "acceptance",
+            "M1-ACC.7": "acceptance",
+            "M1-RET.1": "return"
+          }
+        },
+        {
+          "id": "08-c",
+          "kind": "scout",
+          "effect": "read-only",
+          "profile": "scout",
+          "context": 1,
+          "depends": [],
+          "sections": [
+            {
+              "field": "goal",
+              "heading": "Goal",
+              "text": "Measure with the runtime NeoLua whether raw output compiles and deliver a reusable probe."
+            },
+            {
+              "field": "inputs",
+              "heading": "Inputs",
+              "text": "`AGENTS.md`, `csharp/AGENTS.md` build conventions only, `RoSim.csproj`, `ItemScripts.cs`, `translate_source`, `FORMATS`, 08-a decisions; NeoLua 1.3.19; frozen `c1ec49e` copy with `CATALOG_PATH`."
+            },
+            {
+              "field": "facts",
+              "heading": "Facts",
+              "text": "Runtime NeoLua 1.3.19; no raw output ever loaded by real Lua; another worker edits the translator concurrently."
+            },
+            {
+              "field": "deliverables",
+              "heading": "Deliverables",
+              "text": "Console `net9.0` probe in the operation directory compiling `{id: text}` without executing, like `ItemScripts.cs`, with OK/failure counts and each failure's id, message and line. Raw outputs of `c1ec49e` for both modes of `item_db_equip.yml`, complete scripts, lines joined by `\\n`, compiled per mode, failures grouped by message, up to 5 ids. Toys: bracket levels with quotes; exact concatenations including `-3`, floor/float division, exponentiation; `5 - -3`; one-line `if`/`elseif`/`else`; the `autobonus` call; whether `load` accepts a custom environment. Answer what the probe does not cover."
+            },
+            {
+              "field": "scope",
+              "heading": "Scope",
+              "text": "Non-writer: only the probe directory, the return and `*-08c.py`; `dotnet` for the probe only; no repo, system or commit changes."
+            },
+            {
+              "field": "acceptance",
+              "heading": "Acceptance",
+              "text": "NeoLua assembly version, build/run commands with time; deliverable numbers and exact toy results; a deliberate syntax error fails, a valid text passes."
+            },
+            {
+              "field": "return",
+              "heading": "Return",
+              "text": "Deliverables and evidence in the return; terminal message with ID, situation, path, stopped writing/processes."
+            }
+          ],
+          "items": {
+            "M2-OBJ.1": "goal",
+            "M2-SRC.1": "inputs",
+            "M2-FACT.1": "facts",
+            "M2-DEL.1": "deliverables",
+            "M2-DEL.2": "deliverables",
+            "M2-DEL.3": "deliverables",
+            "M2-DEL.4": "deliverables",
+            "M2-PERM.1": "scope",
+            "M2-ACC.1": "acceptance",
+            "M2-ACC.2": "acceptance",
+            "M2-ACC.3": "acceptance",
+            "M2-RET.1": "return"
+          }
+        }
+      ]
+    }
+  ]
+}
