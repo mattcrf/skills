@@ -1,12 +1,13 @@
 # Orquestração v2 — plano de desenho e validação
 
-Status: candidato revisado para revisão
+Status: Fases A/B implementadas; Fase C simplificada após dogfood
 
 Base empírica: operação `lua-translator-02`
 
 Premissa econômica: tokens e atenção do capitão são escassos; capacidade de
-gerente, scouts, escritores e verificadores baratos é abundante até cerca de três
-vezes o consumo atual e três agentes simultâneos.
+gerente e trabalhadores baratos é abundante, mas sessões, etapas sequenciais e
+latência continuam tendo custo. Três agentes simultâneos são capacidade máxima,
+não objetivo de ocupação.
 Objetivo principal: reduzir de forma substancial e mensurável o consumo de contexto
 e produção textual do capitão, usando trabalhadores baratos para preparar, executar
 e pré-revisar o trabalho, sem perder as garantias que impediram erros reais.
@@ -30,6 +31,10 @@ demonstrar:
    já observados;
 8. ausência de regras centrais específicas do tradutor Lua, NeoLua, rAthena ou de
    qualquer linguagem, banco, harness ou projeto particular.
+9. caminho rotineiro com no máximo um escritor e um verificador; um scout adicional
+   só entra quando uma incerteza concreta impede execução segura. Quantidade de
+   sessões, etapas sequenciais, falhas e tempo crítico são métricas de primeira
+   classe, não custos invisíveis.
 
 Uma ferramenta que não mova ao menos uma dessas métricas não entra no produto.
 Reduzir travessias humanas é desejável, mas secundário diante do custo do capitão e
@@ -116,6 +121,12 @@ Portanto, custo total de tokens não é a função objetivo correta. A função 
 aceitável aumentar deliberadamente o trabalho barato para reduzir a leitura,
 redação e investigação do capitão.
 
+Essa abundância não torna agentes organizacionalmente gratuitos. Agentes baratos
+escrevem e investigam bem, mas cadeias de julgamento sobre julgamento acrescentam
+latência, pontos de falha e material que o capitão precisa auditar. Uma sessão nova
+precisa retirar trabalho concreto do capitão ou elevar uma garantia mensurável;
+preencher vagas ou perseguir uma meta textual não é benefício.
+
 Os arquivos da operação permitem estabelecer somente limites inferiores:
 
 - o capitão produziu ao menos 22.730 palavras em pedidos;
@@ -168,22 +179,19 @@ serão gerados. O capitão verá um pacote de decisão, não a descarga bruta da
  intenção do usuário
          |
          v
- capitão: decisão curta
+ capitão: intenção e limites
          |
          v
- +---------------------------------------------------+
- | om: estado, escopos, leases, evidência e métricas |
- +---------------------------------------------------+
+ scout opcional: somente se uma dúvida bloquear o escopo
          |
-         +--> scout barato: investiga e rascunha a tarefa
-         +--> escritor barato: implementa
-         +--> verificador A: confere critérios, diff e checks --+
-         +--> verificador B: procura falhas e omissões ----------+--+
-                                                                  |
-                                     pacote de decisão compacto <-+
-                                                                  |
-                                                                  v
-                                                    capitão: inspeciona e decide
+         v
+ escritor: investiga o necessário e implementa
+         |
+         v
+ verificador independente
+         |
+         v
+ pacote de decisão -> capitão
 
  transporte dos agentes: bridge externo | nativo | broker futuro
 ```
@@ -196,15 +204,22 @@ Os papéis baratos são capacidades, não sessões fixas:
 - `scout`: pesquisa contexto, identifica superfícies e propõe tarefa/aceitação;
 - `writer`: único agente autorizado a modificar a superfície concedida;
 - `verifier`: reproduz checks e confronta critérios com o diff;
-- `adversarial reviewer`: procura regressões, omissões e testes enganosos.
+- `adversarial reviewer`: capacidade excepcional do verificador quando risco
+  comprovado justificar uma segunda revisão, não papel rotineiro.
 
-Não haverá `curator` inicial. Se a necessidade for demonstrada depois, ele poderá
-ordenar ou anotar, nunca suprimir achados.
+Não haverá `curator` no caminho padrão. Contagem, validação de IDs, dependências e
+limites pertencem ao CLI; conflito semântico volta ao capitão, não a outra camada de
+agentes baratos.
 
-O limite inicial é três agentes baratos simultâneos. Eles podem executar etapas
-diferentes ou análises redundantes, desde que somente um possua a lease de escrita.
-Não é obrigatório ocupar as três vagas: paralelismo sem hipótese de ganho também é
-desperdício, ainda que barato.
+Orçamento por tarefa:
+
+- rotina: escritor + verificador, duas sessões técnicas;
+- ambiguidade comprovada antes da escrita: um scout + escritor + verificador, três;
+- quatro ou mais sessões: somente benchmark ou risco excepcional explicitamente
+  justificado e medido.
+
+O teto de concorrência continua três, com uma única lease de escrita. Ele não
+autoriza redundância sem hipótese nem cadeias adicionais de preparação.
 
 ## 5. Separação estrutural
 
@@ -347,11 +362,13 @@ O capitão não precisa redigir esse arquivo do zero. O fluxo preferido é:
 
 1. capitão registra intenção, restrições e eventual decisão já tomada em poucas
    linhas;
-2. um ou dois scouts baratos inspecionam projeto e fontes e propõem objetivo,
-   superfícies, riscos e aceitação;
-3. o CLI confronta os rascunhos, destaca divergências e monta uma proposta;
-4. o capitão aprova ou corrige somente as decisões, escopo e critérios relevantes;
-5. `task publish` sela a versão final.
+2. se isso já delimita uma execução segura, a tarefa é publicada sem scout; o
+   escritor investiga localmente o necessário para implementar;
+3. se uma dúvida factual impedir delimitar o escopo ou a aceitação, um scout único
+   investiga e devolve somente evidência e decisões ainda necessárias;
+4. se o scout não resolver a dúvida, a tarefa volta bloqueada ao capitão; investigação
+   adicional exige decisão explícita e conta como exceção ao caminho rotineiro;
+5. o capitão decide o que não for derivável e `task publish` sela a versão final.
 
 Pesquisa e redação são delegadas; responsabilidade e autorização não são.
 
@@ -360,6 +377,12 @@ Essa meta reduz o que o capitão precisa aprovar e o que se repete no histórico
 visão resolvida entregue ao trabalhador pode ser maior ao incorporar referências,
 pesquisa dos scouts e contexto necessário; seu tamanho é medido, mas não comprimido
 às custas da qualidade.
+
+O limite é medido **depois** da equivalência técnica. Nenhum agente recebe ordem de
+remover informação para caber: preserva o rascunho completo e retorna
+`over-budget`. Admite-se uma revisão deliberada; repetir compressão até passar ou
+trocar completude por contagem invalida o gate. O CLI verifica estrutura e números,
+mas não funde decisões nem declara equivalência semântica.
 
 ## 7. Resultado e pacote de decisão do capitão
 
@@ -389,10 +412,10 @@ adquire lease de implementação nem fabrica baseline ou diff inexistente.
 ### 7.2 Pré-revisão barata e independente
 
 O retorno do escritor não vai diretamente ao capitão. Após a lease de escrita ser
-liberada:
+liberada, o caminho padrão usa um verificador:
 
 1. um verificador barato confronta cada critério com diff, arquivos e checks;
-2. um segundo agente, quando exigido pelo perfil de risco, procura regressões,
+2. um segundo agente, somente quando exigido pelo perfil de risco, procura regressões,
    pressupostos falsos, testes enfraquecidos e itens fora do pedido;
 3. os verificadores não herdam a conclusão do escritor como fato; recebem o pedido,
    o estado inicial, o diff e a evidência;
@@ -403,9 +426,9 @@ liberada:
 6. desacordo, baixa confiança ou equivalência ambígua é `fail-open`: permanece
    explícito e nunca é rebaixado por ser minoritário.
 
-Três agentes baratos podem ser empregados sem três escritores: por exemplo, um
-scout em fonte externa, um escritor e um leitor de baseline durante a execução; ou
-dois revisores independentes após o escritor terminar.
+O segundo verificador não é seguro barato por padrão. Só entra por condição
+observável: conflito, risco excepcional, teste alterado, superfície sensível ou
+critério sem evidência. Caso contrário, escritor + verificador encerram a cadeia.
 
 ### 7.3 Pacote de decisão
 
@@ -422,8 +445,8 @@ O capitão recebe uma visão própria, não o retorno bruto:
 - recomendação de profundidade: diff completo, hunks de risco ou spot-check.
 
 O pacote inclui uma tabela `finding-id -> representação`, cobrindo todo achado dos
-verificadores. Um curador futuro pode ordenar, agrupar ou anotar essa tabela, jamais
-suprimir IDs ou resolver semanticamente um desacordo em nome do capitão.
+verificadores. O CLI pode ordenar e validar o mapa mecanicamente; equivalência
+ambígua ou desacordo permanece explícito para o capitão, sem agente intermediário.
 
 A recomendação não limita o capitão. Antes do dogfood, revisão ampliada é acionada
 por condições observáveis: critério sem evidência independente; verificador incapaz
@@ -439,6 +462,8 @@ da operação quando detalhe adicional ajudar os verificadores. Ele apenas não 
 dados mecânicos já capturados. A meta do pacote entregue ao capitão é **até 200
 palavras em média**, excluindo código que ele deliberadamente abrir. Logs e raw não
 contam como texto do pacote, mas entram separadamente na métrica de scratch.
+Se um pacote completo exceder a meta, ele é publicado como `over-budget`; não é
+truncado. Fidelidade é gate, tamanho é resultado medido.
 
 ### 7.4 Cápsula de retomada do capitão
 
@@ -683,6 +708,9 @@ como gargalo.
 - percentual de linhas estáticas repetidas;
 - checks executados, duração e logs abertos na revisão;
 - número de tarefas por lote;
+- número de sessões técnicas iniciadas, concluídas, falhas e descartadas por tarefa;
+- número de etapas sequenciais e tempo do caminho crítico até a decisão;
+- motivo observável para cada scout ou segundo verificador adicional;
 - ciclos do backend, transportes humanos e mensagens;
 - tempo entre `ready`, `running`, `returned` e `accepted`;
 - violações prevenidas pelo validador;
@@ -718,6 +746,10 @@ Orçamento para a operação completa `lua-translator-02`:
 | arquivos de coordenação/estado | 109 | <= 70, salvo evidência excepcional |
 | volume ao fim da operação | 31,31 MiB totais atuais | < 2 MiB após `gc` |
 | estado/handoff inválido publicável | sim | não pelo CLI |
+| sessões técnicas por tarefa rotineira | não medido | <= 2: escritor + verificador |
+| sessões em tarefa com ambiguidade comprovada | não medido | <= 3 incluindo scout |
+| quatro ou mais sessões técnicas | ocorreu nos dogfoods C | exceção justificada, nunca padrão |
+| falha de preparação antes de trabalho real | não medido | 0 no caminho rotineiro |
 
 No orçamento acima, a redação de pedidos pelo capitão cai pelo menos 74,9% e a
 entrada de retornos no capitão, pelo menos 77,8%. A soma desses dois limites
@@ -738,7 +770,8 @@ operação completa.
 Regra de regressão: nenhuma alteração posterior pode piorar em mais de 10% o custo
 do capitão, pedido, pacote de decisão ou artefatos sem registrar a causa e obter
 aceite explícito. Aumento do custo barato não é regressão automática, mas deve trazer
-ganho demonstrável de qualidade, cobertura ou economia do capitão.
+ganho demonstrável de qualidade, cobertura ou economia do capitão **e** não pode
+esconder proliferação de sessões ou aumento desnecessário do caminho crítico.
 
 ## 13. Plano de implementação por gates
 
@@ -776,17 +809,32 @@ Gate B: pedido convertido atinge o alvo, todas as invariantes conhecidas têm te
 nenhum dado técnico necessário desaparece e o esquema não contém conceito exclusivo
 do tradutor. Heartbeat e staleness de sessões permanecem fora desta fase.
 
-### Fase C — preparação barata da tarefa
+### Fase C — preparação mínima em trabalho real
 
-1. implementar intenções curtas e rascunhos de scout;
-2. aceitar até três análises concorrentes somente leitura;
-3. estruturar divergências sem pedir ao capitão que leia todos os rascunhos;
-4. medir quanto da redação original do capitão foi substituída;
-5. validar em ao menos um recorte simples e um de investigação ambígua.
+Dois dogfoods sintéticos rejeitaram o desenho de múltiplos scouts e curadoria:
 
-Gate C: o capitão publica uma tarefa tecnicamente equivalente lendo e escrevendo no
-máximo 25% das palavras da linha de base. O scout não pode ampliar escopo nem
-transformar sua hipótese em decisão silenciosa.
+- dogfood-05 usou cinco sessões, custou cerca de US$ 0,143 e 11 minutos de caminho
+  crítico, mas intenção + pacote consumiram 59,2% da linha de base e perderam
+  requisitos técnicos;
+- dogfood-06 iniciou quatro sessões, custou cerca de US$ 0,125 e sete minutos de
+  caminho crítico; o curador terminou por limite após 32.692 tokens de raciocínio,
+  sem produzir arquivo, e um pedido permitiu consultar por engano a solução futura.
+
+Esses resultados não autorizam outra camada de agentes. A fase passa a:
+
+1. parar reconstruções sintéticas e escolher uma tarefa pequena **real**;
+2. registrar intenção curta e publicar diretamente quando ela já for executável;
+3. usar no máximo um scout se uma incerteza concreta bloquear escopo ou aceitação;
+4. executar a tarefa pelo fallback atual com escritor + um verificador;
+5. medir palavras do capitão, sessões técnicas, falhas, caminho crítico e qualidade;
+6. implementar depois somente a menor ajuda mecânica exigida pela fricção observada.
+
+Gate C: a tarefa real é concluída com qualidade igual ou maior, no máximo duas
+sessões técnicas rotineiras ou três quando o scout for justificado, e redução
+material medida do trabalho de preparação do capitão. A meta de 25% permanece como
+objetivo agregado da operação, não teto por mensagem ou autorização para truncar.
+`over-budget` é falha mensurável, não convite a cortar informação. O scout não pode
+ampliar escopo nem transformar hipótese em decisão silenciosa.
 
 ### Fase D — captura, verificação e pacote de decisão
 
@@ -797,13 +845,14 @@ transformar sua hipótese em decisão silenciosa.
 5. fazer replay de resultados simples, falhos, corrigidos e controversos;
 6. comparar pacote novo com o conjunto-ouro da Fase A.
 
-Gate D: pacote atinge o alvo, cobre de forma rastreável 100% dos IDs de achados,
+Gate D: pacote cobre de forma rastreável 100% dos IDs de achados,
 apresenta 100% dos achados bloqueantes conhecidos e não usa escalada indiscriminada
-para obter recall. O capitão consegue dar o mesmo veredito com no máximo 25% da
-entrada textual original, sem perder acesso ao diff completo; bytes adicionais e
-ações de investigação são publicados junto do resultado. Se logs brutos precisarem
-ser abertos em todos os casos, ou controles limpos forem escalados sistematicamente,
-a compactação falhou.
+para obter recall. O capitão consegue dar o mesmo veredito com redução material da
+entrada textual original, sem perder acesso ao diff completo; a meta agregada é 25%,
+mas cada pacote é medido depois da fidelidade e pode falhar `over-budget`. Bytes
+adicionais e ações de investigação são publicados junto do resultado. Se logs brutos
+precisarem ser abertos em todos os casos, ou controles limpos forem escalados
+sistematicamente, a compactação falhou.
 
 ### Fase E — backend bridge com agentes baratos
 
@@ -814,9 +863,10 @@ a compactação falhou.
 5. implementar e testar heartbeat/staleness por backend;
 6. medir custo dos trabalhadores, custo do capitão, ações humanas e payload.
 
-Gate E: zero despacho/execução manual, nenhum enfraquecimento da fronteira do gerente
-e redução do custo do capitão dentro do orçamento. A contagem de viagens é publicada
-mesmo se não cair.
+Gate E: zero despacho/execução manual, nenhum enfraquecimento da fronteira do gerente,
+redução do custo do capitão dentro do orçamento e respeito ao limite rotineiro de
+duas sessões técnicas. A contagem de viagens e o caminho crítico são publicados
+mesmo se não caírem.
 
 ### Fase F — backend native comparável
 
@@ -850,14 +900,16 @@ registrar a decisão de não construir. Ausência do broker pode ser o resultado
 
 ## 14. Ordem prática dos próximos passos
 
-1. revisar este plano uma vez, com escopo fechado;
-2. corrigir apenas falhas que afetem garantia, viabilidade ou métricas;
-3. aprovar o candidato e criar uma branch de implementação;
-4. executar somente a Fase A;
-5. apresentar o relatório medido antes de iniciar a Fase B.
+1. considerar Fases A/B concluídas no commit aceito;
+2. registrar os dois dogfoods falhos de preparação e encerrar esse desenho;
+3. aplicar esta simplificação sem alterar ainda a skill operacional;
+4. usar o controle atual em uma tarefa pequena real, com escritor + verificador e
+   scout somente se houver bloqueio factual;
+5. medir fricção, sessões, caminho crítico e custo do capitão;
+6. escolher a menor adição de Fase C sustentada por esse uso real.
 
-Não se deve implementar CLI, formatos e backend em um único salto. Cada fase precisa
-mostrar o ganho que compra a complexidade seguinte.
+Não se deve implementar CLI, formatos ou novos papéis para antecipar uma necessidade.
+Cada adição precisa mostrar o ganho que compra a complexidade seguinte.
 
 ## 15. Revisão externa sem loop infinito
 
@@ -892,8 +944,11 @@ preferência de desenho.
 - scratch ignorado e sujeito a retenção;
 - estado sempre derivado;
 - consumo e atenção do capitão são a principal função de custo;
-- agentes baratos podem consumir mais para preparar e pré-revisar o trabalho;
-- até três agentes baratos simultâneos, com uma única lease de escrita;
+- agentes baratos podem consumir mais somente quando retiram trabalho demonstrável
+  do capitão ou elevam uma garantia;
+- caminho rotineiro com escritor + verificador; scout adicional por bloqueio factual;
+- até três agentes baratos simultâneos é teto, com uma única lease de escrita;
+- metas textuais são medidas após fidelidade e nunca autorizam truncamento;
 - ponte manual é backend econômico de primeira classe, não mero fallback;
 - backend nativo compete por papel e pode coexistir com agentes externos;
 - capitão sempre decide o aceite e sempre pode abrir o diff completo;
@@ -914,11 +969,11 @@ Essas decisões não impedem a Fase A e seriam prematuras antes do replay.
 
 ## 17. Resultado esperado
 
-Ao final, o capitão deve escrever apenas o delta técnico e a decisão; o trabalhador,
-apenas julgamento e achados que a máquina não pode inferir. Scouts pesquisam e
-rascunham; escritores implementam; verificadores baratos organizam a evidência e
-procuram falhas. Permissões recorrentes, estado, checks, diffs, tempos, locks,
-métricas e retenção deixam de consumir redação humana.
+Ao final, o capitão deve escrever apenas intenção, limites e decisão; o trabalhador,
+apenas julgamento e achados que a máquina não pode inferir. O escritor investiga e
+implementa; um scout aparece somente quando algo bloqueia a execução; um verificador
+independente confere o resultado. Permissões recorrentes, estado, checks, diffs,
+tempos, locks, métricas e retenção deixam de consumir redação humana.
 
 O capitão recebe menos material, mas material mais denso: requisitos confrontados,
 riscos, discordâncias e âncoras de código, com acesso irrestrito às fontes. A ponte
@@ -926,5 +981,5 @@ externa pode continuar existindo porque compra capacidade barata; delegação na
 entra quando for economicamente ou tecnicamente melhor.
 
 Esse é o ganho procurado: muito menos leitura, escrita e investigação do capitão,
-compradas com trabalho barato e redundante, com mais — não menos — capacidade de
-detectar erro e sem depender do domínio de uma tarefa específica.
+compradas com trabalho barato **direcionado**, sem multiplicar sessões e com mais —
+não menos — capacidade de detectar erro, independentemente do domínio da tarefa.
