@@ -48,9 +48,10 @@ Diretório de saídas: temp/tasks/ na raiz do projeto
 O limite abrange todos os trabalhadores ativos, inclusive leitores e lotes
 distintos; capitão e gerente coordenadores não contam, mas não podem usar essa
 exceção para excedê-lo. Ele limita concorrência, não chamadas. Não infira
-orçamento. Use delegação nativa somente quando a ferramenta real e a autorização
-existirem; sem ela, prepare a ponte, não simule agentes nem espere por transporte
-humano em polling.
+orçamento. Use delegação nativa somente com ferramenta real e autorização. Não
+apresente sessão ou task independente como subagente, nem finja ter acionado ou
+acompanhado agentes; sem a ferramenta, prepare a ponte e não espere por
+transporte humano em polling.
 
 ## Operação e autoria
 
@@ -75,8 +76,9 @@ pode preservar a resposta sem interpretar e identificando a exceção. Prefira
 trabalhadores sem herdar a conversa do gerente e aponte o pedido; a pasta
 compartilhada não fornece isolamento, portanto não prometa isso.
 
-`estado.md` contém somente a concessão de escrita, trabalhadores não terminais,
-evento aguardado e, se necessário, um handoff vigente. Contexto técnico fica em
+Enquanto a operação está viva, `estado.md` contém somente a concessão de escrita,
+trabalhadores não terminais, evento aguardado e, se necessário, um handoff
+vigente; encerrada, somente o caminho da sucessora. Contexto técnico fica em
 código, Git, regras, pedidos, retornos e handoffs.
 
 ## Escritor exclusivo
@@ -90,8 +92,9 @@ não delegam.
 
 Registre a reserva antes da ponte. Um pedido publicado já reserva a permissão;
 silêncio, tempo ou fim de turno não a liberam. Libere-a somente após retorno
-terminal que encerre escrita e processos, ou confirmação explícita de
-interrupção. O estado registra o acordo, mas não o impõe tecnicamente.
+terminal que encerre a escrita e quaisquer processos capazes de escrever, ou
+confirmação explícita de interrupção. O estado registra o acordo, mas não o impõe
+tecnicamente.
 
 Leitores não editam implementação. Build, teste com geração, saída compartilhada
 ou processo persistente pertence ao escritor ou a uma validação exclusiva;
@@ -101,29 +104,26 @@ mudarem.
 
 ## Ponte
 
-Confira e grave os arquivos antes de responder. Entregue um destino e um único
-bloco copiável por destino, com IDs preenchidos e caminhos absolutos reais, sem
-repetir o conteúdo do arquivo. O pedido deve bastar para iniciar:
+Confira e grave os arquivos antes de responder. Identifique fora do bloco `Para o
+gerente`, `Para o trabalhador` ou `Para o capitão`; entregue então um único bloco
+copiável por destino, com IDs preenchidos e caminhos absolutos reais, sem repetir
+o arquivo. O pedido deve bastar para iniciar:
 
 ```text
-Para o gerente | Para o trabalhador
-
 Leia "<caminho absoluto>" e execute as instruções.
 ```
 
 Na volta:
 
 ```text
-Para o capitão
-
 Leia "<caminho absoluto do retorno ou índice>" e avalie os resultados indicados.
 ```
 
 Sem gerente, use blocos separados e informe a ordem apenas quando houver
 dependência; nunca inicie dois escritores. Com gerente, envie e receba um único
-lote consolidado. Acrescente fora do bloco apenas uma decisão humana necessária.
-O trabalhador termina sua mensagem somente com ID, situação, caminho do retorno
-e estado da escrita/processos.
+lote consolidado. Além do identificador, acrescente fora do bloco apenas uma
+decisão humana necessária. O trabalhador termina sua mensagem somente com ID,
+situação, caminho do retorno e estado da escrita/processos.
 
 ## Retomada e economia
 
@@ -132,10 +132,11 @@ arquivos exatos apontados e confira o estado real, sem percorrer o histórico;
 como gerente, use despacho, índice e ferramentas nativas, sem ler conteúdo
 técnico. Resolva permissões incertas antes de editar ou redistribuir.
 
-Não repita um ID nem refaça trabalho aceito sem razão: reutilize retorno terminal
-ainda aplicável; esclareça execução possivelmente ativa; dê novo ID a mudanças.
-Use referências e evidências
-proporcionais, sem copiar arquivos, históricos ou logs acessíveis. Não omita
-falhas. `estado.md` obedece estritamente ao esquema do capitão; qualquer campo ou
-narrativa extra é defeito. Após tentativa improdutiva, mude a estratégia; sem
-próximo passo justificável, devolva o impasse.
+Ausência de retorno não prova que um agente terminou. Não repita um ID nem refaça
+trabalho aceito sem razão: reutilize retorno terminal ainda aplicável, esclareça
+execução possivelmente ativa e dê novo ID a mudanças. Use referências e
+evidências proporcionais, sem copiar arquivos, históricos ou logs acessíveis;
+não repita informação entre campos de um retorno nem omita falhas. `estado.md`
+obedece estritamente ao esquema do capitão; qualquer campo ou narrativa extra é
+defeito. Após tentativa improdutiva, mude a estratégia; sem próximo passo
+justificável, devolva o impasse.

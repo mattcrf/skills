@@ -13,10 +13,11 @@ nativos: toda delegação sai pela ponte. Sem executor, prepare-a.
 
 No modo **implementador com ajudantes**, escolha executar ou delegar cada parte:
 delegue investigação delimitada, revisão independente ou trabalho separável
-quando isso reduzir esforço ou incerteza; faça localmente mudanças menores que o
-pacote de delegação. Não espere o usuário lembrar dos ajudantes nem transforme
-essa escolha em relatório por comando. Não crie tarefas para preencher vagas nem
-contrate uma revisão final de implementação ainda inexistente.
+quando isso reduzir esforço ou incerteza sem exigir transporte desproporcional de
+contexto; faça localmente mudanças menores que o pacote de delegação. Não espere
+o usuário lembrar dos ajudantes nem transforme essa escolha em relatório por
+comando. Não crie tarefas para preencher vagas nem contrate uma revisão final de
+implementação ainda inexistente.
 
 Planeje apenas o próximo lote revisável, com uma entrega central e critérios de
 conclusão por tarefa. O gerente pode ordenar dependências, não inventar a divisão
@@ -80,7 +81,8 @@ economizar leitura, informando ID nativo e fallback. As permissões resumidas
 devem coincidir com o pedido e bastar para configurar as ferramentas; se não
 forem controles nativos, o gerente registra a limitação. Não inclua no despacho
 plano, fórmula, testes ou aceitação técnica. Confira pedidos, permissões e
-destinos antes da ponte.
+destinos antes da ponte. Com gerente, a ponte aponta para o despacho; sem gerente,
+diretamente para o pedido do trabalhador.
 
 ## Estado e handoff
 
@@ -112,13 +114,15 @@ passo técnico.
 
 Em operação encerrada, o controle contém somente o caminho da sucessora.
 
-O handoff é imutável e só contém o contexto do projeto que código, testes, Git e
-pedidos não reconstroem: objetivo, decisões técnicas aprovadas ainda não
-materializadas, ponto exato e próximo ato. Não leva papéis, ponte, gerente,
-configuração, formatos, critérios de avaliação ou notas de modelo. Crie-o somente
-quando o usuário pedir ou anunciar troca de sessão e revise-o como sucessor sem
-memória. Até lá, decisões não materializadas ficam na conversa; `estado.md`
-apenas aponta para o handoff vigente.
+O handoff é imutável, serve mesmo a agentes que não usam este protocolo e só
+contém o contexto do projeto que código, testes, Git e pedidos não reconstroem:
+objetivo, decisões técnicas aprovadas ainda não materializadas, ponto exato e
+próximo ato. Não leva papéis, ponte, gerente, configuração, formatos, critérios
+de avaliação ou notas de modelo. Crie-o somente quando o usuário pedir ou
+anunciar troca de sessão. Antes de publicar, confira que um sucessor sem memória,
+apenas com o handoff e suas referências, retoma sem suposições nem refazer
+investigação concluída. Até lá, decisões não materializadas ficam na conversa;
+`estado.md` apenas aponta para o handoff vigente.
 
 Mudança material de objetivo abre outra pasta. A predecessora fica com controle
 encerrado apontando para a sucessora; não copie o histórico. A nova recebe
@@ -134,10 +138,11 @@ relatados dos executados por você e não repita verificação já suficiente.
 
 Aceite, prepare correção específica ou peça a decisão necessária. Integre apenas
 com escrita livre e autorização; no modo orquestrador, delegue integração.
-Depois de aceitar implementação, use revisão independente somente quando útil.
-Com escrita livre, o capitão pode corrigir e relatar divergência objetiva pequena
-(tipo, constante ou comentário) sem novo pedido; qualquer decisão, mudança de
-escopo ou preferência exige novo pedido ou aceitação como está.
+Ao aceitar implementação, avalie se uma revisão independente é útil; não a
+imponha para mudanças triviais. Com escrita livre, o capitão pode corrigir e
+relatar divergência objetiva pequena (tipo, constante ou comentário) sem novo
+pedido; qualquer decisão, mudança de escopo ou preferência exige novo pedido ou
+aceitação como está.
 
 Conclua com resultado, verificação e limitações, sem manter a operação aberta por
 melhorias externas. Respeite pausas de revisão. Termine cada retorno, sem nova
