@@ -7,8 +7,8 @@ description: Coordenar agentes em ambientes distintos com ponte humana e pasta c
 
 Adapte à ponte humana as mesmas decisões que tomaria com subagentes nativos. Os
 agentes compartilham arquivos, mas não conversa nem acompanhamento automático.
-Reduza o transporte e não escolha modelos: isso pertence ao usuário e ao
-ambiente.
+Reduza o transporte e não escolha nem recomende modelos: isso pertence ao usuário
+e ao ambiente.
 
 ## Papel
 
@@ -48,10 +48,10 @@ Diretório de saídas: temp/tasks/ na raiz do projeto
 O limite abrange todos os trabalhadores ativos, inclusive leitores e lotes
 distintos; capitão e gerente coordenadores não contam, mas não podem usar essa
 exceção para excedê-lo. Ele limita concorrência, não chamadas. Não infira
-orçamento. Use delegação nativa somente com ferramenta real e autorização. Não
-apresente sessão ou task independente como subagente, nem finja ter acionado ou
-acompanhado agentes; sem a ferramenta, prepare a ponte e não espere por
-transporte humano em polling.
+orçamento e respeite limites adicionais do usuário. Use delegação nativa somente
+com ferramenta real e autorização. Não apresente sessão ou task independente
+como subagente, nem finja ter acionado ou acompanhado agentes; sem a ferramenta,
+prepare a ponte e não espere por transporte humano em polling.
 
 ## Operação e autoria
 
@@ -62,7 +62,7 @@ O capitão resolve a raiz pelo diretório de trabalho e cria uma pasta curta e
 temp/tasks/<operacao>/
   estado.md          # controle operacional mutável
   continuacao-01.md  # handoff técnico opcional
-  despacho-01.md     # do capitão para o gerente
+  despacho-01.md     # do capitão para o gerente; omitido na ponte direta
   pedido-01-a.md     # do capitão para o trabalhador
   retorno-01-a.md    # do trabalhador
   execucao-01.md     # do gerente
@@ -120,10 +120,13 @@ Leia "<caminho absoluto do retorno ou índice>" e avalie os resultados indicados
 ```
 
 Sem gerente, use blocos separados e informe a ordem apenas quando houver
-dependência; nunca inicie dois escritores. Com gerente, envie e receba um único
-lote consolidado. Além do identificador, acrescente fora do bloco apenas uma
-decisão humana necessária. O trabalhador termina sua mensagem somente com ID,
-situação, caminho do retorno e estado da escrita/processos.
+dependência; nunca peça ao usuário que inicie dois escritores simultaneamente.
+Com gerente, envie e receba um único lote consolidado. Além do identificador,
+acrescente fora do bloco apenas uma decisão humana necessária. Atualizações
+exigidas pelo ambiente continuam válidas, mas devem ser curtas. Não inclua
+conteúdo técnico na mensagem terminal do trabalhador: além do invólucro da ponte
+exigido pelo papel, informe somente ID, situação, caminho do retorno e estado da
+escrita/processos.
 
 ## Retomada e economia
 
@@ -138,5 +141,5 @@ execução possivelmente ativa e dê novo ID a mudanças. Use referências e
 evidências proporcionais, sem copiar arquivos, históricos ou logs acessíveis;
 não repita informação entre campos de um retorno nem omita falhas. `estado.md`
 obedece estritamente ao esquema do capitão; qualquer campo ou narrativa extra é
-defeito. Após tentativa improdutiva, mude a estratégia; sem próximo passo
-justificável, devolva o impasse.
+defeito. Após tentativa improdutiva, mude a estratégia e não reenvie a mesma
+tarefa indefinidamente; sem próximo passo justificável, devolva o impasse.

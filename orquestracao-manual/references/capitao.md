@@ -19,9 +19,9 @@ o usuário lembrar dos ajudantes nem transforme essa escolha em relatório por
 comando. Não crie tarefas para preencher vagas nem contrate uma revisão final de
 implementação ainda inexistente.
 
-Planeje apenas o próximo lote revisável, com uma entrega central e critérios de
-conclusão por tarefa. O gerente pode ordenar dependências, não inventar a divisão
-técnica.
+Planeje apenas o próximo lote revisável, respeitando passos e aprovações do
+projeto, com uma entrega central e critérios de conclusão por tarefa. O gerente
+pode ordenar dependências, não inventar a divisão técnica.
 
 ## Pedido técnico
 
@@ -75,14 +75,15 @@ Não leia pedidos, handoffs, código ou retornos técnicos.
 Dependências só avançam após conclusão; parcial/bloqueado volta ao capitão.
 ```
 
-`Depende de` aceita IDs do lote ou `nenhuma`. Correções indicam fora da tabela a
-sessão destinatária: nova por padrão; reutilize a anterior quando seu histórico
-economizar leitura, informando ID nativo e fallback. As permissões resumidas
-devem coincidir com o pedido e bastar para configurar as ferramentas; se não
-forem controles nativos, o gerente registra a limitação. Não inclua no despacho
-plano, fórmula, testes ou aceitação técnica. Confira pedidos, permissões e
-destinos antes da ponte. Com gerente, a ponte aponta para o despacho; sem gerente,
-diretamente para o pedido do trabalhador.
+As colunas são campos, não prosa. `Depende de` aceita IDs do lote ou `nenhuma`.
+Correções indicam fora da tabela a sessão destinatária: nova por padrão;
+reutilize a anterior quando seu histórico economizar leitura, informando ID
+nativo e fallback. As permissões resumidas devem coincidir com o pedido e bastar
+para configurar as ferramentas, sem conceder acesso adicional; se não forem
+controles nativos, o gerente registra a limitação. Não inclua no despacho plano,
+fórmula, testes esperados ou critérios técnicos de aceitação. Confira pedidos,
+permissões e destinos antes da ponte. Com gerente, a ponte aponta para o
+despacho; sem gerente, diretamente para o pedido do trabalhador.
 
 ## Estado e handoff
 
