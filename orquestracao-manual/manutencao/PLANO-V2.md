@@ -512,6 +512,22 @@ A ponte com gerente deixa de ser tratada como dívida a eliminar. Ela é o adapt
 que disponibiliza agentes externos baratos que GPT e Claude não invocam nativamente.
 O gerente permanece estritamente operacional e não lê conteúdo técnico.
 
+Enquanto o plano de controle ainda não instalar ou resolver o protocolo por conta
+própria, todo despacho do backend `bridge` inclui por padrão os caminhos absolutos da
+fonte canônica do protocolo e da referência do gerente. O conteúdo não é duplicado no
+despacho. Esse pequeno custo de leitura recai no agente mais barato e evita depender
+de uma skill instalada ou de contexto implícito no ambiente externo. Versão ou hash
+esperado poderão ser acrescentados quando a publicação automatizada existir.
+
+A unidade de transporte da ponte é um **segmento executável da cadeia**, não uma
+tarefa isolada. O capitão publica antecipadamente todas as tarefas independentes ou
+dependentes que não exigem nova decisão técnica; o gerente inicia as prontas, desperta
+para liberar sucessoras, aguarda o segmento terminar e devolve um índice consolidado.
+O segmento acaba antes de qualquer bifurcação que exija arquitetura, mudança de
+escopo, adjudicação de achado ou aceite de código pelo capitão. Sessões de agentes e
+viagens humanas são medidas separadamente: uma cadeia pode conter várias sessões e
+uma única ida e volta pela ponte.
+
 Não haverá arquivos de despacho e execução escritos à mão. A mensagem pode ser
 estável:
 
