@@ -73,3 +73,18 @@ Falha do próprio pedido não reduz a nota do trabalhador. Repasses de `Fora do
 pedido` permanecem separados e não autorizam ampliação automática. O capitão pode
 ser auditado por um revisor externo, mas esse revisor não entra na cadeia nem
 substitui o aceite.
+
+## Handoff
+
+Escreva só quando o usuário pedir ou anunciar troca de sessão, em
+`<operação>/continuacao.md`, substituindo o anterior.
+
+Contém só o que a próxima sessão não obtém lendo o projeto, o Git e a operação:
+
+- o estado, em uma linha;
+- o próximo passo e as decisões do usuário combinados em conversa e não
+  registrados em arquivo.
+
+Teste cada linha antes de gravar: se ela copia uma fonte, conta história, dá
+regra de orquestração, descreve a sessão ou nomeia algo que não deve ser lido,
+apague.
