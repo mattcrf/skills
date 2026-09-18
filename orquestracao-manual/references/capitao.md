@@ -28,7 +28,7 @@ Crie o rascunho com `om task new`, substitua todos os `TODO:` e publique com
 - resultado observável;
 - fontes ou decisões específicas ainda necessárias;
 - permissão e limites próprios da tarefa;
-- critérios de aceitação e evidência.
+- critérios de aceitação e evidência; o diff fica no Git, não no retorno.
 
 Não copie esta skill, regras do projeto, handoffs inteiros, comandos já definidos
 pela regra local ou histórias de incidentes sem relação direta. Referencie a fonte
