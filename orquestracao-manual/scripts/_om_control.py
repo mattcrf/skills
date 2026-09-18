@@ -386,6 +386,10 @@ def _publish(args) -> int:
         target = root / "tasks" / (task["id"] + ".md")
         if target.exists():
             _error("task file already exists: %s" % target)
+        try:
+            (root / "evidence" / task["id"]).mkdir(parents=True, exist_ok=True)
+        except OSError:
+            _error("cannot create evidence directory for task: %s" % task["id"])
         bare_event = {
             "seq": len(events) + 1,
             "prev": events[-1]["event_hash"] if events else None,
@@ -529,6 +533,7 @@ def _task_new(args) -> int:
     if context <= 0 or context > operation["current_context"]:
         _error("invalid task context")
     result = (root / "results" / (task_id + ".md")).resolve()
+    evidence = (root / "evidence" / task_id).resolve()
     title = args.title or task_id
     document = """\
 +++
@@ -563,6 +568,7 @@ TODO: liste evidências que permitem julgar a entrega.
 ## Retorno
 
 Grave o resultado em `{result}` conforme o protocolo do trabalhador.
+Grave a evidência em `{evidence}`.
 """.format(
         task_id=_toml_string(task_id),
         kind=_toml_string(kind),
@@ -573,6 +579,7 @@ Grave o resultado em `{result}` conforme o protocolo do trabalhador.
         title=title,
         operation=root.resolve(),
         result=result,
+        evidence=evidence,
     )
     target = root / ".scratch" / "drafts" / (task_id + ".md")
     if target.exists() or (root / "tasks" / (task_id + ".md")).exists():

@@ -31,6 +31,11 @@ arquitetura inteira nem executa trabalho futuro.
 Faça todo trabalho independente ainda útil antes de declarar bloqueio. Não corte
 evidência para atingir contagem de palavras; não há teto rígido de retorno.
 
+Evidência (scripts, saídas, logs, cópias, worktrees) fica só na pasta indicada no
+pedido. Script recebe a raiz do projeto como caminho absoluto, sem deduzi-la da
+própria posição. Comando longo roda em segundo plano, com log; antes de relançar,
+confirme que o anterior terminou.
+
 ## Retorno
 
 Grave no caminho indicado, sem alterar um retorno terminal existente:

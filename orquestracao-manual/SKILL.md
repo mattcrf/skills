@@ -82,6 +82,7 @@ Estrutura:
   operation.toml
   tasks/             # pedidos publicados e selados
   results/           # retornos dos trabalhadores
+  evidence/<ID>/     # evidência de cada trabalhador
   events.jsonl       # publicação append-only
   dispatch*.md       # despachos gerados para o gerente
   execution*.md      # índices escritos pelo gerente
@@ -90,9 +91,9 @@ Estrutura:
 ```
 
 Cada arquivo tem um responsável: o CLI publica `operation.toml`, `tasks/`,
-`events.jsonl` e despachos; cada trabalhador escreve somente seu retorno e os
-efeitos autorizados no projeto; o gerente escreve somente o índice indicado; o
-capitão edita apenas rascunhos ainda não publicados.
+`events.jsonl` e despachos; cada trabalhador escreve somente seu retorno, sua
+evidência e os efeitos autorizados no projeto; o gerente escreve somente o
+índice indicado; o capitão edita apenas rascunhos ainda não publicados.
 
 O formato anterior em `temp/tasks/` continua legível como histórico, mas não é
 modelo para uma operação nova. Não crie `estado.md`, despacho ou pedido manual

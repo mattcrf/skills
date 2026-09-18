@@ -130,11 +130,17 @@ Demonstrate one small task.
             "Operação compartilhada: `%s`." % operation.resolve(),
             writer_path.read_text(encoding="utf-8"),
         )
+        evidence = operation.resolve() / "evidence" / "write-one"
+        self.assertIn(
+            "Grave a evidência em `%s`." % evidence,
+            writer_path.read_text(encoding="utf-8"),
+        )
         rejected = self.run_om(
             "task", "publish", "--operation", str(operation), "--task", str(writer_path)
         )
         self.assertEqual(rejected.returncode, 1)
         self.assertIn("task still contains TODO markers", rejected.stderr)
+        self.assertFalse(evidence.exists())
         writer_path.write_text(
             writer_path.read_text(encoding="utf-8").replace(
                 "TODO:", "Defined:",
@@ -145,6 +151,7 @@ Demonstrate one small task.
             "task", "publish", "--operation", str(operation), "--task", str(writer_path)
         )
         self.assertEqual(published_writer.returncode, 0, published_writer.stderr)
+        self.assertTrue(evidence.is_dir())
 
         verifier = self.run_om(
             "task",

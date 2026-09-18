@@ -51,9 +51,9 @@ py -B "<skill>\scripts\om.py" task publish `
   --operation "<operação>" --task "<rascunho>"
 ```
 
-Publicar copia o pedido para `tasks/`, grava seu hash no log e impede alterações
-silenciosas. A saída informa bytes, palavras e `budget=within|over`. `over` não é
-erro e nunca autoriza truncamento.
+Publicar copia o pedido para `tasks/`, cria `evidence/<ID>/`, grava seu hash no
+log e impede alterações silenciosas. A saída informa bytes, palavras e
+`budget=within|over`. `over` não é erro e nunca autoriza truncamento.
 
 Valide e gere o despacho:
 
