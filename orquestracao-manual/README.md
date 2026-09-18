@@ -4,7 +4,8 @@ Fonte versionada da skill de coordenação por ponte humana.
 
 ## Instalação
 
-Copie para a pasta de skills da harness:
+Copie para as duas instalações, `~/.claude/skills/orquestracao-manual` e
+`~/.codex/skills/orquestracao-manual`:
 
 - `SKILL.md`
 - `references/`
