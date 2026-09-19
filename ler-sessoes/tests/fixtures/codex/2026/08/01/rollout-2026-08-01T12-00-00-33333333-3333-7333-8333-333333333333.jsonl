@@ -1,0 +1,3 @@
+{"timestamp": "2026-08-01T15:00:00.000Z", "ordinal": 0, "type": "session_meta", "payload": {"id": "33333333-3333-7333-8333-333333333333", "parent_thread_id": "aaaaaaaa-0000-7000-8000-000000000000", "agent_path": "/root/worker_x", "cwd": "C:\\proj", "timestamp": "2026-08-01T15:00:00.000Z"}}
+{"timestamp": "2026-08-01T15:00:00.100Z", "ordinal": 1, "type": "turn_context", "payload": {"model": "modelo-z", "effort": "medium"}}
+{"timestamp": "2026-08-01T15:00:01.000Z", "ordinal": 2, "type": "event_msg", "payload": {"type": "item_completed", "item": {"type": "Reasoning", "id": "r1", "summary_text": ["Pensando sem fim."], "raw_content": []}, "started_at_ms": 1785596401000, "completed_at_ms": 1785596401500}}
