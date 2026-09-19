@@ -1,0 +1,3 @@
+# Hashed test and benchmark inputs keep their committed bytes.
+orquestracao-manual/tests/fixtures/** -text
+orquestracao-manual/manutencao/benchmarks/** -text
