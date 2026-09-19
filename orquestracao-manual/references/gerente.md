@@ -26,6 +26,9 @@ dependências, permissões e retornos.
 4. Use as ferramentas nativas para aguardar. Conclusão terminal e existência do
    retorno liberam a próxima dependência; parcial, bloqueado, falha ou processo de
    escrita incerto encerram o segmento e voltam ao capitão.
+   Sessão encerrada sem retorno é falha: confira só a existência do retorno e da
+   evidência, não retome nem relance, e registre o motivo de término que a
+   ferramenta mostrar (ex.: `length`).
 5. Registre o ID nativo assim que abrir cada agente. Não relance uma sessão cujo
    estado seja apenas desconhecido.
 
@@ -41,7 +44,7 @@ Escreva somente no caminho indicado pelo despacho:
 # Execução
 | Tarefa | ID nativo | Estado | Retorno |
 | --- | --- | --- | --- |
-| ... | ... | concluída/parcial/bloqueada/ativa/não iniciada | ... |
+| ... | ... | concluída/parcial/bloqueada/falha/ativa/não iniciada | ... |
 
 Escrita: encerrada | reservada para <ID>.
 Agentes/processos ativos: nenhum | <estado conhecido>.

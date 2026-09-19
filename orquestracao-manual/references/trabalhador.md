@@ -18,7 +18,9 @@ o corpo informa a entrega e o caminho do retorno.
 
 O escritor investiga dentro do escopo, implementa e valida. Decisões técnicas
 pequenas necessárias à entrega são dele; mudança de objetivo, permissão ou
-arquitetura volta ao capitão como parcial ou bloqueada.
+arquitetura volta ao capitão como parcial ou bloqueada. Ao fechar cada parte da
+entrega, reescreva `results/<ID>.progress.md` com quatro linhas (Feito, Agora,
+Falta, Decisões); substitua, nunca acrescente.
 
 O verificador começa somente depois do término do escritor. Confronta pedido,
 diff, arquivos e evidências independentemente; não trata o relato do escritor como
@@ -31,9 +33,10 @@ arquitetura inteira nem executa trabalho futuro.
 Faça todo trabalho independente ainda útil antes de declarar bloqueio. Não corte
 evidência para atingir contagem de palavras; não há teto rígido de retorno.
 
-Evidência (scripts, saídas, logs, cópias, worktrees) fica só na pasta indicada no
-pedido. Script recebe a raiz do projeto como caminho absoluto, sem deduzi-la da
-própria posição. Comando longo roda em segundo plano, com log; antes de relançar,
+Todo arquivo que você criar fora da superfície concedida (script, saída, log,
+cópia, rascunho, worktree) fica só na pasta de evidência do pedido; nunca em pasta
+temporária do sistema ou da harness. Script recebe a raiz do projeto como
+caminho absoluto, sem deduzi-la da própria posição. Comando longo roda em segundo plano, com log; antes de relançar,
 confirme que o anterior terminou.
 
 ## Retorno
