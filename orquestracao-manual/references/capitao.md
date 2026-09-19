@@ -11,10 +11,12 @@ julgamento.
 2. Escolha um ID curto e específico e use `om op init` para uma operação nova.
    Guarde o caminho absoluto emitido pelo comando e use-o em todo o segmento.
    Reuse uma operação somente quando o objetivo material permanece o mesmo.
-3. Planeje apenas o próximo segmento executável: todas as tarefas que o gerente
-   consegue encadear sem nova decisão técnica.
-4. Para implementação, publique um escritor e um verificador dependente. Acrescente
-   um scout somente se uma questão factual impedir escrever o pedido.
+3. Planeje só o próximo segmento: um escritor e um verificador dependente. O
+   escritor recebe uma superfície (arquivo, leitor ou módulo) e a entrega deixa
+   o projeto verde e se aceita sozinha. A mesma regra em várias superfícies vira
+   um segmento por superfície, em ordem; não separe o que só fica verde junto,
+   como código e seus testes.
+4. Acrescente um scout somente se uma questão factual impedir escrever o pedido.
 
 Não use agentes para reescrever o pedido quando você já consegue delimitá-lo. O
 escritor investiga detalhes locais necessários à implementação; o capitão fornece
